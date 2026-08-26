@@ -1,0 +1,189 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+}
+
+body, html, #root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f5f2eb; /* Sıcak Ekru */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.canvas-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* Galeri Nişangah Noktası */
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background-color: #8b5a2b;
+  box-shadow: 0 0 6px rgba(139, 90, 43, 0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* Başlangıç Paneli */
+.instructions-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(245, 242, 235, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #2c2523;
+  cursor: pointer;
+  z-index: 100;
+  text-align: center;
+}
+
+.instructions-card {
+  background: #ffffff;
+  border: 1px solid #d4cbb8;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem 3.5rem;
+  border-radius: 16px;
+}
+
+.instructions-card h1 {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  color: #3b2a22;
+  letter-spacing: 2px;
+}
+
+.instructions-card p {
+  color: #7a6e65;
+  margin-bottom: 1.5rem;
+}
+
+.controls-hint {
+  display: inline-block;
+  background: #f7f4ee;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  border: 1px solid #e0d8c7;
+  color: #4a3e3d;
+}
+
+.start-prompt {
+  margin-top: 1.5rem;
+  color: #8b5a2b;
+  font-weight: 600;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* Eser Detay Modalı */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(35, 30, 28, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 1.5rem;
+}
+
+.modal-content {
+  background: #ffffff;
+  border: 1px solid #dcd5c5;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  animation: modalIn 0.2s ease-out;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #d4cbb8;
+  color: #2c2523;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: #8b5a2b;
+  color: #fff;
+}
+
+.modal-img-wrapper {
+  width: 100%;
+  height: 320px;
+  background: #f0ebe1;
+}
+
+.modal-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.modal-body {
+  padding: 1.75rem;
+}
+
+.modal-tag {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #8b5a2b;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+}
+
+.modal-body h2 {
+  font-size: 1.6rem;
+  color: #2c2523;
+  margin: 0.25rem 0 0.75rem 0;
+}
+
+.modal-body p {
+  color: #635853;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
