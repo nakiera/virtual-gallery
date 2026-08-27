@@ -11,35 +11,54 @@ const ARTIST_INFO = {
   email: 'nakiera@gmail.com'
 };
 
-// TEKİL ESERLER VE EN ÖZEL PARÇALAR
+// 41 DOSYANIN TAMAMI EKSİKSİZ OLARAK DUVARLARA DAĞITILDI
 const ARTWORKS = [
   // --- SOL DUVAR (X = -11.88) ---
-  { id: 1, title: 'Balloon Float', file: '/artworks/1-baloon.png', position: [-11.88, 1.8, -14.0], rotation: [0, Math.PI / 2, 0], height: 1.2 },
-  { id: 2, title: 'Strawberry Bloom', file: '/artworks/2-straw.png', position: [-11.88, 1.8, -10.5], rotation: [0, Math.PI / 2, 0], height: 1.2 },
-  { id: 3, title: 'Botanical Study 3', file: '/artworks/3-DSC00648.JPG', position: [-11.88, 1.8, -7.0], rotation: [0, Math.PI / 2, 0], height: 1.2 },
-  { id: 4, title: 'Morning Daisies I', file: '/artworks/4-daisies1.jpg', position: [-11.88, 1.8, -3.5], rotation: [0, Math.PI / 2, 0], height: 1.2 },
-  { id: 5, title: 'Morning Daisies II', file: '/artworks/5-daisies2.JPG', position: [-11.88, 1.8, 0.0], rotation: [0, Math.PI / 2, 0], height: 1.2 },
-  { id: 6, title: 'Morning Daisies III', file: '/artworks/6-daisies3.JPG', position: [-11.88, 1.8, 3.5], rotation: [0, Math.PI / 2, 0], height: 1.2 },
-  { id: 7, title: 'Drapery in Repose', file: '/artworks/7-bust1.jpg', position: [-11.88, 1.8, 7.0], rotation: [0, Math.PI / 2, 0], height: 1.2 },
-  { id: 8, title: 'Sentinel of the Tides', file: '/artworks/8-lighthouse1.jpg', position: [-11.88, 1.8, 10.5], rotation: [0, Math.PI / 2, 0], height: 1.2 },
+  { id: 1, title: 'Balloon Float', file: '/artworks/1-baloon.png', position: [-11.88, 1.8, -15.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 2, title: 'Strawberry Bloom', file: '/artworks/2-straw.png', position: [-11.88, 1.8, -12.5], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 3, title: 'Botanical Study', file: '/artworks/3-DSC00648.JPG', position: [-11.88, 1.8, -10.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 4, title: 'Daisies I', file: '/artworks/4-daisies1.jpg', position: [-11.88, 1.8, -7.5], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 5, title: 'Daisies II', file: '/artworks/5-daisies2.JPG', position: [-11.88, 1.8, -5.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 6, title: 'Daisies III', file: '/artworks/6-daisies3.JPG', position: [-11.88, 1.8, -2.5], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 7, title: 'Bust Study', file: '/artworks/7-bust1.jpg', position: [-11.88, 1.8, 0.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 8, title: 'Lighthouse', file: '/artworks/8-lighthouse1.jpg', position: [-11.88, 1.8, 2.5], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 9, title: 'Lillies', file: '/artworks/9-lillies4.jpg', position: [-11.88, 1.8, 5.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 10, title: 'Rose I', file: '/artworks/10-rose1.jpg', position: [-11.88, 1.8, 7.5], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 11, title: 'Rose II', file: '/artworks/11-rose2.jpg', position: [-11.88, 1.8, 10.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 12, title: 'Roses Set', file: '/artworks/12-roses3.jpg', position: [-11.88, 1.8, 12.5], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 13, title: 'Ink Flower', file: '/artworks/13-inkflower1.jpg', position: [-11.88, 3.1, -6.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 14, title: 'Wine Still Life', file: '/artworks/14-wine1.jpg', position: [-11.88, 3.1, 0.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
+  { id: 15, title: 'Bouquet', file: '/artworks/15-DSC00922.JPG', position: [-11.88, 3.1, 6.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
 
   // --- SAĞ DUVAR (X = 11.88) ---
-  { id: 9, title: 'Lily in Monochrome', file: '/artworks/9-lillies4.jpg', position: [11.88, 1.8, -14.0], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
-  { id: 10, title: 'White Rose in Negative', file: '/artworks/10-rose1.jpg', position: [11.88, 1.8, -10.5], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
-  { id: 11, title: 'Whispering Stem', file: '/artworks/11-rose2.jpg', position: [11.88, 1.8, -7.0], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
-  { id: 12, title: 'Still Life with Decanter', file: '/artworks/12-roses3.jpg', position: [11.88, 1.8, -3.5], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
-  { id: 13, title: 'Nocturne Botanical', file: '/artworks/13-inkflower1.jpg', position: [11.88, 1.8, 0.0], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
-  { id: 14, title: 'Midnight Vintage', file: '/artworks/14-wine1.jpg', position: [11.88, 1.8, 3.5], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
-  { id: 15, title: 'Bouquet of Grace', file: '/artworks/15-DSC00922.JPG', position: [11.88, 1.8, 7.0], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
-  { id: 16, title: 'November Serenity', file: '/artworks/16-flower11.11.23.png', position: [11.88, 1.8, 10.5], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
+  { id: 16, title: 'Flower Study', file: '/artworks/16-flower11.11.23.png', position: [11.88, 1.8, -15.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 17, title: 'Blue Flower', file: '/artworks/17-flower07-11-23.png', position: [11.88, 1.8, -12.5], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 18, title: 'Bicycle', file: '/artworks/18-bycycle1.jpg', position: [11.88, 1.8, -10.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 19, title: 'Sunflower', file: '/artworks/19-sunflower2.jpg', position: [11.88, 1.8, -7.5], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 20, title: 'Iris Study', file: '/artworks/20-DSC00927.JPG', position: [11.88, 1.8, -5.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 23, title: 'Poppy I', file: '/artworks/23poppy1.jpg', position: [11.88, 1.8, -2.5], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 24, title: 'Poppy II', file: '/artworks/24poppy2.jpg', position: [11.88, 1.8, 0.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 25, title: 'Poppy III', file: '/artworks/25poppy3.jpg', position: [11.88, 1.8, 2.5], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 26, title: 'Poppies', file: '/artworks/26poppies4.jpg', position: [11.88, 1.8, 5.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 27, title: 'Tulip Etude I', file: '/artworks/27-DSC00662.JPG', position: [11.88, 1.8, 7.5], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 28, title: 'Tulip Etude II', file: '/artworks/28-DSC00664.JPG', position: [11.88, 1.8, 10.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 29, title: 'Tulip Etude III', file: '/artworks/29-DSC00668.JPG', position: [11.88, 1.8, 12.5], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 30, title: 'Abstract Vortex', file: '/artworks/30-DSC00655.JPG', position: [11.88, 3.1, -6.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 31, title: 'Ancestral Mirage', file: '/artworks/31-DSC00657.JPG', position: [11.88, 3.1, 0.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
+  { id: 32, title: 'Genesis of Color', file: '/artworks/32-DSC00659.JPG', position: [11.88, 3.1, 6.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
 
-  // --- ARKA DUVAR (Z = -17.85) - EN ÖZEL ESERLER ---
-  { id: 17, title: 'Azure Solitude', file: '/artworks/17-flower07-11-23.png', position: [-6.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 },
-  { id: 18, title: 'Mediterranean Reverie', file: '/artworks/18-bycycle1.jpg', position: [-3.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 },
-  { id: 19, title: 'Gilded Sunflower', file: '/artworks/19-sunflower2.jpg', position: [0.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.4 },
-  { id: 20, title: 'Iris at Twilight', file: '/artworks/20-DSC00927.JPG', position: [3.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 },
-  { id: 23, title: 'Red Poppy I', file: '/artworks/23poppy1.jpg', position: [6.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 },
-  { id: 25, title: 'Crimson Cascade', file: '/artworks/25poppy3.jpg', position: [9.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 }
+  // --- ARKA DUVAR (Z = -17.85) ---
+  { id: 33, title: 'Sunflower Vase I', file: '/artworks/33-DSC00923.JPG', position: [-9.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
+  { id: 34, title: 'Sunflower Vase II', file: '/artworks/33-DSC00924.JPG', position: [-5.4, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
+  { id: 35, title: 'Sunflower Vase III', file: '/artworks/33-DSC00925.JPG', position: [-1.8, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
+  { id: 36, title: 'Emerald Rose', file: '/artworks/34-DSC00670.JPG', position: [1.8, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
+  { id: 37, title: 'Tulips', file: '/artworks/35-tulip1.jpg', position: [5.4, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
+  { id: 38, title: 'Calla Lilies', file: '/artworks/36-calla-lillies1.jpg', position: [9.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
+  { id: 39, title: 'Floral Study B', file: '/artworks/37-DSC00918.JPG', position: [-6.0, 3.1, -17.85], rotation: [0, 0, 0], height: 1.1 },
+  { id: 40, title: 'Dandelion', file: '/artworks/38-dandelion2.jpg', position: [-2.0, 3.1, -17.85], rotation: [0, 0, 0], height: 1.1 },
+  { id: 41, title: 'Iris Bloom', file: '/artworks/39-iris1.jpg', position: [2.0, 3.1, -17.85], rotation: [0, 0, 0], height: 1.1 },
+  { id: 42, title: 'Blue Vase Flowers', file: '/artworks/40-DSC00644.JPG', position: [6.0, 3.1, -17.85], rotation: [0, 0, 0], height: 1.1 },
+  { id: 43, title: 'Dandelion Seeds', file: '/artworks/41-dandelion1.png', position: [0.0, 4.2, -17.85], rotation: [0, 0, 0], height: 1.0 }
 ];
 
 // ÖZEL 2 ADET 4'LÜ SET (GİRİŞ KAPISININ İKİ YANINDA - Z = 13.95)
@@ -90,8 +109,8 @@ function ArtFrame({ art, onSelect }) {
     });
   }, [art.file]);
 
-  const frameWidth = (art.height || 1.2) * aspect;
-  const frameHeight = art.height || 1.2;
+  const frameWidth = (art.height || 1.1) * aspect;
+  const frameHeight = art.height || 1.1;
 
   return (
     <group 
