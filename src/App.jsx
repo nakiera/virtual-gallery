@@ -11,7 +11,7 @@ const ARTIST_INFO = {
   email: 'nakiera@gmail.com'
 };
 
-// SOL VE SAĞ DUVAR ESERLERİ
+// TEKİL ESERLER VE EN ÖZEL PARÇALAR
 const ARTWORKS = [
   // --- SOL DUVAR (X = -11.88) ---
   { id: 1, title: 'Balloon Float', file: '/artworks/1-baloon.png', position: [-11.88, 1.8, -14.0], rotation: [0, Math.PI / 2, 0], height: 1.2 },
@@ -33,23 +33,23 @@ const ARTWORKS = [
   { id: 15, title: 'Bouquet of Grace', file: '/artworks/15-DSC00922.JPG', position: [11.88, 1.8, 7.0], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
   { id: 16, title: 'November Serenity', file: '/artworks/16-flower11.11.23.png', position: [11.88, 1.8, 10.5], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
 
-  // --- ARKA DUVAR (Z = -17.85) - İSTEDİĞİN 6 ADET TEKİL ESER BURADA ---
+  // --- ARKA DUVAR (Z = -17.85) - EN ÖZEL ESERLER ---
   { id: 17, title: 'Azure Solitude', file: '/artworks/17-flower07-11-23.png', position: [-6.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 },
   { id: 18, title: 'Mediterranean Reverie', file: '/artworks/18-bycycle1.jpg', position: [-3.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 },
-  { id: 19, title: 'Gilded Sunflower', file: '/artworks/19-sunflower2.jpg', position: [0.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 },
+  { id: 19, title: 'Gilded Sunflower', file: '/artworks/19-sunflower2.jpg', position: [0.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.4 },
   { id: 20, title: 'Iris at Twilight', file: '/artworks/20-DSC00927.JPG', position: [3.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 },
   { id: 23, title: 'Red Poppy I', file: '/artworks/23poppy1.jpg', position: [6.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 },
-  { id: 24, title: 'Red Poppy II', file: '/artworks/24poppy2.jpg', position: [9.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 }
+  { id: 25, title: 'Crimson Cascade', file: '/artworks/25poppy3.jpg', position: [9.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.2 }
 ];
 
-// 4'LÜ SETLER (GİRİŞ KAPISININ İKİ YANINDA - Z = 13.95)
+// ÖZEL 2 ADET 4'LÜ SET (GİRİŞ KAPISININ İKİ YANINDA - Z = 13.95)
 const GRID_SETS = [
   {
     id: 'flamingo-set',
     title: 'Flamingo Polyptych',
     category: 'Oil Painting Set',
     description: 'A four-panel unified set forming an elegant stylized flamingo composition.',
-    position: [-5.0, 1.8, 13.95], // Kapının Sol Yanı
+    position: [-5.0, 1.8, 13.95],
     rotation: [0, Math.PI, 0],
     files: [
       '/artworks/21Flamingo1.JPG',
@@ -63,7 +63,7 @@ const GRID_SETS = [
     title: 'Chromatic Synthesis',
     category: 'Abstract Set',
     description: 'A four-panel modernist abstract matrix investigating chromatic color blocks.',
-    position: [5.0, 1.8, 13.95], // Kapının Sağ Yanı
+    position: [5.0, 1.8, 13.95],
     rotation: [0, Math.PI, 0],
     files: [
       '/artworks/22Piece1.JPG',
