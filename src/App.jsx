@@ -330,11 +330,11 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY)
+  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - DOĞRU SIRALAMA & EKSİK DAISIES EKLENDİ)
   // ========================================================
   { 
     id: 32, 
-    title: 'Morning Daisies', 
+    title: 'Morning Daisies I', 
     artist: 'Zeynep Ozcelik',
     category: 'Oil Painting', 
     date: '2023', 
@@ -347,6 +347,32 @@ const ARTWORKS = [
   },
   { 
     id: 33, 
+    title: 'Morning Daisies II', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '2023', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/b-daisies2.jpg', 
+    description: 'Close-up botanical perspective focusing on delicate white petals and morning light reflections.', 
+    position: [11.9, 2.0, -13.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.35 
+  },
+  { 
+    id: 34, 
+    title: 'Morning Daisies III', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '2023', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/b-daisies3.jpg', 
+    description: 'Lyrical arrangement of wild field daisies breathing natural simplicity.', 
+    position: [11.9, 2.0, -10.5], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.35 
+  },
+  { 
+    id: 35, 
     title: 'Bouquet of Grace', 
     artist: 'Zeynep Ozcelik',
     category: 'Oil Still Life', 
@@ -354,12 +380,12 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/g-DSC00922.JPG', 
     description: 'Rich tabletop vase filled with layered pink and crimson roses.', 
-    position: [11.9, 2.0, -13.0], 
+    position: [11.9, 2.0, -8.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
   { 
-    id: 34, 
+    id: 36, 
     title: 'Emerald Rose', 
     artist: 'Zeynep Ozcelik',
     category: 'Oil Painting', 
@@ -367,25 +393,12 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/g-DSC00670.JPG', 
     description: 'A deep crimson rose blooming amid deep emerald foliage.', 
-    position: [11.9, 2.0, -10.5], 
+    position: [11.9, 2.0, -5.5], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
   { 
-    id: 35, 
-    title: 'Crimson Solitary', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '01.04.2023', 
-    dimensions: '50x70 cm', 
-    file: '/artworks/t-DSC00660.JPG', 
-    description: 'A solitary crimson rosebud standing proudly before a soft azure horizon.', 
-    position: [11.9, 2.0, -8.0], 
-    rotation: [0, -Math.PI / 2, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 36, 
+    id: 37, 
     title: 'Blush Symphony', 
     artist: 'Zeynep Ozcelik',
     category: 'Oil Painting', 
@@ -393,19 +406,6 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/t-DSC00662.JPG', 
     description: 'Lush pastel pink and white bouquet radiating springtime fragrance.', 
-    position: [11.9, 2.0, -5.5], 
-    rotation: [0, -Math.PI / 2, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 37, 
-    title: 'Midnight Tulips', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '30.03.2023', 
-    dimensions: '34x49.5 cm', 
-    file: '/artworks/t-DSC00664.JPG', 
-    description: 'Vivid red petals illuminated against deep twilight shadows.', 
     position: [11.9, 2.0, -3.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
@@ -425,8 +425,21 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 6: WING PANELS
+  // ZONE 6: WING PANELS (ORTADAKİ FAZLALIK RESİM BURAYA TAŞINDI: Crimson Solitary)
   // ========================================================
+  { 
+    id: 39, 
+    title: 'Crimson Solitary', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '01.04.2023', 
+    dimensions: '50x70 cm', 
+    file: '/artworks/t-DSC00660.JPG', 
+    description: 'A solitary crimson rosebud standing proudly before a soft azure horizon.', 
+    position: [-11.0, 2.0, 0.05], 
+    rotation: [0, 0, 0], 
+    height: 1.35 
+  },
   { 
     id: 40, 
     title: 'Mediterranean Reverie', 
@@ -436,7 +449,7 @@ const ARTWORKS = [
     dimensions: '24x32.8 cm', 
     file: '/artworks/f-bycycle1.jpg', 
     description: 'A tranquil nostalgic scene with a classic bicycle leaning against a weathered Aegean door.', 
-    position: [-9.5, 2.0, 0.05], 
+    position: [-8.5, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -449,7 +462,7 @@ const ARTWORKS = [
     dimensions: '40x30 cm', 
     file: '/artworks/f-iris1.jpg', 
     description: 'Regal purple iris petals accented with golden filaments and lively emerald leaves.', 
-    position: [-7.0, 2.0, 0.05], 
+    position: [-6.0, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -462,7 +475,7 @@ const ARTWORKS = [
     dimensions: '40x50 cm', 
     file: '/artworks/e-DSC00927.JPG', 
     description: 'Deep violet iris blossoms glowing out of velvety night shadows.', 
-    position: [-4.5, 2.0, 0.05], 
+    position: [-3.5, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -476,7 +489,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/d-calla-lilies1.jpg', 
     description: 'Sleek, minimalist pink calla lilies positioned with quiet dignity.', 
-    position: [4.5, 2.0, 0.05], 
+    position: [3.5, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -489,7 +502,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/d-flower07-11-23.png', 
     description: 'A singular azure flower rising like a monument against misted grey canvas.', 
-    position: [7.0, 2.0, 0.05], 
+    position: [6.0, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -502,7 +515,7 @@ const ARTWORKS = [
     dimensions: '29x21 cm', 
     file: '/artworks/e-sunflower2.jpg', 
     description: 'Warm luminous pastel portrait of a sunflower head turned directly toward the light.', 
-    position: [9.5, 2.0, 0.05], 
+    position: [8.5, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
   }
@@ -533,6 +546,8 @@ function getFileCandidates(file) {
     'b-daisies3',
     'b-daisies',
     'daisies1',
+    'daisies2',
+    'daisies3',
     'daisies'
   ]));
 
@@ -811,12 +826,12 @@ function PoppiesDiptychFrame({ onSelect }) {
 
       <mesh position={[-panelW / 2 - 0.01, 0, 0.01]}>
         <planeGeometry args={[panelW, panelH]} />
-        {tex1 ? <meshBasicMaterial map={tex1} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
+        {tex1 ? <meshBasicMaterial map={tex1} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" side={THREE.DoubleSide} />}
       </mesh>
 
       <mesh position={[panelW / 2 + 0.01, 0, 0.01]}>
         <planeGeometry args={[panelW, panelH]} />
-        {tex2 ? <meshBasicMaterial map={tex2} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
+        {tex2 ? <meshBasicMaterial map={tex2} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" side={THREE.DoubleSide} />}
       </mesh>
 
       <mesh position={[0, 0, 0.02]}>
