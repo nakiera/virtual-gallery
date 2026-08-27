@@ -330,7 +330,7 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - DOĞRU SIRALAMA & EKSİK DAISIES)
+  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY)
   // ========================================================
   { 
     id: 32, 
@@ -1068,7 +1068,7 @@ export default function App() {
         </div>
       )}
 
-      {/* MOBILE CONTROLS OVERLAY (TURN & MOVE) */}
+      {/* BOTTOM ENLARGED ENGLISH MOBILE CONTROLS */}
       <div className="mobile-controls-overlay">
         <div className="mobile-turn-group">
           <button 
@@ -1076,13 +1076,13 @@ export default function App() {
             onTouchEnd={() => handleTouchTurn(0)}
             onMouseDown={() => handleTouchTurn(1)}
             onMouseUp={() => handleTouchTurn(0)}
-          >↺ Sol</button>
+          >↺ Turn Left</button>
           <button 
             onTouchStart={() => handleTouchTurn(-1)} 
             onTouchEnd={() => handleTouchTurn(0)}
             onMouseDown={() => handleTouchTurn(-1)}
             onMouseUp={() => handleTouchTurn(0)}
-          >Sağ ↻</button>
+          >Turn Right ↻</button>
         </div>
 
         <div className="mobile-dpad">
@@ -1098,7 +1098,7 @@ export default function App() {
               onTouchEnd={() => handleTouchMove(0, 0)}
               onMouseDown={() => handleTouchMove(0, 1)}
               onMouseUp={() => handleTouchMove(0, 0)}
-            >◀</button>
+            >◄</button>
             <button 
               onTouchStart={() => handleTouchMove(-1, 0)} 
               onTouchEnd={() => handleTouchMove(0, 0)}
@@ -1110,7 +1110,7 @@ export default function App() {
               onTouchEnd={() => handleTouchMove(0, 0)}
               onMouseDown={() => handleTouchMove(0, -1)}
               onMouseUp={() => handleTouchMove(0, 0)}
-            >▶</button>
+            >►</button>
           </div>
         </div>
       </div>
