@@ -13,561 +13,511 @@ const ARTIST_INFO = {
 
 const ARTWORKS = [
   // ========================================================
-  // GÖRSEL 1 (Blok 1): 1, 2, 3 ve 38
+  // ZONE 1: ENTRANCE CORRIDOR (Giriş Koridoru - Genişletilmiş)
   // ========================================================
   { 
     id: 1, 
-    title: 'Ascension of Joy', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil on Canvas', 
-    date: '10.11.2023', 
-    dimensions: '50x70 cm', 
-    file: '/artworks/1-baloon10-11-23.png', 
-    description: 'Whimsical hot air balloons ascending over a sunlit wild meadow of pink and white cosmos flowers.', 
-    position: [2.85, 1.8, 1.6], 
-    rotation: [0, -Math.PI / 2, 0], 
-    height: 1.4 
-  },
-  { 
-    id: 2, 
-    title: 'Wild Strawberry Bloom', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil on Canvas', 
-    date: '07.11.2023', 
-    dimensions: '50x70 cm', 
-    file: '/artworks/2-straw07-11-23.png', 
-    description: 'Textured close-up celebrating the vibrant vitality of ripening strawberries and pure white blossoms.', 
-    position: [2.85, 1.8, 3.8], 
-    rotation: [0, -Math.PI / 2, 0], 
-    height: 1.4 
-  },
-  { 
-    id: 3, 
-    title: 'Conch of the Aegean', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil on Canvas', 
-    date: '08.11.2023', 
-    dimensions: '50x70 cm', 
-    file: '/artworks/3-DSC00648.JPG', 
-    description: 'A tactile relief painting honoring the calcified spiral geometry and quiet eternity of the marine shell.', 
-    position: [2.85, 1.8, 6.0], 
-    rotation: [0, -Math.PI / 2, 0], 
-    height: 1.4 
-  },
-  { 
-    id: 38, 
-    title: 'Dandelion Breeze', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Soft Pastel', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/38-dandelion2.jpg', 
-    description: 'Delicate dandelion florets drifting in a soft breeze.', 
-    position: [2.85, 1.8, 8.2], 
-    rotation: [0, -Math.PI / 2, 0], 
-    height: 1.35 
-  },
-
-  // ========================================================
-  // GÖRSEL 2 (Blok 2): 4, 5, 6 (Yönler düzeltildi)
-  // ========================================================
-  { 
-    id: 4, 
-    title: 'Morning Daisies I', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/4-daisies1.jpg', 
-    description: 'Pristine white daisies in a blue ceramic vase evoking dawn stillness.', 
-    position: [11.85, 2.0, -15.0], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 5, 
-    title: 'Morning Daisies II', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/5-daisies2.jpg', 
-    description: 'Close-up botanical perspective focusing on delicate white petals and morning light reflections.', 
-    position: [11.85, 2.0, -12.0], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 6, 
-    title: 'Morning Daisies III', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/6-daisies3.jpg', 
-    description: 'Lyrical arrangement of wild field daisies breathing natural simplicity.', 
-    position: [11.85, 2.0, -9.0], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 1.35 
-  },
-
-  // ========================================================
-  // GÖRSEL 3 (Blok 3): 7, 8, 9, 10, 11, 12, 13 (Karakalemler)
-  // ========================================================
-  { 
-    id: 7, 
     title: 'Drapery in Repose', 
     artist: 'Zeynep Ozcelik',
     category: 'Charcoal & Crosshatching', 
     date: '10.05.2016', 
     dimensions: '25x35 cm', 
-    file: '/artworks/7-bust1.jpg', 
+    file: '/artworks/k-bust1.jpg', 
     description: 'An academic draping etude investigating tactile tension, sculptural folds, and chiaroscuro depths of hanging fabric.', 
-    position: [11.85, 2.0, -7.5], 
+    position: [-5.8, 1.8, 14.0], 
     rotation: [0, Math.PI / 2, 0], 
-    height: 1.2 
+    height: 1.4 
   },
   { 
-    id: 8, 
+    id: 2, 
     title: 'Sentinel of the Tides', 
     artist: 'Zeynep Ozcelik',
     category: 'Charcoal Drawing', 
     date: '21.04.2016', 
     dimensions: '30x40 cm', 
-    file: '/artworks/8-lighthouse1.jpg', 
+    file: '/artworks/k-lighthouse1.jpg', 
     description: 'Monochromatic coastal study capturing a lone maritime lighthouse enduring the winds alongside circling gulls.', 
-    position: [11.85, 2.0, -6.0], 
+    position: [-5.8, 1.8, 9.0], 
     rotation: [0, Math.PI / 2, 0], 
-    height: 1.2 
+    height: 1.4 
   },
   { 
-    id: 9, 
+    id: 3, 
     title: 'Lily in Monochrome', 
     artist: 'Zeynep Ozcelik',
     category: 'Charcoal Drawing', 
     date: '13.04.2016', 
     dimensions: '40x30 cm', 
-    file: '/artworks/9-lillies4.jpg', 
+    file: '/artworks/k-lillies4.jpg', 
     description: 'An intimate botanical study focusing on the velvety gradations and delicate curvature of lily petals.', 
-    position: [11.85, 2.0, -4.5], 
+    position: [-5.8, 1.8, 4.0], 
     rotation: [0, Math.PI / 2, 0], 
-    height: 1.2 
+    height: 1.4 
   },
   { 
-    id: 10, 
-    title: 'White Rose in Negative', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Charcoal Drawing', 
-    date: '30.04.2016', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/10-rose1.jpg', 
-    description: 'A luminous white rose blooming out of a deep charcoal shadow field, capturing organic spirals and textured foliage.', 
-    position: [11.85, 2.0, -3.0], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 1.2 
-  },
-  { 
-    id: 11, 
-    title: 'Whispering Stem', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Charcoal Drawing', 
-    date: '27.04.2016', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/11-rose2.jpg', 
-    description: 'Vertical graphite exploration of rose stems, subtle thorn silhouettes, and emerging petals.', 
-    position: [11.85, 2.0, -1.5], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 1.2 
-  },
-  { 
-    id: 12, 
-    title: 'Still Life with Decanter', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Charcoal Drawing', 
-    date: '17.04.2016', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/12-roses3.jpg', 
-    description: 'Academic composition observing glass reflections, ceramic curves, and a soft bouquet of wild roses.', 
-    position: [11.85, 2.0, 0.0], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 1.2 
-  },
-  { 
-    id: 13, 
+    id: 4, 
     title: 'Nocturne Botanical (Ink)', 
     artist: 'Zeynep Ozcelik',
     category: 'Ink & Pen Illustration', 
     date: '17.05.2016', 
     dimensions: '24x32.8 cm', 
-    file: '/artworks/13-inkflower1.jpg', 
+    file: '/artworks/g-inkflower1.jpg', 
     description: 'Classical pen-and-ink still life rendered through precise hatched contours and rhythmic botanical gestures.', 
-    position: [11.85, 2.0, 1.5], 
+    position: [-5.8, 1.8, -1.0], 
     rotation: [0, Math.PI / 2, 0], 
-    height: 1.2 
+    height: 1.4 
+  },
+
+  { 
+    id: 5, 
+    title: 'White Rose in Negative', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Charcoal Drawing', 
+    date: '30.04.2016', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/k-rose1.jpg', 
+    description: 'A luminous white rose blooming out of a deep charcoal shadow field, capturing organic spirals and textured foliage.', 
+    position: [5.8, 1.8, 14.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.4 
+  },
+  { 
+    id: 6, 
+    title: 'Whispering Stem', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Charcoal Drawing', 
+    date: '27.04.2016', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/k-rose2.jpg', 
+    description: 'Vertical graphite exploration of rose stems, subtle thorn silhouettes, and emerging petals.', 
+    position: [5.8, 1.8, 9.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.4 
+  },
+  { 
+    id: 7, 
+    title: 'Still Life with Decanter', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Charcoal Drawing', 
+    date: '17.04.2016', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/k-roses3.jpg', 
+    description: 'Academic composition observing glass reflections, ceramic curves, and a soft bouquet of wild roses.', 
+    position: [5.8, 1.8, 4.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.4 
+  },
+  { 
+    id: 8, 
+    title: 'Conch of the Aegean', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil on Canvas', 
+    date: '08.11.2023', 
+    dimensions: '50x70 cm', 
+    file: '/artworks/c-seashell08-11-23.png', 
+    description: 'A tactile relief painting honoring the calcified spiral geometry and quiet eternity of the marine shell.', 
+    position: [5.8, 1.8, -1.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.4 
   },
 
   // ========================================================
-  // GÖRSEL 4 (Blok 4): 14, 15, 16, 17, 18, 19, 20 (Karşı Duvar)
+  // ZONE 2: SOL UZUN DUVAR (Genişletilmiş Aralıklar)
   // ========================================================
-  { 
-    id: 14, 
-    title: 'Midnight Vintage', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Pastel Still Life', 
-    date: '10.05.2016', 
-    dimensions: '24x32.8 cm', 
-    file: '/artworks/14-wine1.jpg', 
-    description: 'Classical chiaroscuro still life capturing the ruby brilliance of wine in crystalline glassware.', 
-    position: [-9.5, 2.1, -17.85], 
-    rotation: [0, 0, 0], 
-    height: 1.5 
-  },
-  { 
-    id: 15, 
-    title: 'Bouquet of Grace', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Still Life', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/15-DSC00922.JPG', 
-    description: 'Rich tabletop vase filled with layered pink and crimson roses.', 
-    position: [-6.8, 2.1, -17.85], 
-    rotation: [0, 0, 0], 
-    height: 1.5 
-  },
-  { 
-    id: 16, 
-    title: 'November Serenity', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil on Canvas', 
-    date: '11.11.2023', 
-    dimensions: '30x50 cm', 
-    file: '/artworks/16-flower11.11.23.png', 
-    description: 'A stately urn holding pure white floral blooms rendered in tactile brushwork against soft cerulean.', 
-    position: [-4.1, 2.1, -17.85], 
-    rotation: [0, 0, 0], 
-    height: 1.5 
-  },
   { 
     id: 17, 
-    title: 'Azure Solitude', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil on Canvas', 
-    date: '07.11.2023', 
-    dimensions: '50x70 cm', 
-    file: '/artworks/17-flower07-11-23.png', 
-    description: 'A singular azure flower rising like a monument against misted grey canvas.', 
-    position: [-1.4, 2.1, -17.85], 
-    rotation: [0, 0, 0], 
-    height: 1.5 
-  },
-  { 
-    id: 18, 
-    title: 'Mediterranean Reverie', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Pastel Landscape', 
-    date: '15.03.2023', 
-    dimensions: '24x32.8 cm', 
-    file: '/artworks/18-bycycle1.jpg', 
-    description: 'A tranquil nostalgic scene with a classic bicycle leaning against a weathered Aegean door.', 
-    position: [1.3, 2.1, -17.85], 
-    rotation: [0, 0, 0], 
-    height: 1.5 
-  },
-  { 
-    id: 19, 
-    title: 'Gilded Sunflower', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Pastel', 
-    date: '18.03.2023', 
-    dimensions: '29x21 cm', 
-    file: '/artworks/19-sunflower2.jpg', 
-    description: 'Warm luminous pastel portrait of a sunflower head turned directly toward the light.', 
-    position: [4.0, 2.1, -17.85], 
-    rotation: [0, 0, 0], 
-    height: 1.5 
-  },
-  { 
-    id: 20, 
-    title: 'Iris at Twilight', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Chiaroscuro Oil', 
-    date: '27.03.2023', 
-    dimensions: '40x50 cm', 
-    file: '/artworks/20-DSC00927.JPG', 
-    description: 'Deep violet iris blossoms glowing out of velvety night shadows.', 
-    position: [6.7, 2.1, -17.85], 
-    rotation: [0, 0, 0], 
-    height: 1.5 
-  },
-
-  // ========================================================
-  // GÖRSEL 5 (Blok 5): En sola 26 eklenerek 26, 27, 28
-  // ========================================================
-  { 
-    id: 26, 
     title: 'Scarlet Wind', 
     artist: 'Zeynep Ozcelik',
     category: 'Expressionist Oil', 
     date: '28.05.2023', 
     dimensions: '40x50 cm', 
-    file: '/artworks/26poppies4.jpg', 
-    description: 'An open meadow of wild scarlet poppies caught in mid-motion.', 
-    position: [-5.2, 2.0, -7.82], 
-    rotation: [0, 0, 0], 
-    height: 1.45 
+    file: '/artworks/poppies4.jpg', 
+    description: 'An open meadow of wild scarlet poppies caught in mid-motion, textured with energetic impasto brushwork.', 
+    position: [-23.85, 2.2, -10.0], 
+    rotation: [0, Math.PI / 2, 0], 
+    height: 1.6 
   },
   { 
-    id: 27, 
-    title: 'Blush Symphony', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '01.04.2023', 
-    dimensions: '50x70 cm', 
-    file: '/artworks/27-DSC00662.JPG', 
-    description: 'Lush pastel pink and white bouquet radiating springtime fragrance.', 
-    position: [-2.6, 2.0, -7.82], 
-    rotation: [0, 0, 0], 
-    height: 1.45 
-  },
-  { 
-    id: 28, 
-    title: 'Twin Scarlet Tulips', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '01.04.2023', 
-    dimensions: '50x70 cm', 
-    file: '/artworks/28-DSC00664.JPG', 
-    description: 'A pair of graceful scarlet tulips ascending against pure velvet darkness.', 
-    position: [0, 2.0, -7.82], 
-    rotation: [0, 0, 0], 
-    height: 1.45 
-  },
-  { 
-    id: 29, 
-    title: 'Tulip Harmony', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '50x70 cm', 
-    file: '/artworks/29-DSC00668.JPG', 
-    description: 'Floral arrangement study.', 
-    position: [2.6, 2.0, -7.82], 
-    rotation: [0, 0, 0], 
-    height: 1.45 
-  },
-
-  // ========================================================
-  // GÖRSEL 6 (Blok 6): 33'ler ve 34
-  // ========================================================
-  { 
-    id: 33_1, 
-    title: 'Solar Hymn (Left Wing)', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Triptych', 
-    date: '28.03.2023', 
-    dimensions: '35x70 cm', 
-    file: '/artworks/33-DSC00923.JPG', 
-    description: 'Left wing of the monumental three-panel sunflower centerpiece.', 
-    position: [3.5, 2.0, 0.02], 
-    rotation: [0, 0, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 33_2, 
-    title: 'Solar Hymn (Center Panel)', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Triptych', 
-    date: '28.03.2023', 
-    dimensions: '35x70 cm', 
-    file: '/artworks/33-DSC00924.JPG', 
-    description: 'Central focal panel of the panoramic sunflower triptych.', 
-    position: [6.0, 2.0, 0.02], 
-    rotation: [0, 0, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 33_3, 
-    title: 'Solar Hymn (Right Wing)', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Triptych', 
-    date: '28.03.2023', 
-    dimensions: '35x70 cm', 
-    file: '/artworks/33-DSC00925.JPG', 
-    description: 'Right wing concluding the three-piece solar hymn triptych installation.', 
-    position: [8.5, 2.0, 0.02], 
-    rotation: [0, 0, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 34, 
-    title: 'Emerald Rose', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/34-DSC00670.JPG', 
-    description: 'A deep crimson rose blooming amid deep emerald foliage.', 
-    position: [11.0, 2.0, 0.02], 
-    rotation: [0, 0, 0], 
-    height: 1.35 
-  },
-
-  // ========================================================
-  // GÖRSEL 7 (Blok 7): 27, 28, 29 (Sergilenen diğer setler)
-  // ========================================================
-  { 
-    id: 23, 
-    title: 'Red Poppies I', 
+    id: 18, 
+    title: 'Crimson Cascade', 
     artist: 'Zeynep Ozcelik',
     category: 'Expressionist Oil', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/23poppy1.jpg', 
-    description: 'Wild poppies study.', 
-    position: [-11.85, 2.0, -15.0], 
+    date: '29.05.2023', 
+    dimensions: '49.5x34 cm', 
+    file: '/artworks/poppy3.jpg', 
+    description: 'Horizontal botanical canvas emphasizing lush velvet reds and wild vitality of blossoming poppies.', 
+    position: [-23.85, 2.2, -4.0], 
     rotation: [0, Math.PI / 2, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 24, 
-    title: 'Red Poppies II', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Expressionist Oil', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/24poppy2.jpg', 
-    description: 'Wild poppies study.', 
-    position: [-11.85, 2.0, -12.0], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 25, 
-    title: 'Red Poppies III', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Expressionist Oil', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/25poppy3.jpg', 
-    description: 'Wild poppies study.', 
-    position: [-11.85, 2.0, -9.0], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 1.35 
+    height: 1.6 
   },
 
   // ========================================================
-  // GÖRSEL 8: Aynen Kalsın (Poliptikler / Setler)
-  // ========================================================
-  // (Not: 21 ve 22 numaralı polyptych'ler kodun altındaki özel Polyptych bileşenleri ile yüklenmektedir)
-
-  // ========================================================
-  // GÖRSEL 9: 36, 37, 40 ve kalanlar uygun yerlere
+  // ZONE 3: ORTA ADA BÖLMELERİ (Genişletilmiş Alan)
   // ========================================================
   { 
-    id: 36, 
-    title: 'Noble Calla Lilies', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/36-calla-lillies1.jpg', 
-    description: 'Sleek, minimalist pink calla lilies positioned with quiet dignity.', 
-    position: [-11.0, 2.0, 0.02], 
-    rotation: [0, 0, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 37, 
-    title: 'Autumn Sunflower', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '40x50 cm', 
-    file: '/artworks/37-DSC00918.JPG', 
-    description: 'Autumn floral arrangement.', 
-    position: [-8.5, 2.0, 0.02], 
-    rotation: [0, 0, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 40, 
-    title: 'Sunflowers in Blue', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '50x70 cm', 
-    file: '/artworks/40-DSC00644.JPG', 
-    description: 'Vibrant Fauvist harmony contrasting deep blue ceramic.', 
-    position: [-6.0, 2.0, 0.02], 
-    rotation: [0, 0, 0], 
-    height: 1.35 
-  },
-  // Kalan eserler (31, 32, 35, 39, 41 vb.) uygun boş duvar alanlarına yerleştirildi:
-  { 
-    id: 31, 
+    id: 19, 
     title: 'Cosmic Vortex', 
     artist: 'Zeynep Ozcelik',
     category: 'Textured Surrealism', 
     date: '2023', 
     dimensions: '50x70 cm', 
-    file: '/artworks/30-DSC00655.JPG', 
-    description: 'Celestial spiral composition.', 
-    position: [-3.5, 2.0, 0.02], 
+    file: '/artworks/s-DSC00655.JPG', 
+    description: 'An evocative spiral composition pulling the viewer into celestial dimensions through tactile pigments.', 
+    position: [-5.2, 2.2, -15.0], 
     rotation: [0, 0, 0], 
-    height: 1.35 
+    height: 1.6 
   },
   { 
-    id: 32, 
+    id: 20, 
     title: 'Ancestral Mirage', 
     artist: 'Zeynep Ozcelik',
     category: 'Textured Surrealism', 
     date: '2023', 
     dimensions: '50x70 cm', 
-    file: '/artworks/31-DSC00657.JPG', 
-    description: 'Figurative presence from warm earth reliefs.', 
-    position: [0.5, 2.0, 0.02], 
+    file: '/artworks/s-DSC00657.JPG', 
+    description: 'A mysterious figurative presence emerging from warm earth reliefs and weathered gold pigments.', 
+    position: [0, 2.2, -15.0], 
     rotation: [0, 0, 0], 
-    height: 1.35 
+    height: 1.6 
   },
   { 
-    id: 35, 
-    title: 'Twin Scarlet Tulips', 
+    id: 21, 
+    title: 'Genesis of Color', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Abstract Expressionism', 
+    date: '2023', 
+    dimensions: '50x70 cm', 
+    file: '/artworks/s-DSC00659.JPG', 
+    description: 'Passionate multi-directional palette knife gestures capturing the unfiltered energy of chromatic eruption.', 
+    position: [5.2, 2.2, -15.0], 
+    rotation: [0, 0, 0], 
+    height: 1.6 
+  },
+
+  { 
+    id: 22, 
+    title: 'Wild Strawberry Bloom', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil on Canvas', 
+    date: '07.11.2023', 
+    dimensions: '50x70 cm', 
+    file: '/artworks/c-straw07-11-23.png', 
+    description: 'Textured close-up celebrating the vibrant vitality of ripening strawberries and pure white blossoms.', 
+    position: [-5.2, 2.2, -15.6], 
+    rotation: [0, Math.PI, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 23, 
+    title: 'Ascension of Joy', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil on Canvas', 
+    date: '10.11.2023', 
+    dimensions: '50x70 cm', 
+    file: '/artworks/c-baloon10-11-23.png', 
+    description: 'Whimsical hot air balloons ascending over a sunlit wild meadow of pink and white cosmos flowers.', 
+    position: [0, 2.2, -15.6], 
+    rotation: [0, Math.PI, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 24, 
+    title: 'Flight of the Dandelion', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Soft Pastel', 
+    date: '16.03.2023', 
+    dimensions: '32.8x24 cm', 
+    file: '/artworks/g-dandelion1.png', 
+    description: 'Weightless dandelion seeds taking flight into azure ether, executed in soft powdered pastels.', 
+    position: [5.2, 2.2, -15.6], 
+    rotation: [0, Math.PI, 0], 
+    height: 1.6 
+  },
+
+  // ========================================================
+  // ZONE 4: ARKA/KARŞI BÜYÜK DUVAR (Genişletilmiş Aralıklar)
+  // ========================================================
+  { 
+    id: 25, 
+    title: 'Midnight Vintage', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Pastel Still Life', 
+    date: '10.05.2016', 
+    dimensions: '24x32.8 cm', 
+    file: '/artworks/g-wine1.jpg', 
+    description: 'Classical chiaroscuro still life capturing the ruby brilliance of wine in crystalline glassware.', 
+    position: [-18.0, 2.4, -35.8], 
+    rotation: [0, 0, 0], 
+    height: 1.8 
+  },
+  { 
+    id: 26, 
+    title: 'Solar Hymn (Left Wing)', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Triptych', 
+    date: '28.03.2023', 
+    dimensions: '35x70 cm', 
+    file: '/artworks/a-DSC00923.JPG', 
+    description: 'Left wing of the monumental three-panel sunflower centerpiece celebrating sunlight and vitality.', 
+    position: [-9.0, 2.4, -35.8], 
+    rotation: [0, 0, 0], 
+    height: 1.8 
+  },
+  { 
+    id: 27, 
+    title: 'Solar Hymn (Center Panel)', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Triptych', 
+    date: '28.03.2023', 
+    dimensions: '35x70 cm', 
+    file: '/artworks/a-DSC00924.JPG', 
+    description: 'Central focal panel of the panoramic sunflower triptych radiating warmth and raw botanical energy.', 
+    position: [-4.5, 2.4, -35.8], 
+    rotation: [0, 0, 0], 
+    height: 1.8 
+  },
+  { 
+    id: 28, 
+    title: 'Solar Hymn (Right Wing)', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Triptych', 
+    date: '28.03.2023', 
+    dimensions: '35x70 cm', 
+    file: '/artworks/a-DSC00925.JPG', 
+    description: 'Right wing concluding the three-piece solar hymn triptych installation.', 
+    position: [0.0, 2.4, -35.8], 
+    rotation: [0, 0, 0], 
+    height: 1.8 
+  },
+  { 
+    id: 29, 
+    title: 'Sunflowers in Cobalt', 
     artist: 'Zeynep Ozcelik',
     category: 'Oil Painting', 
     date: '2023', 
     dimensions: '50x70 cm', 
-    file: '/artworks/35-tulip1.jpg', 
-    description: 'Graceful scarlet tulips.', 
-    position: [11.0, 2.0, -18.0], 
+    file: '/artworks/d-DSC00644.JPG', 
+    description: 'Vibrant Fauvist harmony contrasting deep cobalt blue ceramic with blazing golden petals.', 
+    position: [5.5, 2.4, -35.8], 
     rotation: [0, 0, 0], 
-    height: 1.35 
+    height: 1.8 
   },
   { 
-    id: 39, 
-    title: 'Iris in Full Bloom', 
+    id: 30, 
+    title: 'Autumn Solstice', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '06.11.2023', 
+    dimensions: '40x50 cm', 
+    file: '/artworks/d-sunflower6-11-23.jpg', 
+    description: 'Rich amber and russet undertones portraying the mature elegance of late autumn sunflowers.', 
+    position: [12.0, 2.4, -35.8], 
+    rotation: [0, 0, 0], 
+    height: 1.8 
+  },
+  { 
+    id: 31, 
+    title: 'November Serenity', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil on Canvas', 
+    date: '11.11.2023', 
+    dimensions: '30x50 cm', 
+    file: '/artworks/g-flower11.11.23.png', 
+    description: 'A stately urn holding pure white floral blooms rendered in tactile brushwork against soft cerulean.', 
+    position: [18.5, 2.4, -35.8], 
+    rotation: [0, 0, 0], 
+    height: 1.8 
+  },
+
+  // ========================================================
+  // ZONE 5: SAĞ UZUN DUVAR (Genişletilmiş Aralıklar)
+  // ========================================================
+  { 
+    id: 32, 
+    title: 'Morning Daisies I', 
     artist: 'Zeynep Ozcelik',
     category: 'Oil Painting', 
     date: '2023', 
-    dimensions: '40x30 cm', 
-    file: '/artworks/39-iris1.jpg', 
-    description: 'Regal purple iris petals.', 
-    position: [11.85, 2.0, -5.5], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 1.35 
+    dimensions: '30x40 cm', 
+    file: '/artworks/b-daisies1.jpg', 
+    description: 'Pristine white daisies in a blue ceramic vase evoking dawn stillness.', 
+    position: [23.85, 2.2, -31.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 33, 
+    title: 'Morning Daisies II', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '2023', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/b-daisies2.JPG', 
+    description: 'Close-up botanical perspective focusing on delicate white petals and morning light reflections.', 
+    position: [23.85, 2.2, -25.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 34, 
+    title: 'Morning Daisies III', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '2023', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/b-daisies3.JPG', 
+    description: 'Lyrical arrangement of wild field daisies breathing natural simplicity.', 
+    position: [23.85, 2.2, -19.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 35, 
+    title: 'Bouquet of Grace', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Still Life', 
+    date: '2023', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/g-DSC00922.JPG', 
+    description: 'Rich tabletop vase filled with layered pink and crimson roses.', 
+    position: [23.85, 2.2, -13.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 36, 
+    title: 'Emerald Rose', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '2023', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/g-DSC00670.JPG', 
+    description: 'A deep crimson rose blooming amid deep emerald foliage.', 
+    position: [23.85, 2.2, -7.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 37, 
+    title: 'Blush Symphony', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '01.04.2023', 
+    dimensions: '50x70 cm', 
+    file: '/artworks/t-DSC00662.JPG', 
+    description: 'Lush pastel pink and white bouquet radiating springtime fragrance.', 
+    position: [23.85, 2.2, -1.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 38, 
+    title: 'Twin Scarlet Tulips', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '01.04.2023', 
+    dimensions: '50x70 cm', 
+    file: '/artworks/c-tulip1.jpg', 
+    description: 'A pair of graceful scarlet tulips ascending against pure velvet darkness.', 
+    position: [23.85, 2.2, 5.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.6 
+  },
+
+  // ========================================================
+  // ZONE 6: YAN WING PANELS (Genişletilmiş Aralıklar)
+  // ========================================================
+  { 
+    id: 39, 
+    title: 'Crimson Solitary', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '01.04.2023', 
+    dimensions: '50x70 cm', 
+    file: '/artworks/t-DSC00660.JPG', 
+    description: 'A solitary crimson rosebud standing proudly before a soft azure horizon.', 
+    position: [-22.0, 2.2, 0.1], 
+    rotation: [0, 0, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 40, 
+    title: 'Mediterranean Reverie', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Pastel Landscape', 
+    date: '15.03.2023', 
+    dimensions: '24x32.8 cm', 
+    file: '/artworks/f-bycycle1.jpg', 
+    description: 'A tranquil nostalgic scene with a classic bicycle leaning against a weathered Aegean door.', 
+    position: [-16.0, 2.2, 0.1], 
+    rotation: [0, 0, 0], 
+    height: 1.6 
   },
   { 
     id: 41, 
-    title: 'Dandelion Seed', 
+    title: 'Iris in Full Bloom', 
     artist: 'Zeynep Ozcelik',
-    category: 'Soft Pastel', 
+    category: 'Oil Painting', 
+    date: '26.03.2023', 
+    dimensions: '40x30 cm', 
+    file: '/artworks/f-iris1.jpg', 
+    description: 'Regal purple iris petals accented with golden filaments and lively emerald leaves.', 
+    position: [-10.0, 2.2, 0.1], 
+    rotation: [0, 0, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 42, 
+    title: 'Iris at Twilight', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Chiaroscuro Oil', 
+    date: '27.03.2023', 
+    dimensions: '40x50 cm', 
+    file: '/artworks/e-DSC00927.JPG', 
+    description: 'Deep violet iris blossoms glowing out of velvety night shadows.', 
+    position: [-4.0, 2.2, 0.1], 
+    rotation: [0, 0, 0], 
+    height: 1.6 
+  },
+
+  { 
+    id: 43, 
+    title: 'Noble Calla Lilies', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
     date: '2023', 
-    dimensions: '32x24 cm', 
-    file: '/artworks/41-dandelion1.png', 
-    description: 'Weightless dandelion seeds.', 
-    position: [11.85, 2.0, -2.5], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 1.35 
+    dimensions: '30x40 cm', 
+    file: '/artworks/d-calla-lillies1.jpg', 
+    description: 'Sleek, minimalist pink calla lilies positioned with quiet dignity.', 
+    position: [4.0, 2.2, 0.1], 
+    rotation: [0, 0, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 44, 
+    title: 'Azure Solitude', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil on Canvas', 
+    date: '07.11.2023', 
+    dimensions: '50x70 cm', 
+    file: '/artworks/d-flower07-11-23.png', 
+    description: 'A singular azure flower rising like a monument against misted grey canvas.', 
+    position: [11.0, 2.2, 0.1], 
+    rotation: [0, 0, 0], 
+    height: 1.6 
+  },
+  { 
+    id: 45, 
+    title: 'Gilded Sunflower', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Pastel', 
+    date: '18.03.2023', 
+    dimensions: '29x21 cm', 
+    file: '/artworks/e-sunflower2.jpg', 
+    description: 'Warm luminous pastel portrait of a sunflower head turned directly toward the light.', 
+    position: [18.0, 2.2, 0.1], 
+    rotation: [0, 0, 0], 
+    height: 1.6 
   }
 ];
 
@@ -590,7 +540,15 @@ function getFileCandidates(file) {
     'b-' + rawBase,
     'b_' + rawBase,
     't-' + rawBase,
-    't_' + rawBase
+    't_' + rawBase,
+    'b-daisies1',
+    'b-daisies2',
+    'b-daisies3',
+    'b-daisies',
+    'daisies1',
+    'daisies2',
+    'daisies3',
+    'daisies'
   ]));
 
   const extensions = ['.JPG', '.jpg', '.PNG', '.png', '.jpeg', '.JPEG', '.webp'];
@@ -747,9 +705,9 @@ function Polyptych4Frame({ position, rotation, files, title, category, descripti
     });
   }, [files]);
 
-  const pW = 0.65;
-  const pH = 0.95;
-  const gap = 0.02;
+  const pW = 0.9;
+  const pH = 1.3;
+  const gap = 0.03;
   const totalW = pW * 2 + gap;
   const totalH = pH * 2 + gap;
 
@@ -782,7 +740,7 @@ function Polyptych4Frame({ position, rotation, files, title, category, descripti
       }}
     >
       <mesh position={[0, 0, -0.015]}>
-        <boxGeometry args={[totalW + 0.06, totalH + 0.06, 0.03]} />
+        <boxGeometry args={[totalW + 0.08, totalH + 0.08, 0.03]} />
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
       </mesh>
 
@@ -803,17 +761,8 @@ function Polyptych4Frame({ position, rotation, files, title, category, descripti
         {textures[3] ? <meshBasicMaterial map={textures[3]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
       </mesh>
 
-      <mesh position={[0, 0, 0.02]}>
-        <boxGeometry args={[gap, totalH, 0.01]} />
-        <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
-      </mesh>
-      <mesh position={[0, 0, 0.02]}>
-        <boxGeometry args={[totalW, gap, 0.01]} />
-        <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
-      </mesh>
-
       <group position={[0, -(totalH / 2) - 0.055, 0]}>
-        <BrassPlaque title={title} artist="Zeynep Ozcelik" width={0.48} />
+        <BrassPlaque title={title} artist="Zeynep Ozcelik" width={0.6} />
       </group>
     </group>
   );
@@ -825,13 +774,13 @@ function PoppiesDiptychFrame({ onSelect }) {
   const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
-    loadTextureWithFallbacks('/artworks/23poppy1.jpg', setTex1);
-    loadTextureWithFallbacks('/artworks/24poppy2.jpg', setTex2);
+    loadTextureWithFallbacks('/artworks/poppy1.jpg', setTex1);
+    loadTextureWithFallbacks('/artworks/poppy2.jpg', setTex2);
   }, []);
 
-  const panelH = 1.35;
-  const panelW = 0.7;
-  const totalW = panelW * 2 + 0.02;
+  const panelH = 1.6;
+  const panelW = 0.9;
+  const totalW = panelW * 2 + 0.03;
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -839,16 +788,16 @@ function PoppiesDiptychFrame({ onSelect }) {
       title: 'Red Poppies Diptych',
       artist: 'Zeynep Ozcelik',
       category: 'Oil on Canvas (Diptych)',
-      date: '2023',
-      dimensions: '2x (20x40 cm)',
-      file: '/artworks/23poppy1.jpg',
+      date: '28.03.2023',
+      dimensions: '2x (40x70 cm)',
+      file: '/artworks/poppy1.jpg',
       description: 'An expressive two-piece diptych capturing blooming crimson poppies.'
     });
   };
 
   return (
     <group 
-      position={[-11.85, 2.0, -8.6]} 
+      position={[-23.85, 2.2, -22.0]} 
       rotation={[0, Math.PI / 2, 0]}
       onClick={handleClick}
       onPointerOver={(e) => {
@@ -862,27 +811,22 @@ function PoppiesDiptychFrame({ onSelect }) {
       }}
     >
       <mesh position={[0, 0, -0.015]}>
-        <boxGeometry args={[totalW + 0.06, panelH + 0.06, 0.03]} />
+        <boxGeometry args={[totalW + 0.08, panelH + 0.08, 0.03]} />
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
       </mesh>
 
-      <mesh position={[-panelW / 2 - 0.01, 0, 0.01]}>
+      <mesh position={[-panelW / 2 - 0.015, 0, 0.01]}>
         <planeGeometry args={[panelW, panelH]} />
         {tex1 ? <meshBasicMaterial map={tex1} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" side={THREE.DoubleSide} />}
       </mesh>
 
-      <mesh position={[panelW / 2 + 0.01, 0, 0.01]}>
+      <mesh position={[panelW / 2 + 0.015, 0, 0.01]}>
         <planeGeometry args={[panelW, panelH]} />
         {tex2 ? <meshBasicMaterial map={tex2} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" side={THREE.DoubleSide} />}
       </mesh>
 
-      <mesh position={[0, 0, 0.02]}>
-        <boxGeometry args={[0.015, panelH, 0.01]} />
-        <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
-      </mesh>
-
       <group position={[0, -(panelH / 2) - 0.055, 0]}>
-        <BrassPlaque title="Red Poppies Diptych" artist="Zeynep Ozcelik" width={0.46} />
+        <BrassPlaque title="Red Poppies Diptych" artist="Zeynep Ozcelik" width={0.6} />
       </group>
     </group>
   );
@@ -890,24 +834,20 @@ function PoppiesDiptychFrame({ onSelect }) {
 
 function OpenDoubleDoor() {
   return (
-    <group position={[0, 0, 10.2]}>
-      <mesh position={[-1.75, 1.8, 0]}><boxGeometry args={[0.12, 3.6, 0.2]} /><meshStandardMaterial color="#3d2314" /></mesh>
-      <mesh position={[1.75, 1.8, 0]}><boxGeometry args={[0.12, 3.6, 0.2]} /><meshStandardMaterial color="#3d2314" /></mesh>
-      <mesh position={[0, 3.55, 0]}><boxGeometry args={[3.6, 0.12, 0.2]} /><meshStandardMaterial color="#3d2314" /></mesh>
+    <group position={[0, 0, 20.4]}>
+      <mesh position={[-2.5, 2.2, 0]}><boxGeometry args={[0.15, 4.4, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
+      <mesh position={[2.5, 2.2, 0]}><boxGeometry args={[0.15, 4.4, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
+      <mesh position={[0, 4.45, 0]}><boxGeometry args={[5.1, 0.15, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
 
-      <group position={[-1.7, 0, 0]} rotation={[0, Math.PI / 2.8, 0]}>
-        <mesh position={[0.75, 1.7, 0]}><boxGeometry args={[1.5, 3.3, 0.06]} /><meshStandardMaterial color="#4a2e18" /></mesh>
-        <mesh position={[0.75, 2.1, 0.01]}><planeGeometry args={[1.2, 1.8]} /><meshStandardMaterial color="#e0f2fe" transparent opacity={0.4} roughness={0.1} side={THREE.DoubleSide} /></mesh>
-        <mesh position={[1.35, 1.6, 0.05]}><cylinderGeometry args={[0.02, 0.02, 0.25]} /><meshStandardMaterial color="#c5a059" metalness={0.8} /></mesh>
+      <group position={[-2.4, 0, 0]} rotation={[0, Math.PI / 2.8, 0]}>
+        <mesh position={[1.1, 2.1, 0]}><boxGeometry args={[2.2, 4.1, 0.08]} /><meshStandardMaterial color="#4a2e18" /></mesh>
+        <mesh position={[1.1, 2.5, 0.01]}><planeGeometry args={[1.7, 2.5]} /><meshStandardMaterial color="#e0f2fe" transparent opacity={0.4} roughness={0.1} side={THREE.DoubleSide} /></mesh>
       </group>
 
-      <group position={[1.7, 0, 0]} rotation={[0, -Math.PI / 2.8, 0]}>
-        <mesh position={[-0.75, 1.7, 0]}><boxGeometry args={[1.5, 3.3, 0.06]} /><meshStandardMaterial color="#4a2e18" /></mesh>
-        <mesh position={[-0.75, 2.1, 0.01]}><planeGeometry args={[1.2, 1.8]} /><meshStandardMaterial color="#e0f2fe" transparent opacity={0.4} roughness={0.1} side={THREE.DoubleSide} /></mesh>
-        <mesh position={[-1.35, 1.6, 0.05]}><cylinderGeometry args={[0.02, 0.02, 0.25]} /><meshStandardMaterial color="#c5a059" metalness={0.8} /></mesh>
+      <group position={[2.4, 0, 0]} rotation={[0, -Math.PI / 2.8, 0]}>
+        <mesh position={[-1.1, 2.1, 0]}><boxGeometry args={[2.2, 4.1, 0.08]} /><meshStandardMaterial color="#4a2e18" /></mesh>
+        <mesh position={[-1.1, 2.5, 0.01]}><planeGeometry args={[1.7, 2.5]} /><meshStandardMaterial color="#e0f2fe" transparent opacity={0.4} roughness={0.1} side={THREE.DoubleSide} /></mesh>
       </group>
-
-      <mesh position={[0, 2, 2.5]}><planeGeometry args={[8, 5]} /><meshBasicMaterial color="#fdfbf7" side={THREE.DoubleSide} /></mesh>
     </group>
   );
 }
@@ -918,25 +858,28 @@ function GalleryArchitecture() {
 
   return (
     <group>
-      <mesh position={[0, 0, 5.5]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[6, 11]} /><meshStandardMaterial color={floorColor} roughness={0.4} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[0, 0, -9]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[24, 18]} /><meshStandardMaterial color={floorColor} roughness={0.4} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[0, 4.2, -4]} rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[24, 28]} /><meshStandardMaterial color="#faf8f5" roughness={0.9} side={THREE.DoubleSide} /></mesh>
+      {/* Zemin (2 Kat Büyütülmüş) */}
+      <mesh position={[0, 0, 10.0]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[12, 22]} /><meshStandardMaterial color={floorColor} roughness={0.4} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[0, 0, -18.0]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[48, 36]} /><meshStandardMaterial color={floorColor} roughness={0.4} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[0, 5.2, -8.0]} rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[48, 56]} /><meshStandardMaterial color="#faf8f5" roughness={0.9} side={THREE.DoubleSide} /></mesh>
 
-      <mesh position={[-3, 2, 5.5]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[11, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[3, 2, 5.5]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[11, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      {/* Koridor Yan Duvarları */}
+      <mesh position={[-6.0, 2.5, 10.0]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[22, 5.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[6.0, 2.5, 10.0]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[22, 5.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
 
-      <mesh position={[-12, 2.1, -9]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[18, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[12, 2.1, -9]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[18, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[0, 2.1, -18]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      {/* Ana Salon Dış Duvarları */}
+      <mesh position={[-24.0, 2.6, -18.0]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[36, 5.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[24.0, 2.6, -18.0]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[36, 5.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[0, 2.6, -36.0]}><planeGeometry args={[48, 5.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
 
-      <mesh position={[0, 2.0, -8.0]}><boxGeometry args={[8.0, 3.4, 0.3]} /><meshStandardMaterial color={ecruColor} roughness={0.8} /></mesh>
+      {/* Ön Kanatlar */}
+      <mesh position={[-15.0, 2.6, 0.0]}><planeGeometry args={[18, 5.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[15.0, 2.6, 0.0]}><planeGeometry args={[18, 5.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
 
-      <mesh position={[-7.5, 2.1, 0]}><planeGeometry args={[9, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[7.5, 2.1, 0]}><planeGeometry args={[9, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-
-      <mesh position={[-2.35, 2, 10.2]}><planeGeometry args={[1.3, 4]} /><meshStandardMaterial color={ecruColor} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[2.35, 2, 10.2]}><planeGeometry args={[1.3, 4]} /><meshStandardMaterial color={ecruColor} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[0, 3.7, 10.2]}><planeGeometry args={[3.4, 0.6]} /><meshStandardMaterial color={ecruColor} side={THREE.DoubleSide} /></mesh>
+      {/* Giriş Çerçevesi */}
+      <mesh position={[-4.7, 2.5, 20.4]}><planeGeometry args={[2.6, 5]} /><meshStandardMaterial color={ecruColor} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[4.7, 2.5, 20.4]}><planeGeometry args={[2.6, 5]} /><meshStandardMaterial color={ecruColor} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[0, 4.6, 20.4]}><planeGeometry args={[6.8, 1.2]} /><meshStandardMaterial color={ecruColor} side={THREE.DoubleSide} /></mesh>
     </group>
   );
 }
@@ -958,7 +901,7 @@ function PlayerMovement({ isLocked, mobileMove, mobileLook, mobileTurn }) {
   }, []);
 
   useFrame((_, delta) => {
-    const speed = 5.2 * delta;
+    const speed = 6.0 * delta;
     const turnSpeed = 2.2 * delta;
     const forward = new THREE.Vector3();
     const right = new THREE.Vector3();
@@ -996,17 +939,13 @@ function PlayerMovement({ isLocked, mobileMove, mobileLook, mobileTurn }) {
 
     camera.position.y = 1.7;
 
+    // Genişletilmiş Odaya Göre Yürüyüş Sınırları (Clamp)
     if (camera.position.z > 0) {
-      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -2.4, 2.4);
-      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -17.2, 9.8);
+      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -5.2, 5.2);
+      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -34.0, 19.5);
     } else {
-      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -11.2, 11.2);
-      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -17.2, 0.5);
-
-      if (Math.abs(camera.position.x) < 4.2 && camera.position.z > -8.8 && camera.position.z < -7.2) {
-        if (camera.position.z > -8.0) camera.position.z = -7.1;
-        else camera.position.z = -8.9;
-      }
+      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -23.0, 23.0);
+      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -34.0, 1.0);
     }
   });
 
@@ -1157,7 +1096,7 @@ export default function App() {
         </div>
       </div>
 
-      <Canvas camera={{ position: [0, 1.7, 8.8], fov: 70 }}>
+      <Canvas camera={{ position: [0, 1.7, 18.0], fov: 70 }}>
         <ambientLight intensity={1.8} color="#ffffff" />
         <directionalLight position={[0, 10, 5]} intensity={1.8} color="#fffcf5" />
         <directionalLight position={[0, 6, -10]} intensity={1.5} color="#ffffff" />
@@ -1172,28 +1111,27 @@ export default function App() {
           <ArtFrame key={`${art.file}-${idx}`} art={art} onSelect={handleArtSelect} />
         ))}
 
-        {/* POLIPTIKLER VE DİPTİKLER */}
         <Polyptych4Frame 
-          position={[-11.85, 2.0, -15.5]}
+          position={[-23.85, 2.2, -31.0]}
           rotation={[0, Math.PI / 2, 0]}
-          files={['/artworks/21Flamingo1.JPG', '/artworks/21Flamingo2.JPG', '/artworks/21Flamingo3.JPG', '/artworks/21Flamingo4.JPG']}
+          files={['/artworks/Flamingo1.JPG', '/artworks/Flamingo2.JPG', '/artworks/Flamingo3.JPG', '/artworks/Flamingo4.JPG']}
           title="Flamingo Polyptych"
           category="Oil Painting (4-Piece Set)"
           date="2023"
-          dimensions="40x40 cm (Unified)"
-          description="A four-panel polyptych converging into an elegant stylized flamingo silhouette."
+          dimensions="80x80 cm (Unified)"
+          description="A four-panel polyptych converging into an elegant stylized flamingo silhouette surrounded by tropical geometries."
           onSelect={handleArtSelect}
         />
 
         <Polyptych4Frame 
-          position={[-11.85, 2.0, -12.2]}
+          position={[-23.85, 2.2, -26.0]}
           rotation={[0, Math.PI / 2, 0]}
-          files={['/artworks/22Piece1.JPG', '/artworks/22Piece2.JPG', '/artworks/22Piece3.JPG', '/artworks/22Piece4.JPG']}
+          files={['/artworks/Piece1.JPG', '/artworks/Piece2.JPG', '/artworks/Piece3.JPG', '/artworks/Piece4.JPG']}
           title="Chromatic Synthesis"
           category="Abstract (4-Piece Set)"
           date="2023"
-          dimensions="40x40 cm (Unified)"
-          description="A four-panel modernist abstract matrix."
+          dimensions="80x80 cm (Unified)"
+          description="A four-panel modernist abstract matrix investigating chromatic color blocks and geometric tension."
           onSelect={handleArtSelect}
         />
 
