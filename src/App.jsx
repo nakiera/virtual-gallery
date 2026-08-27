@@ -317,16 +317,16 @@ const ARTWORKS = [
   },
   { 
     id: 31, 
-    title: 'November Serenity', 
+   title: 'Morning Daisies II', 
     artist: 'Zeynep Ozcelik',
-    category: 'Oil on Canvas', 
-    date: '11.11.2023', 
-    dimensions: '30x50 cm', 
-    file: '/artworks/g-flower11.11.23.png', 
-    description: 'A stately urn holding pure white floral blooms rendered in tactile brushwork against soft cerulean.', 
-    position: [9.5, 2.1, -17.9], 
-    rotation: [0, 0, 0], 
-    height: 1.6 
+    category: 'Oil Painting', 
+    date: '2023', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/b-daisies2.jpg', 
+    description: 'Close-up botanical perspective focusing on delicate white petals and morning light reflections.', 
+    position: [11.9, 2.0, -13.0], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.35 
   },
 
   // ========================================================
@@ -347,16 +347,16 @@ const ARTWORKS = [
   },
   { 
     id: 33, 
-    title: 'Morning Daisies II', 
+    title: 'November Serenity', 
     artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/b-daisies2.jpg', 
-    description: 'Close-up botanical perspective focusing on delicate white petals and morning light reflections.', 
-    position: [11.9, 2.0, -13.0], 
-    rotation: [0, -Math.PI / 2, 0], 
-    height: 1.35 
+    category: 'Oil on Canvas', 
+    date: '11.11.2023', 
+    dimensions: '30x50 cm', 
+    file: '/artworks/g-flower11.11.23.png', 
+    description: 'A stately urn holding pure white floral blooms rendered in tactile brushwork against soft cerulean.', 
+    position: [9.5, 2.1, -17.9], 
+    rotation: [0, 0, 0], 
+    height: 1.6 
   },
   { 
     id: 34, 
