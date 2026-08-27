@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { PointerLockControls, Html } from '@react-three/drei';
+import { PointerLockControls, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import './App.css';
 
@@ -250,8 +250,6 @@ const ARTWORKS = [
     rotation: [0, 0, 0], 
     height: 1.6 
   },
-  
-  // 3-Piece Sunflower Triptych
   { 
     id: 26, 
     title: 'Solar Hymn (Left Wing)', 
@@ -291,7 +289,6 @@ const ARTWORKS = [
     rotation: [0, 0, 0], 
     height: 1.6 
   },
-
   { 
     id: 29, 
     title: 'Sunflowers in Cobalt', 
@@ -374,7 +371,6 @@ const ARTWORKS = [
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
-
   { 
     id: 35, 
     title: 'Crimson Solitary', 
@@ -521,7 +517,6 @@ const ARTWORKS = [
     rotation: [0, 0, 0], 
     height: 1.35 
   },
-
   { 
     id: 46, 
     title: 'Emerald Rose', 
@@ -550,7 +545,41 @@ const ARTWORKS = [
   }
 ];
 
-// Tekil Eser Çerçevesi (Occlusion Destekli Plaket)
+// 3D Pure WebGL Brass Plaque
+function BrassPlaque({ title, artist, width = 0.55, height = 0.07 }) {
+  return (
+    <group position={[0, 0, 0.015]}>
+      {/* Plaque Mesh */}
+      <mesh>
+        <planeGeometry args={[width, height]} />
+        <meshStandardMaterial color="#c5a059" metalness={0.85} roughness={0.25} />
+      </mesh>
+      {/* Title Text */}
+      <Text
+        position={[0, 0.012, 0.005]}
+        fontSize={0.022}
+        color="#1a0f05"
+        anchorX="center"
+        anchorY="middle"
+        maxWidth={width - 0.04}
+      >
+        {title}
+      </Text>
+      {/* Artist Text */}
+      <Text
+        position={[0, -0.014, 0.005]}
+        fontSize={0.014}
+        color="#3b2814"
+        anchorX="center"
+        anchorY="middle"
+      >
+        {artist || 'Zeynep Ozcelik'}
+      </Text>
+    </group>
+  );
+}
+
+// Single Frame with 3D Plaque
 function ArtFrame({ art, onSelect }) {
   const [texture, setTexture] = useState(null);
   const [aspect, setAspect] = useState(1.0);
@@ -580,6 +609,7 @@ function ArtFrame({ art, onSelect }) {
 
   const frameWidth = (art.height || 1.35) * aspect;
   const frameHeight = art.height || 1.35;
+  const plaqueW = Math.max(Math.min(frameWidth * 0.85, 0.65), 0.42);
 
   return (
     <group 
@@ -599,11 +629,13 @@ function ArtFrame({ art, onSelect }) {
         document.body.style.cursor = 'default';
       }}
     >
+      {/* Frame border */}
       <mesh position={[0, 0, -0.015]}>
         <boxGeometry args={[frameWidth + 0.06, frameHeight + 0.06, 0.03]} />
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
       </mesh>
 
+      {/* Picture surface */}
       <mesh position={[0, 0, 0.01]}>
         <planeGeometry args={[frameWidth, frameHeight]} />
         {texture ? (
@@ -613,24 +645,15 @@ function ArtFrame({ art, onSelect }) {
         )}
       </mesh>
 
-      {/* Occlude prop prevents seeing through walls */}
-      <Html
-        position={[0, -(frameHeight / 2) - 0.08, 0.02]}
-        transform
-        distanceFactor={3.2}
-        occlude="blending"
-        center
-      >
-        <div className={`museum-plaque ${hovered ? 'hovered' : ''}`}>
-          <div className="plaque-title">{art.title}</div>
-          <div className="plaque-artist">{art.artist || 'Zeynep Ozcelik'}</div>
-        </div>
-      </Html>
+      {/* Embedded 3D Brass Plaque */}
+      <group position={[0, -(frameHeight / 2) - 0.08, 0]}>
+        <BrassPlaque title={art.title} artist={art.artist} width={plaqueW} />
+      </group>
     </group>
   );
 }
 
-// 4'lü Poliptik Set Çerçevesi (Flamingo ve Piece İçin Tek Ortak Plaket)
+// 4-Piece Unified Polyptych Frame
 function Polyptych4Frame({ position, rotation, files, title, category, description, date, dimensions, onSelect }) {
   const [textures, setTextures] = useState([]);
   const [hovered, setHovered] = useState(false);
@@ -684,28 +707,23 @@ function Polyptych4Frame({ position, rotation, files, title, category, descripti
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
       </mesh>
 
-      {/* Top Left */}
       <mesh position={[-pW / 2 - gap / 2, pH / 2 + gap / 2, 0.01]}>
         <planeGeometry args={[pW, pH]} />
         {textures[0] ? <meshBasicMaterial map={textures[0]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
       </mesh>
-      {/* Top Right */}
       <mesh position={[pW / 2 + gap / 2, pH / 2 + gap / 2, 0.01]}>
         <planeGeometry args={[pW, pH]} />
         {textures[1] ? <meshBasicMaterial map={textures[1]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
       </mesh>
-      {/* Bottom Left */}
       <mesh position={[-pW / 2 - gap / 2, -pH / 2 - gap / 2, 0.01]}>
         <planeGeometry args={[pW, pH]} />
         {textures[2] ? <meshBasicMaterial map={textures[2]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
       </mesh>
-      {/* Bottom Right */}
       <mesh position={[pW / 2 + gap / 2, -pH / 2 - gap / 2, 0.01]}>
         <planeGeometry args={[pW, pH]} />
         {textures[3] ? <meshBasicMaterial map={textures[3]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
       </mesh>
 
-      {/* Inner Dividing Strips */}
       <mesh position={[0, 0, 0.02]}>
         <boxGeometry args={[gap, totalH, 0.01]} />
         <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
@@ -715,24 +733,14 @@ function Polyptych4Frame({ position, rotation, files, title, category, descripti
         <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
       </mesh>
 
-      {/* Single Unified Plaque */}
-      <Html
-        position={[0, -(totalH / 2) - 0.08, 0.02]}
-        transform
-        distanceFactor={3.2}
-        occlude="blending"
-        center
-      >
-        <div className={`museum-plaque polyptych ${hovered ? 'hovered' : ''}`}>
-          <div className="plaque-title">{title}</div>
-          <div className="plaque-artist">Zeynep Ozcelik</div>
-        </div>
-      </Html>
+      <group position={[0, -(totalH / 2) - 0.08, 0]}>
+        <BrassPlaque title={title} artist="Zeynep Ozcelik" width={0.75} />
+      </group>
     </group>
   );
 }
 
-// 2 Parçalı Gelincik Diptik Çerçevesi
+// 2-Piece Diptych Frame
 function PoppiesDiptychFrame({ onSelect }) {
   const [tex1, setTex1] = useState(null);
   const [tex2, setTex2] = useState(null);
@@ -802,18 +810,9 @@ function PoppiesDiptychFrame({ onSelect }) {
         <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
       </mesh>
 
-      <Html
-        position={[0, -(panelH / 2) - 0.08, 0.02]}
-        transform
-        distanceFactor={3.2}
-        occlude="blending"
-        center
-      >
-        <div className={`museum-plaque diptych ${hovered ? 'hovered' : ''}`}>
-          <div className="plaque-title">Red Poppies Diptych</div>
-          <div className="plaque-artist">Zeynep Ozcelik</div>
-        </div>
-      </Html>
+      <group position={[0, -(panelH / 2) - 0.08, 0]}>
+        <BrassPlaque title="Red Poppies Diptych" artist="Zeynep Ozcelik" width={0.7} />
+      </group>
     </group>
   );
 }
@@ -974,7 +973,7 @@ export default function App() {
             </div>
 
             <div className="controls-hint">
-              <strong>[W, A, S, D]</strong> Walk &nbsp;|&nbsp; <strong>[Mouse]</strong> Look Around
+              <strong>[W, A, S, D]</strong> Walk &nbsp;|&nbsp; <strong>[Mouse]</strong> Look Around &nbsp;|&nbsp; <strong>[Click Artwork]</strong> Inspect
             </div>
             <div className="start-prompt">▶ Click Anywhere to Enter the Gallery</div>
           </div>
@@ -1056,7 +1055,6 @@ export default function App() {
               </p>
               <p className="art-desc">{selectedArt.description}</p>
 
-              {/* Distinct & Separated Action Buttons */}
               <div className="modal-actions-row">
                 <a 
                   href={ARTIST_INFO.instagram} 
