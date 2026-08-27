@@ -759,7 +759,7 @@ function ArtFrame({ art, onSelect }) {
         document.body.style.cursor = 'default';
       }}
     >
-      {/* Frame Body */}
+      {/* Frame Mold */}
       <mesh position={[0, 0, -0.015]}>
         <boxGeometry args={[frameWidth + 0.06, frameHeight + 0.06, 0.03]} />
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
@@ -1025,15 +1025,10 @@ export default function App() {
                 alt={selectedArt.title}
                 onError={(e) => {
                   const currentSrc = e.target.src;
-                  if (currentSrc.endsWith('.JPG')) {
-                    e.target.src = currentSrc.replace('.JPG', '.jpg');
-                  } else if (currentSrc.endsWith('.jpg')) {
-                    e.target.src = currentSrc.replace('.jpg', '.JPG');
-                  } else if (currentSrc.endsWith('.PNG')) {
-                    e.target.src = currentSrc.replace('.PNG', '.png');
-                  } else if (currentSrc.endsWith('.png')) {
-                    e.target.src = currentSrc.replace('.png', '.PNG');
-                  }
+                  if (currentSrc.endsWith('.JPG')) e.target.src = currentSrc.replace('.JPG', '.jpg');
+                  else if (currentSrc.endsWith('.jpg')) e.target.src = currentSrc.replace('.jpg', '.JPG');
+                  else if (currentSrc.endsWith('.PNG')) e.target.src = currentSrc.replace('.PNG', '.png');
+                  else if (currentSrc.endsWith('.png')) e.target.src = currentSrc.replace('.png', '.PNG');
                 }}
               />
             </div>
@@ -1049,23 +1044,21 @@ export default function App() {
               </p>
               <p className="art-desc">{selectedArt.description}</p>
 
-              {/* Minimalist Contact Strip */}
-              <div className="mini-contact-strip">
-                <span className="inquiry-label">For acquisitions &amp; inquiries:</span>
+              {/* Distinct & Elegant Contact Action Buttons */}
+              <div className="modal-actions-row">
                 <a 
                   href={ARTIST_INFO.instagram} 
                   target="_blank" 
                   rel="noreferrer" 
-                  className="mini-link ig"
+                  className="modal-action-btn ig"
                 >
-                  Instagram {ARTIST_INFO.instagramHandle}
+                  📸 Instagram {ARTIST_INFO.instagramHandle}
                 </a>
-                <span className="dot-separator">•</span>
                 <a 
                   href={`mailto:${ARTIST_INFO.email}?subject=Acquisition Inquiry: ${encodeURIComponent(selectedArt.title)}`} 
-                  className="mini-link mail"
+                  className="modal-action-btn mail"
                 >
-                  {ARTIST_INFO.email}
+                  ✉️ Inquire via Email
                 </a>
               </div>
             </div>
