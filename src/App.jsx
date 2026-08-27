@@ -330,7 +330,7 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - HER BİRİ FARKLI VE DOLU)
+  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY)
   // ========================================================
   { 
     id: 32, 
@@ -508,8 +508,8 @@ const ARTWORKS = [
   }
 ];
 
-function loadTextureWithFallbacks(file, onLoaded) {
-  const loader = new THREE.TextureLoader();
+function getFileCandidates(file) {
+  if (!file) return [];
   const lastSlash = file.lastIndexOf('/');
   const dir = file.substring(0, lastSlash + 1);
   const fullFileName = file.substring(lastSlash + 1);
@@ -538,13 +538,17 @@ function loadTextureWithFallbacks(file, onLoaded) {
 
   const extensions = ['.JPG', '.jpg', '.PNG', '.png', '.jpeg', '.JPEG', '.webp'];
   const candidates = [];
-
   baseVariants.forEach(b => {
     extensions.forEach(ext => {
       candidates.push(`${dir}${b}${ext}`);
     });
   });
+  return candidates;
+}
 
+function loadTextureWithFallbacks(file, onLoaded) {
+  const loader = new THREE.TextureLoader();
+  const candidates = getFileCandidates(file);
   let index = 0;
   const tryNext = () => {
     if (index >= candidates.length) return;
@@ -560,6 +564,27 @@ function loadTextureWithFallbacks(file, onLoaded) {
     );
   };
   tryNext();
+}
+
+function ModalImage({ file, alt }) {
+  const [src, setSrc] = useState(file);
+  const candidatesRef = useRef(getFileCandidates(file));
+  const candidateIndexRef = useRef(0);
+
+  useEffect(() => {
+    candidatesRef.current = getFileCandidates(file);
+    candidateIndexRef.current = 0;
+    setSrc(file);
+  }, [file]);
+
+  const handleError = () => {
+    candidateIndexRef.current += 1;
+    if (candidateIndexRef.current < candidatesRef.current.length) {
+      setSrc(candidatesRef.current[candidateIndexRef.current]);
+    }
+  };
+
+  return <img src={src} alt={alt} onError={handleError} />;
 }
 
 function BrassPlaque({ title, artist, width = 0.32, height = 0.048 }) {
@@ -1020,17 +1045,7 @@ export default function App() {
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close-btn" onClick={() => setSelectedArt(null)}>&times;</button>
             <div className="modal-img-wrapper">
-              <img 
-                src={selectedArt.file} 
-                alt={selectedArt.title}
-                onError={(e) => {
-                  const currentSrc = e.target.src;
-                  if (currentSrc.endsWith('.JPG')) e.target.src = currentSrc.replace('.JPG', '.jpg');
-                  else if (currentSrc.endsWith('.jpg')) e.target.src = currentSrc.replace('.jpg', '.JPG');
-                  else if (currentSrc.endsWith('.PNG')) e.target.src = currentSrc.replace('.PNG', '.png');
-                  else if (currentSrc.endsWith('.png')) e.target.src = currentSrc.replace('.png', '.PNG');
-                }}
-              />
+              <ModalImage file={selectedArt.file} alt={selectedArt.title} />
             </div>
             <div className="modal-body">
               <div className="modal-meta-row">
