@@ -330,7 +330,7 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - HATASIZ HİZALAMA)
+  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - DOĞRU AÇI VE DERİNLİK)
   // ========================================================
   { 
     id: 32, 
