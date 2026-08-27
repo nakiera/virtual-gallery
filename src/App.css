@@ -187,3 +187,50 @@ body, html, #root {
   line-height: 1.6;
   font-size: 0.95rem;
 }
+
+/* Museum Brass Plaques (Crisp & High-Res) */
+.museum-plaque {
+  background: linear-gradient(135deg, #dfba73 0%, #c5a059 50%, #9e7d3b 100%);
+  border: 1px solid #7c5f2b;
+  border-radius: 3px;
+  padding: 4px 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  min-width: 140px;
+  max-width: 220px;
+  user-select: none;
+  pointer-events: none;
+  transform: translateZ(0);
+  transition: all 0.2s ease;
+}
+
+.museum-plaque.diptych {
+  min-width: 200px;
+}
+
+.museum-plaque.hovered {
+  border-color: #ffd700;
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.plaque-title {
+  font-family: 'Times New Roman', serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a0f05;
+  letter-spacing: 0.5px;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.plaque-artist {
+  font-family: 'Arial', sans-serif;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #3b2814;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin-top: 1px;
+}
