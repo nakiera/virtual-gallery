@@ -13,7 +13,7 @@ const ARTIST_INFO = {
 
 const ARTWORKS = [
   // ========================================================
-  // ZONE 1: ENTRANCE CORRIDOR (GRAPHITE & INK RETROSPECTIVE 2016)
+  // ZONE 1: ENTRANCE CORRIDOR (GRAPHITE & INK 2016)
   // ========================================================
   { 
     id: 1, 
@@ -122,7 +122,7 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 2: LEFT WALL (POPPY SERIES)
+  // ZONE 2: LEFT WALL (POPPY MEADOWS & EXPRESSIONISM)
   // ========================================================
   { 
     id: 17, 
@@ -154,6 +154,7 @@ const ARTWORKS = [
   // ========================================================
   // ZONE 3: CENTER ISLAND (SURREAL & TEXTURED REALMS)
   // ========================================================
+  // Front Face (z = -7.85)
   { 
     id: 19, 
     title: 'Cosmic Vortex', 
@@ -194,15 +195,16 @@ const ARTWORKS = [
     height: 1.45 
   },
 
+  // Rear Face (z = -8.15)
   { 
     id: 22, 
-    title: 'Flight of the Dandelion', 
+    title: 'Wild Strawberry Bloom', 
     artist: 'Zeynep Ozcelik',
-    category: 'Soft Pastel', 
-    date: '16.03.2023', 
-    dimensions: '32.8x24 cm', 
-    file: '/artworks/g-dandelion1.jpg', 
-    description: 'Weightless dandelion seeds taking flight into azure ether, executed in soft powdered pastels.', 
+    category: 'Oil on Canvas', 
+    date: '07.11.2023', 
+    dimensions: '50x70 cm', 
+    file: '/artworks/c-straw07-11-23.png', 
+    description: 'Textured close-up celebrating the vibrant vitality of ripening strawberries and pure white blossoms.', 
     position: [-2.6, 2.0, -8.15], 
     rotation: [0, Math.PI, 0], 
     height: 1.45 
@@ -222,13 +224,13 @@ const ARTWORKS = [
   },
   { 
     id: 24, 
-    title: 'Wild Strawberry Bloom', 
+    title: 'Flight of the Dandelion', 
     artist: 'Zeynep Ozcelik',
-    category: 'Oil on Canvas', 
-    date: '07.11.2023', 
-    dimensions: '50x70 cm', 
-    file: '/artworks/c-straw07-11-23.png', 
-    description: 'Textured close-up celebrating the vibrant vitality of ripening strawberries and pure white blossoms.', 
+    category: 'Soft Pastel', 
+    date: '16.03.2023', 
+    dimensions: '32.8x24 cm', 
+    file: '/artworks/g-dandelion1.jpg', 
+    description: 'Weightless dandelion seeds taking flight into azure ether, executed in soft powdered pastels.', 
     position: [2.6, 2.0, -8.15], 
     rotation: [0, Math.PI, 0], 
     height: 1.45 
@@ -250,8 +252,6 @@ const ARTWORKS = [
     rotation: [0, 0, 0], 
     height: 1.6 
   },
-  
-  // 3-Piece Sunflower Triptych
   { 
     id: 26, 
     title: 'Solar Hymn (Left Wing)', 
@@ -291,7 +291,6 @@ const ARTWORKS = [
     rotation: [0, 0, 0], 
     height: 1.6 
   },
-
   { 
     id: 29, 
     title: 'Sunflowers in Cobalt', 
@@ -333,7 +332,7 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY)
+  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - BALANCED SPACING)
   // ========================================================
   { 
     id: 32, 
@@ -344,7 +343,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/b-DSC00634.JPG', 
     description: 'Pristine white daisies in a blue ceramic vase evoking dawn stillness.', 
-    position: [11.9, 2.0, -16.5], 
+    position: [11.9, 2.0, -16.2], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -357,7 +356,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/b-DSC00635.JPG', 
     description: 'Close-up perspective studying translucent white petals and morning light reflections.', 
-    position: [11.9, 2.0, -14.4], 
+    position: [11.9, 2.0, -14.1], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -370,7 +369,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/b-daisies.jpg', 
     description: 'Lyrical arrangement of wild field daisies breathing natural simplicity.', 
-    position: [11.9, 2.0, -12.3], 
+    position: [11.9, 2.0, -12.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -396,7 +395,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/t-DSC00662.JPG', 
     description: 'Lush pastel pink and white bouquet radiating springtime fragrance.', 
-    position: [11.9, 2.0, -7.7], 
+    position: [11.9, 2.0, -7.6], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -409,7 +408,7 @@ const ARTWORKS = [
     dimensions: '34x49.5 cm', 
     file: '/artworks/t-DSC00664.JPG', 
     description: 'Vivid red petals illuminated against deep twilight shadows.', 
-    position: [11.9, 2.0, -5.6], 
+    position: [11.9, 2.0, -5.4], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -422,7 +421,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/c-tulip1.jpg', 
     description: 'A pair of graceful scarlet tulips ascending against pure velvet darkness.', 
-    position: [11.9, 2.0, -3.5], 
+    position: [11.9, 2.0, -3.2], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -435,12 +434,14 @@ const ARTWORKS = [
     dimensions: '40x50 cm', 
     file: '/artworks/d-DSC00918.JPG', 
     description: 'Sun-drenched sunflower fields rolling infinitely beneath open summer skies.', 
-    position: [11.9, 2.0, -1.4], 
+    position: [11.9, 2.0, -1.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
 
-  // Wing Panels
+  // ========================================================
+  // ZONE 6: WING PANELS (BALANCED FRONT WALLS)
+  // ========================================================
   { 
     id: 40, 
     title: 'Mediterranean Reverie', 
@@ -450,7 +451,7 @@ const ARTWORKS = [
     dimensions: '24x32.8 cm', 
     file: '/artworks/f-bycycle1.jpg', 
     description: 'A tranquil nostalgic scene with a classic bicycle leaning against a weathered Aegean door.', 
-    position: [-8.8, 2.0, 0.05], 
+    position: [-9.5, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -463,7 +464,7 @@ const ARTWORKS = [
     dimensions: '40x30 cm', 
     file: '/artworks/f-iris1.jpg', 
     description: 'Regal purple iris petals accented with golden filaments and lively emerald leaves.', 
-    position: [-6.4, 2.0, 0.05], 
+    position: [-7.0, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -476,7 +477,7 @@ const ARTWORKS = [
     dimensions: '40x50 cm', 
     file: '/artworks/e-DSC00927.JPG', 
     description: 'Deep violet iris blossoms glowing out of velvety night shadows.', 
-    position: [-4.0, 2.0, 0.05], 
+    position: [-4.5, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -490,7 +491,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/d-calla-lilies1.jpg', 
     description: 'Sleek, minimalist pink calla lilies positioned with quiet dignity.', 
-    position: [4.0, 2.0, 0.05], 
+    position: [4.5, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -503,7 +504,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/d-flower07-11-23.png', 
     description: 'A singular azure flower rising like a monument against misted grey canvas.', 
-    position: [6.4, 2.0, 0.05], 
+    position: [7.0, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -516,49 +517,56 @@ const ARTWORKS = [
     dimensions: '29x21 cm', 
     file: '/artworks/e-sunflower2.jpg', 
     description: 'Warm luminous pastel portrait of a sunflower head turned directly toward the light.', 
-    position: [8.8, 2.0, 0.05], 
+    position: [9.5, 2.0, 0.05], 
     rotation: [0, 0, 0], 
     height: 1.35 
-  },
-
-  { 
-    id: 46, 
-    title: 'Emerald Rose', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/g-DSC00670.JPG', 
-    description: 'A deep crimson rose blooming amid deep emerald foliage.', 
-    position: [-10.8, 2.0, 0.05], 
-    rotation: [0, 0, 0], 
-    height: 1.3 
-  },
-  { 
-    id: 47, 
-    title: 'Bouquet of Grace', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Still Life', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/g-DSC00922.JPG', 
-    description: 'Rich tabletop vase filled with layered pink and crimson roses.', 
-    position: [10.8, 2.0, 0.05], 
-    rotation: [0, 0, 0], 
-    height: 1.3 
   }
 ];
 
-// Zarif ve İnce Müze Pirinç Plaketi
+// Akıllı Çoklu Dosya Yükleyici (Tüm Linux Harf/Uzantı Varyantlarını Otomatik Çözer)
+function loadTextureWithFallbacks(file, onLoaded) {
+  const loader = new THREE.TextureLoader();
+  const baseName = file.substring(0, file.lastIndexOf('.'));
+  const originalExt = file.substring(file.lastIndexOf('.'));
+
+  const candidates = [
+    file,
+    baseName + originalExt.toLowerCase(),
+    baseName + originalExt.toUpperCase(),
+    baseName.toLowerCase() + originalExt.toLowerCase(),
+    baseName.toLowerCase() + originalExt.toUpperCase(),
+    baseName + '.JPG',
+    baseName + '.jpg',
+    baseName + '.png',
+    baseName + '.PNG',
+    baseName + '.jpeg',
+    baseName + '.JPEG'
+  ];
+
+  let index = 0;
+  const tryNext = () => {
+    if (index >= candidates.length) return;
+    const currentUrl = candidates[index++];
+    loader.load(
+      currentUrl,
+      (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        onLoaded(tex);
+      },
+      undefined,
+      () => tryNext()
+    );
+  };
+  tryNext();
+}
+
 function BrassPlaque({ title, artist, width = 0.32, height = 0.048 }) {
   return (
     <group position={[0, 0, 0.012]}>
-      {/* Plaket Tabanı */}
       <mesh>
         <planeGeometry args={[width, height]} />
         <meshStandardMaterial color="#c5a059" metalness={0.75} roughness={0.3} />
       </mesh>
-      {/* Eser Başlığı */}
       <Text
         position={[0, 0.008, 0.003]}
         fontSize={0.015}
@@ -569,7 +577,6 @@ function BrassPlaque({ title, artist, width = 0.32, height = 0.048 }) {
       >
         {title}
       </Text>
-      {/* Sanatçı */}
       <Text
         position={[0, -0.009, 0.003]}
         fontSize={0.0095}
@@ -583,32 +590,18 @@ function BrassPlaque({ title, artist, width = 0.32, height = 0.048 }) {
   );
 }
 
-// Tekil Tablo Çerçevesi
 function ArtFrame({ art, onSelect }) {
   const [texture, setTexture] = useState(null);
   const [aspect, setAspect] = useState(1.0);
   const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    const tryLoad = (url) => {
-      loader.load(
-        url,
-        (tex) => {
-          tex.colorSpace = THREE.SRGBColorSpace;
-          if (tex.image && tex.image.height > 0) {
-            setAspect(tex.image.width / tex.image.height);
-          }
-          setTexture(tex);
-        },
-        undefined,
-        () => {
-          if (url.endsWith('.JPG')) tryLoad(url.replace('.JPG', '.jpg'));
-          else if (url.endsWith('.jpg')) tryLoad(url.replace('.jpg', '.JPG'));
-        }
-      );
-    };
-    tryLoad(art.file);
+    loadTextureWithFallbacks(art.file, (tex) => {
+      if (tex.image && tex.image.height > 0) {
+        setAspect(tex.image.width / tex.image.height);
+      }
+      setTexture(tex);
+    });
   }, [art.file]);
 
   const frameWidth = (art.height || 1.35) * aspect;
@@ -633,13 +626,11 @@ function ArtFrame({ art, onSelect }) {
         document.body.style.cursor = 'default';
       }}
     >
-      {/* Çerçeve */}
       <mesh position={[0, 0, -0.015]}>
         <boxGeometry args={[frameWidth + 0.05, frameHeight + 0.05, 0.03]} />
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
       </mesh>
 
-      {/* Resim Tuvali */}
       <mesh position={[0, 0, 0.01]}>
         <planeGeometry args={[frameWidth, frameHeight]} />
         {texture ? (
@@ -649,7 +640,6 @@ function ArtFrame({ art, onSelect }) {
         )}
       </mesh>
 
-      {/* Çerçevenin Tam Altında Pirinç Plaket */}
       <group position={[0, -(frameHeight / 2) - 0.055, 0]}>
         <BrassPlaque title={art.title} artist={art.artist} width={plaqueW} />
       </group>
@@ -657,19 +647,20 @@ function ArtFrame({ art, onSelect }) {
   );
 }
 
-// 4'lü Poliptik Tekil Panel Çerçevesi
 function Polyptych4Frame({ position, rotation, files, title, category, description, date, dimensions, onSelect }) {
   const [textures, setTextures] = useState([]);
   const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    const loaded = files.map(file => {
-      const tex = loader.load(file);
-      tex.colorSpace = THREE.SRGBColorSpace;
-      return tex;
+    files.forEach((file, i) => {
+      loadTextureWithFallbacks(file, (tex) => {
+        setTextures(prev => {
+          const next = [...prev];
+          next[i] = tex;
+          return next;
+        });
+      });
     });
-    setTextures(loaded);
   }, [files]);
 
   const pW = 0.65;
@@ -744,22 +735,14 @@ function Polyptych4Frame({ position, rotation, files, title, category, descripti
   );
 }
 
-// 2'li Gelincik Diptik Çerçevesi
 function PoppiesDiptychFrame({ onSelect }) {
   const [tex1, setTex1] = useState(null);
   const [tex2, setTex2] = useState(null);
   const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    loader.load('/artworks/poppy1.jpg', (tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      setTex1(tex);
-    });
-    loader.load('/artworks/poppy2.jpg', (tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      setTex2(tex);
-    });
+    loadTextureWithFallbacks('/artworks/poppy1.jpg', setTex1);
+    loadTextureWithFallbacks('/artworks/poppy2.jpg', setTex2);
   }, []);
 
   const panelH = 1.35;
@@ -862,7 +845,7 @@ function GalleryArchitecture() {
       <mesh position={[12, 2.1, -9]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[18, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
       <mesh position={[0, 2.1, -18]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
 
-      {/* Orta Ada Duvarı */}
+      {/* Center Island Wall */}
       <mesh position={[0, 2.0, -8.0]}><boxGeometry args={[8.0, 3.4, 0.3]} /><meshStandardMaterial color={ecruColor} roughness={0.8} /></mesh>
 
       <mesh position={[-7.5, 2.1, 0]}><planeGeometry args={[9, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
