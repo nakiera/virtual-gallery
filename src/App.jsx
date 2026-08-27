@@ -330,44 +330,44 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - BALANCED SPACING)
+  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - HER BİRİ FARKLI VE DOLU)
   // ========================================================
   { 
     id: 32, 
-    title: 'Morning Daisies I', 
+    title: 'Morning Daisies', 
     artist: 'Zeynep Ozcelik',
     category: 'Oil Painting', 
     date: '2023', 
     dimensions: '30x40 cm', 
-    file: '/artworks/b-DSC00634.JPG', 
+    file: '/artworks/b-daisies1.jpg', 
     description: 'Pristine white daisies in a blue ceramic vase evoking dawn stillness.', 
-    position: [11.9, 2.0, -16.2], 
+    position: [11.9, 2.0, -15.5], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
   { 
     id: 33, 
-    title: 'Morning Daisies II', 
+    title: 'Bouquet of Grace', 
     artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
+    category: 'Oil Still Life', 
     date: '2023', 
     dimensions: '30x40 cm', 
-    file: '/artworks/b-DSC00635.JPG', 
-    description: 'Close-up perspective studying translucent white petals and morning light reflections.', 
-    position: [11.9, 2.0, -14.1], 
+    file: '/artworks/g-DSC00922.JPG', 
+    description: 'Rich tabletop vase filled with layered pink and crimson roses.', 
+    position: [11.9, 2.0, -13.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
   { 
     id: 34, 
-    title: 'Meadow Daisies III', 
+    title: 'Emerald Rose', 
     artist: 'Zeynep Ozcelik',
     category: 'Oil Painting', 
     date: '2023', 
     dimensions: '30x40 cm', 
-    file: '/artworks/b-daisies.jpg', 
-    description: 'Lyrical arrangement of wild field daisies breathing natural simplicity.', 
-    position: [11.9, 2.0, -12.0], 
+    file: '/artworks/g-DSC00670.JPG', 
+    description: 'A deep crimson rose blooming amid deep emerald foliage.', 
+    position: [11.9, 2.0, -10.5], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -380,7 +380,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/t-DSC00660.JPG', 
     description: 'A solitary crimson rosebud standing proudly before a soft azure horizon.', 
-    position: [11.9, 2.0, -9.8], 
+    position: [11.9, 2.0, -8.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -393,7 +393,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/t-DSC00662.JPG', 
     description: 'Lush pastel pink and white bouquet radiating springtime fragrance.', 
-    position: [11.9, 2.0, -7.6], 
+    position: [11.9, 2.0, -5.5], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -406,7 +406,7 @@ const ARTWORKS = [
     dimensions: '34x49.5 cm', 
     file: '/artworks/t-DSC00664.JPG', 
     description: 'Vivid red petals illuminated against deep twilight shadows.', 
-    position: [11.9, 2.0, -5.4], 
+    position: [11.9, 2.0, -3.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -419,26 +419,13 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/c-tulip1.jpg', 
     description: 'A pair of graceful scarlet tulips ascending against pure velvet darkness.', 
-    position: [11.9, 2.0, -3.2], 
-    rotation: [0, -Math.PI / 2, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 39, 
-    title: 'Golden Expanse', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Landscape Oil', 
-    date: '2023', 
-    dimensions: '40x50 cm', 
-    file: '/artworks/d-DSC00918.JPG', 
-    description: 'Sun-drenched sunflower fields rolling infinitely beneath open summer skies.', 
-    position: [11.9, 2.0, -1.0], 
+    position: [11.9, 2.0, -0.5], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
 
   // ========================================================
-  // ZONE 6: WING PANELS (BALANCED FRONT WALLS)
+  // ZONE 6: WING PANELS
   // ========================================================
   { 
     id: 40, 
@@ -521,33 +508,40 @@ const ARTWORKS = [
   }
 ];
 
-// Geliştirilmiş Kesintisiz Doku Yükleyici
 function loadTextureWithFallbacks(file, onLoaded) {
   const loader = new THREE.TextureLoader();
   const lastSlash = file.lastIndexOf('/');
   const dir = file.substring(0, lastSlash + 1);
   const fullFileName = file.substring(lastSlash + 1);
   const lastDot = fullFileName.lastIndexOf('.');
-  const baseName = fullFileName.substring(0, lastDot);
-  const originalExt = fullFileName.substring(lastDot);
+  const baseName = lastDot !== -1 ? fullFileName.substring(0, lastDot) : fullFileName;
+  const rawBase = baseName.replace(/^[a-zA-Z][-_]/, '');
 
-  // Olası dosya varyasyonları (b-DSC00635, DSC00635, b-daisies vb.)
-  const candidateNames = [
+  const baseVariants = Array.from(new Set([
     baseName,
     baseName.toLowerCase(),
     baseName.toUpperCase(),
-    baseName.replace(/^b-/, ''),
-    baseName.replace(/^b-/, 'b-'),
-    baseName.replace(/^b-/, '').toLowerCase()
-  ];
+    rawBase,
+    rawBase.toLowerCase(),
+    rawBase.toUpperCase(),
+    'b-' + rawBase,
+    'b_' + rawBase,
+    't-' + rawBase,
+    't_' + rawBase,
+    'b-daisies1',
+    'b-daisies2',
+    'b-daisies3',
+    'b-daisies',
+    'daisies1',
+    'daisies'
+  ]));
 
-  const extensions = ['.JPG', '.jpg', '.PNG', '.png', '.JPEG', '.jpeg'];
+  const extensions = ['.JPG', '.jpg', '.PNG', '.png', '.jpeg', '.JPEG', '.webp'];
   const candidates = [];
 
-  candidateNames.forEach(name => {
+  baseVariants.forEach(b => {
     extensions.forEach(ext => {
-      const url = `${dir}${name}${ext}`;
-      if (!candidates.includes(url)) candidates.push(url);
+      candidates.push(`${dir}${b}${ext}`);
     });
   });
 
