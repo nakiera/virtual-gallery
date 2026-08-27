@@ -154,7 +154,6 @@ const ARTWORKS = [
   // ========================================================
   // ZONE 3: CENTER ISLAND (SURREAL & TEXTURED REALMS)
   // ========================================================
-  // Front Face (z = -7.85)
   { 
     id: 19, 
     title: 'Cosmic Vortex', 
@@ -195,7 +194,6 @@ const ARTWORKS = [
     height: 1.45 
   },
 
-  // Rear Face (z = -8.15)
   { 
     id: 22, 
     title: 'Wild Strawberry Bloom', 
@@ -523,25 +521,35 @@ const ARTWORKS = [
   }
 ];
 
-// Akıllı Çoklu Dosya Yükleyici (Tüm Linux Harf/Uzantı Varyantlarını Otomatik Çözer)
+// Geliştirilmiş Kesintisiz Doku Yükleyici
 function loadTextureWithFallbacks(file, onLoaded) {
   const loader = new THREE.TextureLoader();
-  const baseName = file.substring(0, file.lastIndexOf('.'));
-  const originalExt = file.substring(file.lastIndexOf('.'));
+  const lastSlash = file.lastIndexOf('/');
+  const dir = file.substring(0, lastSlash + 1);
+  const fullFileName = file.substring(lastSlash + 1);
+  const lastDot = fullFileName.lastIndexOf('.');
+  const baseName = fullFileName.substring(0, lastDot);
+  const originalExt = fullFileName.substring(lastDot);
 
-  const candidates = [
-    file,
-    baseName + originalExt.toLowerCase(),
-    baseName + originalExt.toUpperCase(),
-    baseName.toLowerCase() + originalExt.toLowerCase(),
-    baseName.toLowerCase() + originalExt.toUpperCase(),
-    baseName + '.JPG',
-    baseName + '.jpg',
-    baseName + '.png',
-    baseName + '.PNG',
-    baseName + '.jpeg',
-    baseName + '.JPEG'
+  // Olası dosya varyasyonları (b-DSC00635, DSC00635, b-daisies vb.)
+  const candidateNames = [
+    baseName,
+    baseName.toLowerCase(),
+    baseName.toUpperCase(),
+    baseName.replace(/^b-/, ''),
+    baseName.replace(/^b-/, 'b-'),
+    baseName.replace(/^b-/, '').toLowerCase()
   ];
+
+  const extensions = ['.JPG', '.jpg', '.PNG', '.png', '.JPEG', '.jpeg'];
+  const candidates = [];
+
+  candidateNames.forEach(name => {
+    extensions.forEach(ext => {
+      const url = `${dir}${name}${ext}`;
+      if (!candidates.includes(url)) candidates.push(url);
+    });
+  });
 
   let index = 0;
   const tryNext = () => {
@@ -784,12 +792,12 @@ function PoppiesDiptychFrame({ onSelect }) {
 
       <mesh position={[-panelW / 2 - 0.01, 0, 0.01]}>
         <planeGeometry args={[panelW, panelH]} />
-        {tex1 ? <meshBasicMaterial map={tex1} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" side={THREE.DoubleSide} />}
+        {tex1 ? <meshBasicMaterial map={tex1} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
       </mesh>
 
       <mesh position={[panelW / 2 + 0.01, 0, 0.01]}>
         <planeGeometry args={[panelW, panelH]} />
-        {tex2 ? <meshBasicMaterial map={tex2} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" side={THREE.DoubleSide} />}
+        {tex2 ? <meshBasicMaterial map={tex2} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
       </mesh>
 
       <mesh position={[0, 0, 0.02]}>
