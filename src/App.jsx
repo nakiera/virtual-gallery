@@ -250,6 +250,8 @@ const ARTWORKS = [
     rotation: [0, 0, 0], 
     height: 1.6 
   },
+  
+  // 3-Piece Sunflower Triptych
   { 
     id: 26, 
     title: 'Solar Hymn (Left Wing)', 
@@ -289,6 +291,7 @@ const ARTWORKS = [
     rotation: [0, 0, 0], 
     height: 1.6 
   },
+
   { 
     id: 29, 
     title: 'Sunflowers in Cobalt', 
@@ -517,6 +520,7 @@ const ARTWORKS = [
     rotation: [0, 0, 0], 
     height: 1.35 
   },
+
   { 
     id: 46, 
     title: 'Emerald Rose', 
@@ -545,30 +549,30 @@ const ARTWORKS = [
   }
 ];
 
-// 3D Pure WebGL Brass Plaque
-function BrassPlaque({ title, artist, width = 0.55, height = 0.07 }) {
+// Zarif ve İnce Müze Pirinç Plaketi
+function BrassPlaque({ title, artist, width = 0.32, height = 0.048 }) {
   return (
-    <group position={[0, 0, 0.015]}>
-      {/* Plaque Mesh */}
+    <group position={[0, 0, 0.012]}>
+      {/* Plaket Tabanı */}
       <mesh>
         <planeGeometry args={[width, height]} />
-        <meshStandardMaterial color="#c5a059" metalness={0.85} roughness={0.25} />
+        <meshStandardMaterial color="#c5a059" metalness={0.75} roughness={0.3} />
       </mesh>
-      {/* Title Text */}
+      {/* Eser Başlığı */}
       <Text
-        position={[0, 0.012, 0.005]}
-        fontSize={0.022}
+        position={[0, 0.008, 0.003]}
+        fontSize={0.015}
         color="#1a0f05"
         anchorX="center"
         anchorY="middle"
-        maxWidth={width - 0.04}
+        maxWidth={width - 0.02}
       >
         {title}
       </Text>
-      {/* Artist Text */}
+      {/* Sanatçı */}
       <Text
-        position={[0, -0.014, 0.005]}
-        fontSize={0.014}
+        position={[0, -0.009, 0.003]}
+        fontSize={0.0095}
         color="#3b2814"
         anchorX="center"
         anchorY="middle"
@@ -579,7 +583,7 @@ function BrassPlaque({ title, artist, width = 0.55, height = 0.07 }) {
   );
 }
 
-// Single Frame with 3D Plaque
+// Tekil Tablo Çerçevesi
 function ArtFrame({ art, onSelect }) {
   const [texture, setTexture] = useState(null);
   const [aspect, setAspect] = useState(1.0);
@@ -609,7 +613,7 @@ function ArtFrame({ art, onSelect }) {
 
   const frameWidth = (art.height || 1.35) * aspect;
   const frameHeight = art.height || 1.35;
-  const plaqueW = Math.max(Math.min(frameWidth * 0.85, 0.65), 0.42);
+  const plaqueW = Math.max(Math.min(frameWidth * 0.75, 0.45), 0.28);
 
   return (
     <group 
@@ -629,13 +633,13 @@ function ArtFrame({ art, onSelect }) {
         document.body.style.cursor = 'default';
       }}
     >
-      {/* Frame border */}
+      {/* Çerçeve */}
       <mesh position={[0, 0, -0.015]}>
-        <boxGeometry args={[frameWidth + 0.06, frameHeight + 0.06, 0.03]} />
+        <boxGeometry args={[frameWidth + 0.05, frameHeight + 0.05, 0.03]} />
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
       </mesh>
 
-      {/* Picture surface */}
+      {/* Resim Tuvali */}
       <mesh position={[0, 0, 0.01]}>
         <planeGeometry args={[frameWidth, frameHeight]} />
         {texture ? (
@@ -645,15 +649,15 @@ function ArtFrame({ art, onSelect }) {
         )}
       </mesh>
 
-      {/* Embedded 3D Brass Plaque */}
-      <group position={[0, -(frameHeight / 2) - 0.08, 0]}>
+      {/* Çerçevenin Tam Altında Pirinç Plaket */}
+      <group position={[0, -(frameHeight / 2) - 0.055, 0]}>
         <BrassPlaque title={art.title} artist={art.artist} width={plaqueW} />
       </group>
     </group>
   );
 }
 
-// 4-Piece Unified Polyptych Frame
+// 4'lü Poliptik Tekil Panel Çerçevesi
 function Polyptych4Frame({ position, rotation, files, title, category, description, date, dimensions, onSelect }) {
   const [textures, setTextures] = useState([]);
   const [hovered, setHovered] = useState(false);
@@ -703,7 +707,7 @@ function Polyptych4Frame({ position, rotation, files, title, category, descripti
       }}
     >
       <mesh position={[0, 0, -0.015]}>
-        <boxGeometry args={[totalW + 0.08, totalH + 0.08, 0.03]} />
+        <boxGeometry args={[totalW + 0.06, totalH + 0.06, 0.03]} />
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
       </mesh>
 
@@ -733,14 +737,14 @@ function Polyptych4Frame({ position, rotation, files, title, category, descripti
         <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
       </mesh>
 
-      <group position={[0, -(totalH / 2) - 0.08, 0]}>
-        <BrassPlaque title={title} artist="Zeynep Ozcelik" width={0.75} />
+      <group position={[0, -(totalH / 2) - 0.055, 0]}>
+        <BrassPlaque title={title} artist="Zeynep Ozcelik" width={0.48} />
       </group>
     </group>
   );
 }
 
-// 2-Piece Diptych Frame
+// 2'li Gelincik Diptik Çerçevesi
 function PoppiesDiptychFrame({ onSelect }) {
   const [tex1, setTex1] = useState(null);
   const [tex2, setTex2] = useState(null);
@@ -791,7 +795,7 @@ function PoppiesDiptychFrame({ onSelect }) {
       }}
     >
       <mesh position={[0, 0, -0.015]}>
-        <boxGeometry args={[totalW + 0.08, panelH + 0.08, 0.03]} />
+        <boxGeometry args={[totalW + 0.06, panelH + 0.06, 0.03]} />
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
       </mesh>
 
@@ -810,8 +814,8 @@ function PoppiesDiptychFrame({ onSelect }) {
         <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
       </mesh>
 
-      <group position={[0, -(panelH / 2) - 0.08, 0]}>
-        <BrassPlaque title="Red Poppies Diptych" artist="Zeynep Ozcelik" width={0.7} />
+      <group position={[0, -(panelH / 2) - 0.055, 0]}>
+        <BrassPlaque title="Red Poppies Diptych" artist="Zeynep Ozcelik" width={0.46} />
       </group>
     </group>
   );
@@ -858,7 +862,7 @@ function GalleryArchitecture() {
       <mesh position={[12, 2.1, -9]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[18, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
       <mesh position={[0, 2.1, -18]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
 
-      {/* Center Island Wall */}
+      {/* Orta Ada Duvarı */}
       <mesh position={[0, 2.0, -8.0]}><boxGeometry args={[8.0, 3.4, 0.3]} /><meshStandardMaterial color={ecruColor} roughness={0.8} /></mesh>
 
       <mesh position={[-7.5, 2.1, 0]}><planeGeometry args={[9, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
