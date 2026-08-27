@@ -317,36 +317,6 @@ const ARTWORKS = [
   },
   { 
     id: 31, 
-   title: 'Morning Daisies II', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/b-daisies2.jpg', 
-    description: 'Close-up botanical perspective focusing on delicate white petals and morning light reflections.', 
-    position: [11.9, 2.0, -13.0], 
-    rotation: [0, -Math.PI / 2, 0], 
-    height: 1.35 
-  },
-
-  // ========================================================
-  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY)
-  // ========================================================
-  { 
-    id: 32, 
-    title: 'Morning Daisies I', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/b-daisies1.jpg', 
-    description: 'Pristine white daisies in a blue ceramic vase evoking dawn stillness.', 
-    position: [11.9, 2.0, -15.5], 
-    rotation: [0, -Math.PI / 2, 0], 
-    height: 1.35 
-  },
-  { 
-    id: 33, 
     title: 'November Serenity', 
     artist: 'Zeynep Ozcelik',
     category: 'Oil on Canvas', 
@@ -358,17 +328,47 @@ const ARTWORKS = [
     rotation: [0, 0, 0], 
     height: 1.6 
   },
+
+  // ========================================================
+  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - DÜZELTİLMİŞ)
+  // ========================================================
+  { 
+    id: 32, 
+    title: 'Morning Daisies I', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '2023', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/b-daisies1.jpg', 
+    description: 'Pristine white daisies in a blue ceramic vase evoking dawn stillness.', 
+    position: [11.9, 2.0, -16.5], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.35 
+  },
+  { 
+    id: 33, 
+    title: 'Morning Daisies II', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Oil Painting', 
+    date: '2023', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/b-daisies2.jpg', 
+    description: 'Close-up botanical perspective focusing on delicate white petals and morning light reflections.', 
+    position: [11.9, 2.0, -13.8], 
+    rotation: [0, -Math.PI / 2, 0], 
+    height: 1.35 
+  },
   { 
     id: 34, 
-      title: 'Gilded Sunflower', 
+    title: 'Morning Daisies III', 
     artist: 'Zeynep Ozcelik',
-    category: 'Pastel', 
-    date: '18.03.2023', 
-    dimensions: '29x21 cm', 
-    file: '/artworks/e-sunflower2.jpg', 
-    description: 'Warm luminous pastel portrait of a sunflower head turned directly toward the light.', 
-    position: [8.5, 2.0, 0.05], 
-    rotation: [0, 0, 0], 
+    category: 'Oil Painting', 
+    date: '2023', 
+    dimensions: '30x40 cm', 
+    file: '/artworks/b-daisies3.jpg', 
+    description: 'Lyrical arrangement of wild field daisies breathing natural simplicity.', 
+    position: [11.9, 2.0, -11.1], 
+    rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
   { 
@@ -380,7 +380,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/g-DSC00922.JPG', 
     description: 'Rich tabletop vase filled with layered pink and crimson roses.', 
-    position: [11.9, 2.0, -8.0], 
+    position: [11.9, 2.0, -8.4], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -393,7 +393,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/g-DSC00670.JPG', 
     description: 'A deep crimson rose blooming amid deep emerald foliage.', 
-    position: [11.9, 2.0, -5.5], 
+    position: [11.9, 2.0, -5.7], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -419,7 +419,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/c-tulip1.jpg', 
     description: 'A pair of graceful scarlet tulips ascending against pure velvet darkness.', 
-    position: [11.9, 2.0, -0.5], 
+    position: [11.9, 2.0, -0.3], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -506,6 +506,19 @@ const ARTWORKS = [
     rotation: [0, 0, 0], 
     height: 1.35 
   },
+  { 
+    id: 45, 
+    title: 'Gilded Sunflower', 
+    artist: 'Zeynep Ozcelik',
+    category: 'Pastel', 
+    date: '18.03.2023', 
+    dimensions: '29x21 cm', 
+    file: '/artworks/e-sunflower2.jpg', 
+    description: 'Warm luminous pastel portrait of a sunflower head turned directly toward the light.', 
+    position: [8.5, 2.0, 0.05], 
+    rotation: [0, 0, 0], 
+    height: 1.35 
+  }
 ];
 
 function getFileCandidates(file) {
