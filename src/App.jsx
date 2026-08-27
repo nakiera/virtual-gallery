@@ -4,6 +4,13 @@ import { PointerLockControls, Text } from '@react-three/drei';
 import * as THREE from 'three';
 import './App.css';
 
+const ARTIST_INFO = {
+  name: 'Zeynep Ozcelik',
+  instagram: 'https://instagram.com/zeyozc',
+  instagramHandle: '@zeyozc',
+  email: 'nakiera@gmail.com'
+};
+
 const ARTWORKS = [
   // ========================================================
   // ZONE 1: ENTRANCE CORRIDOR (CHARCOAL & INK DRAWINGS 2016)
@@ -17,7 +24,7 @@ const ARTWORKS = [
     date: '10.05.2016', 
     dimensions: '25x35 cm', 
     file: '/artworks/k-bust1.jpg', 
-    description: 'An academic drapery study exploring the tonal depth, light-shadow interplay, and structural folds of textured fabric.', 
+    description: 'An academic drapery study exploring tonal depth, light-shadow interplay, and structural folds of textured fabric.', 
     position: [-2.9, 1.8, 8.5], 
     rotation: [0, Math.PI / 2, 0], 
     height: 1.25 
@@ -110,7 +117,7 @@ const ARTWORKS = [
     date: '08.11.2023', 
     dimensions: '50x70 cm', 
     file: '/artworks/c-seashell08-11-23.png', 
-    description: 'Heavily textured organic study capturing the calcified spiraling ridges and natural curves of a seashell against a neutral background.', 
+    description: 'Heavily textured organic study capturing the calcified spiraling ridges and natural curves of a seashell.', 
     position: [2.9, 1.8, 1.6], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.25 
@@ -182,7 +189,7 @@ const ARTWORKS = [
     date: '2023', 
     dimensions: '40x40 cm', 
     file: '/artworks/Piece1.JPG', 
-    description: 'Top-left module of an abstract geometric polyptych exploring vibrant chromatic blocks and sharp linear intersections.', 
+    description: 'Top-left module of an abstract geometric polyptych exploring vibrant chromatic blocks and sharp intersections.', 
     position: [-11.9, 2.5, -12.5], 
     rotation: [0, Math.PI / 2, 0], 
     height: 0.95 
@@ -249,7 +256,7 @@ const ARTWORKS = [
     date: '29.05.2023', 
     dimensions: '49.5x34 cm', 
     file: '/artworks/poppy3.jpg', 
-    description: 'Horizontal botanical composition showcasing the radiant crimson petals and deep foliage contrast.', 
+    description: 'Horizontal botanical composition showcasing radiant crimson petals and deep foliage contrast.', 
     position: [-11.9, 2.0, -2.4], 
     rotation: [0, Math.PI / 2, 0], 
     height: 1.35 
@@ -267,7 +274,7 @@ const ARTWORKS = [
     date: '2023', 
     dimensions: '50x70 cm', 
     file: '/artworks/s-DSC00655.JPG', 
-    description: 'A mystical and dynamic vortex composition defying planar dimensions through layered circular brushwork and vivid chromatic sweeps.', 
+    description: 'A mystical vortex composition defying planar dimensions through layered circular brushwork and chromatic sweeps.', 
     position: [-2.6, 2.0, -7.85], 
     rotation: [0, 0, 0], 
     height: 1.45 
@@ -973,6 +980,7 @@ function GalleryArchitecture() {
       <mesh position={[12, 2.1, -9]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[18, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
       <mesh position={[0, 2.1, -18]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
 
+      {/* Center Island Wall */}
       <mesh position={[0, 2.0, -8.0]}><boxGeometry args={[8.0, 3.4, 0.3]} /><meshStandardMaterial color={ecruColor} roughness={0.8} /></mesh>
 
       <mesh position={[-7.5, 2.1, 0]}><planeGeometry args={[9, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
@@ -1015,7 +1023,27 @@ export default function App() {
         <div className="instructions-overlay" onClick={handleStart}>
           <div className="instructions-card">
             <h1>ZEYNEP OZCELIK</h1>
-            <p>Virtual Fine Art Gallery &amp; Retrospective</p>
+            <p className="subtitle">Virtual Fine Art Gallery &amp; Retrospective</p>
+
+            <div className="artist-links">
+              <a 
+                href={ARTIST_INFO.instagram} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="artist-link-badge ig"
+                onClick={(e) => e.stopPropagation()}
+              >
+                📸 Instagram: <strong>{ARTIST_INFO.instagramHandle}</strong>
+              </a>
+              <a 
+                href={`mailto:${ARTIST_INFO.email}`} 
+                className="artist-link-badge mail"
+                onClick={(e) => e.stopPropagation()}
+              >
+                ✉️ {ARTIST_INFO.email}
+              </a>
+            </div>
+
             <div className="controls-hint">
               <strong>[W, A, S, D]</strong> Walk &nbsp;|&nbsp; <strong>[Mouse]</strong> Look Around
             </div>
@@ -1056,8 +1084,28 @@ export default function App() {
                 {selectedArt.dimensions && <span className="modal-dim-tag">📐 {selectedArt.dimensions}</span>}
               </div>
               <h2>{selectedArt.title}</h2>
-              <p className="artist-byline">Artist: <strong>{selectedArt.artist || 'Zeynep Ozcelik'}</strong></p>
+              <p className="artist-byline">
+                Artist: <strong>{selectedArt.artist || 'Zeynep Ozcelik'}</strong>
+              </p>
               <p className="art-desc">{selectedArt.description}</p>
+
+              {/* Artist Inquiries & Social Contact */}
+              <div className="modal-contact-row">
+                <a 
+                  href={ARTIST_INFO.instagram} 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  className="modal-contact-btn ig-btn"
+                >
+                  Follow on Instagram {ARTIST_INFO.instagramHandle}
+                </a>
+                <a 
+                  href={`mailto:${ARTIST_INFO.email}?subject=Inquiry about ${encodeURIComponent(selectedArt.title)}`} 
+                  className="modal-contact-btn email-btn"
+                >
+                  Inquire via Email
+                </a>
+              </div>
             </div>
           </div>
         </div>
