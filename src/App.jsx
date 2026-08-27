@@ -4,73 +4,99 @@ import { PointerLockControls } from '@react-three/drei';
 import * as THREE from 'three';
 import './App.css';
 
-// 53 Eserin Tamamı ve Birebir Dosya Adları
+// Yeni Gruplandırılmış 53 Eser Listesi
 const ARTWORKS = [
-  // --- 1. GİRİŞ KORİDORU: SOL DUVAR ---
-  { id: 1, title: 'Karahindiba I', category: 'Botanik', file: '/artworks/dandelion1.png', description: 'Uçuşan tohumlar ve dokusal gökyüzü.', position: [-2.9, 1.8, 8.5], rotation: [0, Math.PI / 2, 0], height: 1.2 },
-  { id: 2, title: 'Karahindiba II', category: 'Botanik', file: '/artworks/dandelion2.jpg', description: 'Karahindiba detay etüdü.', position: [-2.9, 1.8, 6.2], rotation: [0, Math.PI / 2, 0], height: 1.2 },
-  { id: 3, title: 'Deniz Kabuğu', category: 'Etüt', file: '/artworks/seashell08-11-23.png', description: 'Spiral form ve heykelsi gölgeler.', position: [-2.9, 1.8, 4.0], rotation: [0, Math.PI / 2, 0], height: 1.2 },
-  { id: 4, title: 'Çilek & Yapraklar', category: 'Renk & Doku', file: '/artworks/straw07-11-23.png', description: 'Canlı kırmızı ve yeşil tonlar.', position: [-2.9, 1.8, 1.8], rotation: [0, Math.PI / 2, 0], height: 1.2 },
+  // ==========================================
+  // 1. GİRİŞ KORİDORU: KARAKALEM & DESEN (k-)
+  // ==========================================
+  // Sol Koridor Duvarı
+  { id: 1, title: 'Antik Büst Etüdü', category: 'Karakalem', file: '/artworks/k-bust1.jpg', description: 'Işık-gölge ve anatomik form tonlama çalışması.', position: [-2.9, 1.8, 8.5], rotation: [0, Math.PI / 2, 0], height: 1.25 },
+  { id: 2, title: 'Deniz Feneri & Martılar', category: 'Karakalem', file: '/artworks/k-lighthouse1.jpg', description: 'Kayalıklar ve deniz temalı atmosferik desen.', position: [-2.9, 1.8, 6.2], rotation: [0, Math.PI / 2, 0], height: 1.25 },
+  { id: 3, title: 'Monokrom Zambak', category: 'Karakalem', file: '/artworks/k-lillies4.jpg', description: 'Grafit tonlamalarla zarif çiçek anatomisi.', position: [-2.9, 1.8, 3.9], rotation: [0, Math.PI / 2, 0], height: 1.25 },
+  { id: 4, title: 'Mürekkep Çiçek', category: 'Desen', file: '/artworks/g-inkflower1.jpg', description: 'Mürekkep hatlarıyla botanik çizim.', position: [-2.9, 1.8, 1.6], rotation: [0, Math.PI / 2, 0], height: 1.25 },
 
-  // --- 2. GİRİŞ KORİDORU: SAĞ DUVAR ---
-  { id: 5, title: 'Papatyalar I', category: 'Papatya Serisi', file: '/artworks/DSC00634.JPG', description: 'Papatya serisinin ilk parçası.', position: [2.9, 1.8, 8.5], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
-  { id: 6, title: 'Papatyalar II', category: 'Papatya Serisi', file: '/artworks/DSC00635.JPG', description: 'Mavi vazoda papatyalar.', position: [2.9, 1.8, 6.2], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
-  { id: 7, title: 'Papatyalar III', category: 'Papatya Serisi', file: '/artworks/daisies.jpg', description: 'Zarif papatya kompozisyonu.', position: [2.9, 1.8, 4.0], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
-  { id: 8, title: 'Balonlar & Kır Bahçesi', category: 'Peyzaj', file: '/artworks/baloon10-11-23.png', description: 'Gökyüzüne yükselen renkli balonlar.', position: [2.9, 1.8, 1.8], rotation: [0, -Math.PI / 2, 0], height: 1.2 },
+  // Sağ Koridor Duvarı
+  { id: 5, title: 'Gül Çizimi I', category: 'Karakalem', file: '/artworks/k-rose1.jpg', description: 'Grafit tonlama gül etüdü.', position: [2.9, 1.8, 8.5], rotation: [0, -Math.PI / 2, 0], height: 1.25 },
+  { id: 6, title: 'Gül Çizimi II', category: 'Karakalem', file: '/artworks/k-rose2.jpg', description: 'Katmanlı yaprak detayları.', position: [2.9, 1.8, 6.2], rotation: [0, -Math.PI / 2, 0], height: 1.25 },
+  { id: 7, title: 'Vazo ve Güller', category: 'Karakalem', file: '/artworks/k-roses3.jpg', description: 'Klasik natürmort desen kompozisyonu.', position: [2.9, 1.8, 3.9], rotation: [0, -Math.PI / 2, 0], height: 1.25 },
+  { id: 8, title: 'Deniz Kabuğu', category: 'Desen & Etüt', file: '/artworks/c-seashell08-11-23.png', description: 'Heykelsi spiral kabuk formu.', position: [2.9, 1.8, 1.6], rotation: [0, -Math.PI / 2, 0], height: 1.25 },
 
-  // --- 3. BÜYÜK SALON: KARŞI DUVAR ---
-  { id: 9, title: 'Şarap & Kadeh', category: 'Klasik Natürmort', file: '/artworks/wine1.jpg', description: 'Koyu zemin üzerinde cam ışıltısı ve zengin bordo tonlar.', position: [-8.5, 2.1, -17.9], rotation: [0, 0, 0], height: 1.6 },
-  { id: 10, title: 'Ayçiçeği Portresi', category: 'Yağlıboya', file: '/artworks/sunflower2.jpg', description: 'Mavi gökyüzü önünde enerjik ayçiçeği.', position: [-4.8, 2.1, -17.9], rotation: [0, 0, 0], height: 1.6 },
-  { id: 11, title: 'Güz Ayçiçeği', category: 'Natürmort', file: '/artworks/sunflower6-11-23.jpg', description: 'Sıcak tonlarda sonbahar ayçiçeği.', position: [4.8, 2.1, -17.9], rotation: [0, 0, 0], height: 1.6 },
-  { id: 12, title: 'Kasım Çiçekleri', category: 'Botanik Tuval', file: '/artworks/flower11.11.23.png', description: 'Zengin dokulu çiçek buketi.', position: [8.5, 2.1, -17.9], rotation: [0, 0, 0], height: 1.6 },
+  // ==========================================
+  // 2. SOL DUVAR: ÇOKLU SETLER (Flamingo, Piece, Poppy)
+  // ==========================================
+  // 4'lü Flamingo Paneli
+  { id: 9, title: 'Flamingo - I', category: '4’lü Flamingo Serisi', file: '/artworks/Flamingo1.JPG', description: 'Flamingo serisi sol üst panel.', position: [-11.9, 2.5, -16.2], rotation: [0, Math.PI / 2, 0], height: 1.0 },
+  { id: 10, title: 'Flamingo - II', category: '4’lü Flamingo Serisi', file: '/artworks/Flamingo2.JPG', description: 'Flamingo serisi sağ üst panel.', position: [-11.9, 2.5, -17.0], rotation: [0, Math.PI / 2, 0], height: 1.0 },
+  { id: 11, title: 'Flamingo - III', category: '4’lü Flamingo Serisi', file: '/artworks/Flamingo3.JPG', description: 'Flamingo serisi sol alt panel.', position: [-11.9, 1.4, -16.2], rotation: [0, Math.PI / 2, 0], height: 1.0 },
+  { id: 12, title: 'Flamingo - IV', category: '4’lü Flamingo Serisi', file: '/artworks/Flamingo4.JPG', description: 'Flamingo serisi sağ alt panel.', position: [-11.9, 1.4, -17.0], rotation: [0, Math.PI / 2, 0], height: 1.0 },
 
-  // --- 4. SOL DUVAR (4'LÜ SETLER & YAĞLIBOYA) ---
-  { id: 13, title: 'Flamingo - Sol Üst', category: '4’lü Flamingo Serisi', file: '/artworks/Flamingo1.JPG', description: 'Flamingo paneli sol üst.', position: [-11.9, 2.5, -15.5], rotation: [0, Math.PI / 2, 0], height: 1.05 },
-  { id: 14, title: 'Flamingo - Sağ Üst', category: '4’lü Flamingo Serisi', file: '/artworks/Flamingo2.JPG', description: 'Flamingo paneli sağ üst.', position: [-11.9, 2.5, -16.35], rotation: [0, Math.PI / 2, 0], height: 1.05 },
-  { id: 15, title: 'Flamingo - Sol Alt', category: '4’lü Flamingo Serisi', file: '/artworks/Flamingo3.JPG', description: 'Flamingo paneli sol alt.', position: [-11.9, 1.4, -15.5], rotation: [0, Math.PI / 2, 0], height: 1.05 },
-  { id: 16, title: 'Flamingo - Sağ Alt', category: '4’lü Flamingo Serisi', file: '/artworks/Flamingo4.JPG', description: 'Flamingo paneli sağ alt.', position: [-11.9, 1.4, -16.35], rotation: [0, Math.PI / 2, 0], height: 1.05 },
+  // 4'lü Piece Geometrik Panel
+  { id: 13, title: 'Piece - I', category: '4’lü Geometrik Seri', file: '/artworks/Piece1.JPG', description: 'Geometrik soyutlama sol üst panel.', position: [-11.9, 2.5, -13.0], rotation: [0, Math.PI / 2, 0], height: 1.0 },
+  { id: 14, title: 'Piece - II', category: '4’lü Geometrik Seri', file: '/artworks/Piece2.JPG', description: 'Geometrik soyutlama sağ üst panel.', position: [-11.9, 2.5, -13.8], rotation: [0, Math.PI / 2, 0], height: 1.0 },
+  { id: 15, title: 'Piece - III', category: '4’lü Geometrik Seri', file: '/artworks/Piece3.JPG', description: 'Geometrik soyutlama sol alt panel.', position: [-11.9, 1.4, -13.0], rotation: [0, Math.PI / 2, 0], height: 1.0 },
+  { id: 16, title: 'Piece - IV', category: '4’lü Geometrik Seri', file: '/artworks/Piece4.JPG', description: 'Geometrik soyutlama sağ alt panel.', position: [-11.9, 1.4, -13.8], rotation: [0, Math.PI / 2, 0], height: 1.0 },
 
-  { id: 17, title: 'Piece - Sol Üst', category: '4’lü Geometrik Seri', file: '/artworks/Piece1.JPG', description: 'Geometrik panel sol üst.', position: [-11.9, 2.5, -12.2], rotation: [0, Math.PI / 2, 0], height: 1.05 },
-  { id: 18, title: 'Piece - Sağ Üst', category: '4’lü Geometrik Seri', file: '/artworks/Piece2.JPG', description: 'Geometrik panel sağ üst.', position: [-11.9, 2.5, -13.05], rotation: [0, Math.PI / 2, 0], height: 1.05 },
-  { id: 19, title: 'Piece - Sol Alt', category: '4’lü Geometrik Seri', file: '/artworks/Piece3.JPG', description: 'Geometrik panel sol alt.', position: [-11.9, 1.4, -12.2], rotation: [0, Math.PI / 2, 0], height: 1.05 },
-  { id: 20, title: 'Piece - Sağ Alt', category: '4’lü Geometrik Seri', file: '/artworks/Piece4.JPG', description: 'Geometrik panel sağ alt.', position: [-11.9, 1.4, -13.05], rotation: [0, Math.PI / 2, 0], height: 1.05 },
+  // Gelincik (Poppy) Serisi
+  { id: 17, title: 'Gelincik Tarlası', category: 'Gelincik Serisi', file: '/artworks/poppies4.jpg', description: 'Geniş format dokusal gelincik kompozisyonu.', position: [-11.9, 2.0, -10.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  { id: 18, title: 'Kırmızı Gelincik I', category: 'Gelincik Serisi', file: '/artworks/poppy1.jpg', description: 'Canlı kırmızı fırça tuşeleri.', position: [-11.9, 2.0, -8.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  { id: 19, title: 'Kırmızı Gelincik II', category: 'Gelincik Serisi', file: '/artworks/poppy2.jpg', description: 'Dikey gelincik etüdü.', position: [-11.9, 2.0, -6.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  { id: 20, title: 'Gelincik Buketi', category: 'Gelincik Serisi', file: '/artworks/poppy3.jpg', description: 'Yatay kompozisyonda açan gelincikler.', position: [-11.9, 2.0, -4.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  { id: 21, title: 'Karahindiba Etüdü', category: 'Botanik', file: '/artworks/g-dandelion1.jpg', description: 'Rüzgarda savrulan tohumlar.', position: [-11.9, 2.0, -1.8], rotation: [0, Math.PI / 2, 0], height: 1.3 },
 
-  { id: 21, title: 'Gül Demeti', category: 'Yağlıboya Natürmort', file: '/artworks/DSC00922.JPG', description: 'Vazo içinde güller.', position: [-11.9, 2.0, -9.5], rotation: [0, Math.PI / 2, 0], height: 1.35 },
-  { id: 22, title: 'Gece ve İris', category: 'Tuval', file: '/artworks/DSC00927.JPG', description: 'Koyu tonda iris çalışması.', position: [-11.9, 2.0, -7.5], rotation: [0, Math.PI / 2, 0], height: 1.35 },
-  { id: 23, title: 'Zümrüt Gül', category: 'Tuval', file: '/artworks/DSC00670.JPG', description: 'Koyu fonda kırmızı gül.', position: [-11.9, 2.0, -5.5], rotation: [0, Math.PI / 2, 0], height: 1.35 },
-  { id: 24, title: 'Gül Goncası', category: 'Tuval', file: '/artworks/DSC00668.JPG', description: 'Mavi gökyüzü önünde gül.', position: [-11.9, 2.0, -3.5], rotation: [0, Math.PI / 2, 0], height: 1.35 },
-  { id: 25, title: 'Kırmızı Laleler', category: 'Tuval', file: '/artworks/tulip1.jpg', description: 'Siyah fonda zarif laleler.', position: [-11.9, 2.0, -1.5], rotation: [0, Math.PI / 2, 0], height: 1.35 },
+  // ==========================================
+  // 3. BÜYÜK KARŞI DUVAR: BAŞYAPITLAR & AYÇİÇEĞİ TRİPTİK
+  // ==========================================
+  { id: 22, title: 'Şarap & Kadeh', category: 'Klasik Natürmort', file: '/artworks/g-wine1.jpg', description: 'Derin bordo tonlar ve cam ışıltısı.', position: [-9.2, 2.1, -17.9], rotation: [0, 0, 0], height: 1.6 },
+  
+  // Ayçiçeği Triptik (a-)
+  { id: 23, title: 'Ayçiçeği Triptik - Sol', category: '3’lü Ayçiçeği Serisi', file: '/artworks/a-DSC00923.JPG', description: 'Triptik serinin sol paneli.', position: [-4.2, 2.1, -17.9], rotation: [0, 0, 0], height: 1.6 },
+  { id: 24, title: 'Ayçiçeği Triptik - Merkez', category: '3’lü Ayçiçeği Serisi', file: '/artworks/a-DSC00924.JPG', description: 'Triptik serinin merkez paneli.', position: [-2.5, 2.1, -17.9], rotation: [0, 0, 0], height: 1.6 },
+  { id: 25, title: 'Ayçiçeği Triptik - Sağ', category: '3’lü Ayçiçeği Serisi', file: '/artworks/a-DSC00925.JPG', description: 'Triptik serinin sağ paneli.', position: [-0.8, 2.1, -17.9], rotation: [0, 0, 0], height: 1.6 },
 
-  // --- 5. SAĞ DUVAR (AYÇİÇEĞİ TRİPTİK & KARAKALEMLER) ---
-  { id: 26, title: 'Ayçiçeği Triptik I', category: '3’lü Seri', file: '/artworks/DSC00923.JPG', description: '1. panel.', position: [11.9, 2.0, -16.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
-  { id: 27, title: 'Ayçiçeği Triptik II', category: '3’lü Seri', file: '/artworks/DSC00924.JPG', description: 'Merkez panel.', position: [11.9, 2.0, -14.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
-  { id: 28, title: 'Ayçiçeği Triptik III', category: '3’lü Seri', file: '/artworks/DSC00925.JPG', description: '3. panel.', position: [11.9, 2.0, -12.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
-  { id: 29, title: 'Günebakan Tarlası', category: 'Peyzaj', file: '/artworks/DSC00918.JPG', description: 'Ayçiçeği tarlası peyzajı.', position: [11.9, 2.0, -10.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
-  { id: 30, title: 'Karakalem Büst', category: 'Heykel & Portre', file: '/artworks/bust1.jpg', description: 'Antik büst tonlama etüdü.', position: [11.9, 2.0, -8.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
-  { id: 31, title: 'Mürekkep Çiçek', category: 'Desen', file: '/artworks/inkflower1.jpg', description: 'Mürekkep hatlarıyla botanik.', position: [11.9, 2.0, -6.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
-  { id: 32, title: 'Monokrom Zambak', category: 'Karakalem', file: '/artworks/lillies4.jpg', description: 'Siyah-beyaz zambak formu.', position: [11.9, 2.0, -4.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
-  { id: 33, title: 'Desen Vazo ve Güller', category: 'Karakalem', file: '/artworks/roses3.jpg', description: 'Grafit çizgileriyle vazo etüdü.', position: [11.9, 2.0, -2.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
+  { id: 26, title: 'Mavi Vazoda Ayçiçekleri', category: 'Yağlıboya Natürmort', file: '/artworks/d-DSC00644.JPG', description: 'Geniş vazo içinde zengin sarı ayçiçekleri.', position: [2.6, 2.1, -17.9], rotation: [0, 0, 0], height: 1.6 },
+  { id: 27, title: 'Güz Ayçiçeği', category: 'Yağlıboya', file: '/artworks/d-sunflower6-11-23.jpg', description: 'Sıcak sonbahar ışığında ayçiçeği.', position: [6.0, 2.1, -17.9], rotation: [0, 0, 0], height: 1.6 },
+  { id: 28, title: 'Kasım Çiçekleri', category: 'Botanik Tuval', file: '/artworks/g-flower11.11.23.png', description: 'Zengin dokulu çiçek buketi.', position: [9.2, 2.1, -17.9], rotation: [0, 0, 0], height: 1.6 },
 
-  // --- 6. ORTA ADA DUVARI (ANA YAĞLIBOYA ESERLERİ) ---
-  { id: 34, title: 'Sarı Çiçekler & Vazo', category: 'Yağlıboya', file: '/artworks/DSC00644.JPG', description: 'Vazo içinde sarı çiçekler.', position: [-2.6, 2.0, -7.85], rotation: [0, 0, 0], height: 1.45 },
-  { id: 35, title: 'Mavi Bahçe Çiçekleri', category: 'Yağlıboya', file: '/artworks/DSC00648.JPG', description: 'Mavi ve yeşil kontrastlı tuval.', position: [0, 2.0, -7.85], rotation: [0, 0, 0], height: 1.45 },
-  { id: 36, title: 'Kır Laleleri', category: 'Yağlıboya', file: '/artworks/DSC00664.JPG', description: 'Lale bahçesi.', position: [2.6, 2.0, -7.85], rotation: [0, 0, 0], height: 1.45 },
+  // ==========================================
+  // 4. ORTA ADA DUVARI: SÜRREAL & SOYUT (s-)
+  // ==========================================
+  // Ön Yüz (Girişe Bakan Taraf)
+  { id: 29, title: 'Sürreal Girdap', category: 'Sürreal & Doku', file: '/artworks/s-DSC00655.JPG', description: 'Dairesel renk dalgalanmaları ve mistik formlar.', position: [-2.6, 2.0, -7.85], rotation: [0, 0, 0], height: 1.45 },
+  { id: 30, title: 'Mistik Figüratif Tuval', category: 'Sürreal & Doku', file: '/artworks/s-DSC00657.JPG', description: 'Katmanlı doku ve derin figüratif anlatım.', position: [0, 2.0, -7.85], rotation: [0, 0, 0], height: 1.45 },
+  { id: 31, title: 'Soyut Dışavurum', category: 'Sürreal & Doku', file: '/artworks/s-DSC00659.JPG', description: 'Enerjik renk tuşeleri ve dışavurumcu soyutlama.', position: [2.6, 2.0, -7.85], rotation: [0, 0, 0], height: 1.45 },
 
-  { id: 37, title: 'Beyaz Çiçekler & Buket', category: 'Yağlıboya', file: '/artworks/DSC00652.JPG', description: 'Gri fonda beyaz çiçek buketi.', position: [-2.6, 2.0, -8.15], rotation: [0, Math.PI, 0], height: 1.45 },
-  { id: 38, title: 'Mistik Figüratif Tuval', category: 'Yağlıboya', file: '/artworks/DSC00657.JPG', description: 'Katmanlı renk ve doku.', position: [0, 2.0, -8.15], rotation: [0, Math.PI, 0], height: 1.45 },
-  { id: 39, title: 'Soyut Dışavurum', category: 'Yağlıboya', file: '/artworks/DSC00659.JPG', description: 'Dinamik fırça tuşeleri.', position: [2.6, 2.0, -8.15], rotation: [0, Math.PI, 0], height: 1.45 },
+  // Arka Yüz (Karşı Duvara Bakan Taraf)
+  { id: 32, title: 'Zümrüt Gül', category: 'Yağlıboya', file: '/artworks/g-DSC00670.JPG', description: 'Koyu fonda heykelsi kırmızı gül.', position: [-2.6, 2.0, -8.15], rotation: [0, Math.PI, 0], height: 1.45 },
+  { id: 33, title: 'Gül Demeti', category: 'Yağlıboya Natürmort', file: '/artworks/g-DSC00922.JPG', description: 'Vazo içinde pembe güller.', position: [0, 2.0, -8.15], rotation: [0, Math.PI, 0], height: 1.45 },
+  { id: 34, title: 'Gece ve İris', category: 'Yağlıboya', file: '/artworks/e-DSC00927.JPG', description: 'Koyu fonda zarif iris çiçeği.', position: [2.6, 2.0, -8.15], rotation: [0, Math.PI, 0], height: 1.45 },
 
-  // --- 7. KEMERLER VE DİĞER ESERLER ---
-  { id: 40, title: 'Bisiklet', category: 'Nostalji', file: '/artworks/bycycle1.jpg', description: 'Mavi kapı önünde bisiklet.', position: [-7.0, 2.0, 0.05], rotation: [0, 0, 0], height: 1.45 },
-  { id: 41, title: 'İris Çiçeği', category: 'Renk Armonisi', file: '/artworks/iris1.jpg', description: 'Mor ve yeşil tonların akışı.', position: [7.0, 2.0, 0.05], rotation: [0, 0, 0], height: 1.45 },
-  { id: 42, title: 'Calla Lilies', category: 'Renk & Form', file: '/artworks/calla-lillies1.jpg', description: 'Zarif kalalar.', position: [-4.0, 2.0, 0.05], rotation: [0, 0, 0], height: 1.4 },
-  { id: 43, title: 'Mavi Çiçek Buketi', category: 'Botanik Tuval', file: '/artworks/bflower07-11-23.png', description: 'Canlı mavi detaylar.', position: [4.0, 2.0, 0.05], rotation: [0, 0, 0], height: 1.4 },
-  { id: 44, title: 'Deniz Feneri', category: 'Karakalem', file: '/artworks/lighthouse1.jpg', description: 'Kayalıklar üzerinde fener.', position: [-7.0, 2.0, -17.9], rotation: [0, 0, 0], height: 1.4 },
-  { id: 45, title: 'Gül Çizimi I', category: 'Karakalem', file: '/artworks/rose1.jpg', description: 'Klasik gül deseni.', position: [7.0, 2.0, -17.9], rotation: [0, 0, 0], height: 1.4 },
-  { id: 46, title: 'Gül Çizimi II', category: 'Karakalem', file: '/artworks/rose2.jpg', description: 'Detaylı yaprak tonlamaları.', position: [9.8, 2.0, -17.9], rotation: [0, 0, 0], height: 1.4 },
-  { id: 47, title: 'Bahçe Kompozisyonu', category: 'Tuval', file: '/artworks/DSC00655.JPG', description: 'Özel bahçe peyzajı.', position: [-9.8, 2.0, -17.9], rotation: [0, 0, 0], height: 1.4 },
-  { id: 48, title: 'Pembe Çiçekler', category: 'Tuval', file: '/artworks/DSC00661.JPG', description: 'Vazo içinde pembe çiçekler.', position: [-10.5, 2.0, 0.05], rotation: [0, 0, 0], height: 1.35 },
-  { id: 49, title: 'Bahar Dalları', category: 'Tuval', file: '/artworks/DSC00662.JPG', description: 'Bahar çiçekleri.', position: [10.5, 2.0, 0.05], rotation: [0, 0, 0], height: 1.35 }
+  // ==========================================
+  // 5. SAĞ DUVAR: PAPATYALAR, LALELER VE ÇİÇEKLER
+  // ==========================================
+  // Papatya Serisi (b-)
+  { id: 35, title: 'Papatyalar I', category: 'Papatya Serisi', file: '/artworks/b-DSC00634.JPG', description: 'Mavi vazoda beyaz papatyalar.', position: [11.9, 2.0, -16.5], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
+  { id: 36, title: 'Papatyalar II', category: 'Papatya Serisi', file: '/artworks/b-DSC00635.JPG', description: 'Papatya serisi detay çalışması.', position: [11.9, 2.0, -14.5], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
+  { id: 37, title: 'Papatyalar III', category: 'Papatya Serisi', file: '/artworks/b-daisies.jpg', description: 'Zarif papatya buketi.', position: [11.9, 2.0, -12.5], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
+
+  // Lale Serisi (t- ve c-)
+  { id: 38, title: 'Kırmızı Gül Goncası', category: 'Tuval', file: '/artworks/t-DSC00660.JPG', description: 'Mavi gökyüzü önünde kırmızı gonca.', position: [11.9, 2.0, -10.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
+  { id: 39, title: 'Pembe Çiçekler', category: 'Tuval', file: '/artworks/t-DSC00662.JPG', description: 'Vazo içinde bahar esintisi.', position: [11.9, 2.0, -8.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
+  { id: 40, title: 'Kır Laleleri', category: 'Tuval', file: '/artworks/t-DSC00664.JPG', description: 'Koyu lacivert zemin üzerinde kırmızı lale.', position: [11.9, 2.0, -6.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
+  { id: 41, title: 'Kırmızı Laleler', category: 'Tuval', file: '/artworks/c-tulip1.jpg', description: 'Siyah fonda çift kırmızı lale.', position: [11.9, 2.0, -4.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
+  { id: 42, title: 'Günebakan Tarlası', category: 'Peyzaj', file: '/artworks/d-DSC00918.JPG', description: 'Sıcak sarı ayçiçeği tarlası.', position: [11.9, 2.0, -2.0], rotation: [0, -Math.PI / 2, 0], height: 1.35 },
+
+  // ==========================================
+  // 6. GİRİŞ KANATLARI & ARA KEMERLER (c-, d-, e-, f-)
+  // ==========================================
+  { id: 43, title: 'Mavi Kapı & Bisiklet', category: 'Nostaljik Peyzaj', file: '/artworks/f-bycycle1.jpg', description: 'Taş sokakta nostaljik bisiklet.', position: [-8.5, 2.0, 0.05], rotation: [0, 0, 0], height: 1.4 },
+  { id: 44, title: 'İris Armonisi', category: 'Renk & Botanik', file: '/artworks/f-iris1.jpg', description: 'Mor iris ve zengin yaprak tonları.', position: [-4.8, 2.0, 0.05], rotation: [0, 0, 0], height: 1.4 },
+  { id: 45, title: 'Calla Lilies', category: 'Renk & Form', file: '/artworks/d-calla-lilies1.jpg', description: 'Koyu zeminde pembe kalalar.', position: [4.8, 2.0, 0.05], rotation: [0, 0, 0], height: 1.4 },
+  { id: 46, title: 'Mavi Çiçek Buketi', category: 'Botanik Tuval', file: '/artworks/d-flower07-11-23.png', description: 'Canlı mavi taç yapraklar.', position: [8.5, 2.0, 0.05], rotation: [0, 0, 0], height: 1.4 },
+
+  { id: 47, title: 'Beyaz Çiçekler & Vazo', category: 'Yağlıboya', file: '/artworks/d-DSC00648.JPG', description: 'Beyaz çiçek ve dokusal vazo.', position: [-10.5, 2.0, 0.05], rotation: [0, 0, 0], height: 1.35 },
+  { id: 48, title: 'Güneş Ayçiçeği', category: 'Yağlıboya', file: '/artworks/e-sunflower2.jpg', description: 'Güneş ışığında parlayan ayçiçeği.', position: [10.5, 2.0, 0.05], rotation: [0, 0, 0], height: 1.35 },
+  { id: 49, title: 'Balonlar & Kır Bahçesi', category: 'Peyzaj', file: '/artworks/c-baloon10-11-23.png', description: 'Gökyüzüne yükselen renkli balonlar.', position: [-2.9, 1.8, 0.3], rotation: [0, Math.PI / 2, 0], height: 1.2 },
+  { id: 48, title: 'Çilek & Yapraklar', category: 'Renk & Doku', file: '/artworks/c-straw07-11-23.png', description: 'Canlı kırmızı çilekler ve yeşil yapraklar.', position: [2.9, 1.8, 0.3], rotation: [0, -Math.PI / 2, 0], height: 1.2 }
 ];
 
 function PlayerMovement({ isLocked }) {
@@ -142,7 +168,6 @@ function ArtFrame({ art, onSelect }) {
         },
         undefined,
         () => {
-          // Uzantı .JPG ise .jpg, .jpg ise .JPG dene (Linux case-sensitivity çözümü)
           if (url.endsWith('.JPG')) tryLoad(url.replace('.JPG', '.jpg'));
           else if (url.endsWith('.jpg')) tryLoad(url.replace('.jpg', '.JPG'));
         }
@@ -188,82 +213,6 @@ function ArtFrame({ art, onSelect }) {
 
       <mesh position={[0, -(frameHeight / 2) - 0.08, 0.01]}>
         <planeGeometry args={[Math.min(frameWidth * 0.7, 0.5), 0.06]} />
-        <meshStandardMaterial color="#c5a059" metalness={0.7} roughness={0.3} side={THREE.DoubleSide} />
-      </mesh>
-    </group>
-  );
-}
-
-function PoppiesDiptychFrame({ onSelect }) {
-  const [tex1, setTex1] = useState(null);
-  const [tex2, setTex2] = useState(null);
-  const [hovered, setHovered] = useState(false);
-
-  useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    loader.load('/artworks/poppy2.jpg', (tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.repeat.set(0.65, 1);
-      setTex1(tex);
-    });
-    loader.load('/artworks/poppy1.jpg', (tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.repeat.set(0.65, 1);
-      setTex2(tex);
-    });
-  }, []);
-
-  const panelW = 0.95;
-  const panelH = 1.5;
-  const totalW = panelW * 2;
-
-  const handleClick = (e) => {
-    e.stopPropagation();
-    onSelect({
-      title: 'Gelincikler (İkili Diptik Seri)',
-      category: 'Dışavurumcu Natürmort',
-      file: '/artworks/poppies4.jpg',
-      description: 'Tek bir çerçeve içinde birleşen iki parçalı dışavurumcu gelincik kompozisyonu.'
-    });
-  };
-
-  return (
-    <group 
-      position={[0, 2.1, -17.9]} 
-      rotation={[0, 0, 0]}
-      onClick={handleClick}
-      onPointerOver={(e) => {
-        e.stopPropagation();
-        setHovered(true);
-        document.body.style.cursor = 'pointer';
-      }}
-      onPointerOut={() => {
-        setHovered(false);
-        document.body.style.cursor = 'default';
-      }}
-    >
-      <mesh position={[0, 0, -0.015]}>
-        <boxGeometry args={[totalW + 0.12, panelH + 0.12, 0.04]} />
-        <meshStandardMaterial color={hovered ? '#c59b6d' : '#3d2514'} roughness={0.4} />
-      </mesh>
-
-      <mesh position={[-panelW / 2, 0, 0.01]}>
-        <planeGeometry args={[panelW, panelH]} />
-        {tex1 ? <meshBasicMaterial map={tex1} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#c4b5a5" side={THREE.DoubleSide} />}
-      </mesh>
-
-      <mesh position={[panelW / 2, 0, 0.01]}>
-        <planeGeometry args={[panelW, panelH]} />
-        {tex2 ? <meshBasicMaterial map={tex2} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#c4b5a5" side={THREE.DoubleSide} />}
-      </mesh>
-
-      <mesh position={[0, 0, 0.015]}>
-        <boxGeometry args={[0.02, panelH, 0.01]} />
-        <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
-      </mesh>
-
-      <mesh position={[0, -(panelH / 2) - 0.1, 0.01]}>
-        <planeGeometry args={[1.0, 0.07]} />
         <meshStandardMaterial color="#c5a059" metalness={0.7} roughness={0.3} side={THREE.DoubleSide} />
       </mesh>
     </group>
@@ -354,7 +303,7 @@ export default function App() {
         <div className="instructions-overlay" onClick={handleStart}>
           <div className="instructions-card">
             <h1>SANAL SANAT GALERİSİ</h1>
-            <p>53 Eserlik Büyük Koleksiyon Sergisi</p>
+            <p>Tematik Eser Koleksiyonu Sergisi</p>
             <div className="controls-hint">
               <strong>[W, A, S, D]</strong> ile Yürü &nbsp;|&nbsp; <strong>[Fare]</strong> ile Etrafa Bak
             </div>
@@ -374,11 +323,9 @@ export default function App() {
         <GalleryArchitecture />
         <OpenDoubleDoor />
 
-        {ARTWORKS.map(art => (
-          <ArtFrame key={art.id} art={art} onSelect={handleArtSelect} />
+        {ARTWORKS.map((art, idx) => (
+          <ArtFrame key={`${art.file}-${idx}`} art={art} onSelect={handleArtSelect} />
         ))}
-
-        <PoppiesDiptychFrame onSelect={handleArtSelect} />
       </Canvas>
 
       {selectedArt && (
