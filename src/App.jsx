@@ -15,7 +15,6 @@ const ARTWORKS = [
   // ========================================================
   // ZONE 1: ENTRANCE CORRIDOR (GRAPHITE & INK RETROSPECTIVE 2016)
   // ========================================================
-  // Left Corridor Wall (x = -2.9)
   { 
     id: 1, 
     title: 'Drapery in Repose', 
@@ -69,7 +68,6 @@ const ARTWORKS = [
     height: 1.2 
   },
 
-  // Right Corridor Wall (x = 2.9)
   { 
     id: 5, 
     title: 'White Rose in Negative', 
@@ -124,117 +122,8 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 2: LEFT WALL (POLYPTYCHS & POPPY MEADOWS)
+  // ZONE 2: LEFT WALL (POPPY SERIES)
   // ========================================================
-  // Flamingo 4-Piece Polyptych
-  { 
-    id: 9, 
-    title: 'Flamingo Polyptych I', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting (Polyptych)', 
-    date: '2023', 
-    dimensions: '40x40 cm', 
-    file: '/artworks/Flamingo1.JPG', 
-    description: 'Top-left quadrant of a four-panel polyptych merging fauna silhouette with tropical geometry.', 
-    position: [-11.9, 2.5, -15.5], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 0.95 
-  },
-  { 
-    id: 10, 
-    title: 'Flamingo Polyptych II', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting (Polyptych)', 
-    date: '2023', 
-    dimensions: '40x40 cm', 
-    file: '/artworks/Flamingo2.JPG', 
-    description: 'Top-right quadrant of a four-panel polyptych with vibrant contrasting tones.', 
-    position: [-11.9, 2.5, -16.35], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 0.95 
-  },
-  { 
-    id: 11, 
-    title: 'Flamingo Polyptych III', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting (Polyptych)', 
-    date: '2023', 
-    dimensions: '40x40 cm', 
-    file: '/artworks/Flamingo3.JPG', 
-    description: 'Bottom-left quadrant of the flamingo multi-panel composition.', 
-    position: [-11.9, 1.45, -15.5], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 0.95 
-  },
-  { 
-    id: 12, 
-    title: 'Flamingo Polyptych IV', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting (Polyptych)', 
-    date: '2023', 
-    dimensions: '40x40 cm', 
-    file: '/artworks/Flamingo4.JPG', 
-    description: 'Bottom-right quadrant completing the four-panel flamingo installation.', 
-    position: [-11.9, 1.45, -16.35], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 0.95 
-  },
-
-  // Geometric Piece 4-Panel Set
-  { 
-    id: 13, 
-    title: 'Chromatic Synthesis I', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Geometric Abstract (Set)', 
-    date: '2023', 
-    dimensions: '40x40 cm', 
-    file: '/artworks/Piece1.JPG', 
-    description: 'Top-left module of an abstract geometric quartet examining spatial balance through pure color planes.', 
-    position: [-11.9, 2.5, -12.2], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 0.95 
-  },
-  { 
-    id: 14, 
-    title: 'Chromatic Synthesis II', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Geometric Abstract (Set)', 
-    date: '2023', 
-    dimensions: '40x40 cm', 
-    file: '/artworks/Piece2.JPG', 
-    description: 'Top-right module of the four-panel abstract geometric composition.', 
-    position: [-11.9, 2.5, -13.05], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 0.95 
-  },
-  { 
-    id: 15, 
-    title: 'Chromatic Synthesis III', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Geometric Abstract (Set)', 
-    date: '2023', 
-    dimensions: '40x40 cm', 
-    file: '/artworks/Piece3.JPG', 
-    description: 'Bottom-left module maintaining rhythmic spatial geometry.', 
-    position: [-11.9, 1.45, -12.2], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 0.95 
-  },
-  { 
-    id: 16, 
-    title: 'Chromatic Synthesis IV', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Geometric Abstract (Set)', 
-    date: '2023', 
-    dimensions: '40x40 cm', 
-    file: '/artworks/Piece4.JPG', 
-    description: 'Bottom-right module concluding the geometric polyptych grid.', 
-    position: [-11.9, 1.45, -13.05], 
-    rotation: [0, Math.PI / 2, 0], 
-    height: 0.95 
-  },
-
-  // Poppy Series
   { 
     id: 17, 
     title: 'Scarlet Wind', 
@@ -661,56 +550,7 @@ const ARTWORKS = [
   }
 ];
 
-function PlayerMovement({ isLocked }) {
-  const { camera } = useThree();
-  const keys = useRef({});
-
-  useEffect(() => {
-    const handleKeyDown = (e) => (keys.current[e.code] = true);
-    const handleKeyUp = (e) => (keys.current[e.code] = false);
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, []);
-
-  useFrame((_, delta) => {
-    if (!isLocked) return;
-    const speed = 5.2 * delta;
-    const forward = new THREE.Vector3();
-    const right = new THREE.Vector3();
-
-    camera.getWorldDirection(forward);
-    forward.y = 0;
-    forward.normalize();
-    right.crossVectors(camera.up, forward).normalize();
-
-    if (keys.current['KeyW'] || keys.current['ArrowUp']) camera.position.addScaledVector(forward, speed);
-    if (keys.current['KeyS'] || keys.current['ArrowDown']) camera.position.addScaledVector(forward, -speed);
-    if (keys.current['KeyA'] || keys.current['ArrowLeft']) camera.position.addScaledVector(right, speed);
-    if (keys.current['KeyD'] || keys.current['ArrowRight']) camera.position.addScaledVector(right, -speed);
-
-    camera.position.y = 1.7;
-
-    if (camera.position.z > 0) {
-      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -2.4, 2.4);
-      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -17.2, 9.8);
-    } else {
-      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -11.2, 11.2);
-      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -17.2, 0.5);
-
-      if (Math.abs(camera.position.x) < 4.2 && camera.position.z > -8.8 && camera.position.z < -7.2) {
-        if (camera.position.z > -8.0) camera.position.z = -7.1;
-        else camera.position.z = -8.9;
-      }
-    }
-  });
-
-  return null;
-}
-
+// Tekil Eser Çerçevesi (Occlusion Destekli Plaket)
 function ArtFrame({ art, onSelect }) {
   const [texture, setTexture] = useState(null);
   const [aspect, setAspect] = useState(1.0);
@@ -759,13 +599,11 @@ function ArtFrame({ art, onSelect }) {
         document.body.style.cursor = 'default';
       }}
     >
-      {/* Frame Mold */}
       <mesh position={[0, 0, -0.015]}>
         <boxGeometry args={[frameWidth + 0.06, frameHeight + 0.06, 0.03]} />
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
       </mesh>
 
-      {/* Canvas Face */}
       <mesh position={[0, 0, 0.01]}>
         <planeGeometry args={[frameWidth, frameHeight]} />
         {texture ? (
@@ -775,11 +613,12 @@ function ArtFrame({ art, onSelect }) {
         )}
       </mesh>
 
-      {/* Museum High-Res Plaque */}
+      {/* Occlude prop prevents seeing through walls */}
       <Html
-        position={[0, -(frameHeight / 2) - 0.085, 0.03]}
+        position={[0, -(frameHeight / 2) - 0.08, 0.02]}
         transform
-        distanceFactor={2.5}
+        distanceFactor={3.2}
+        occlude="blending"
         center
       >
         <div className={`museum-plaque ${hovered ? 'hovered' : ''}`}>
@@ -791,35 +630,129 @@ function ArtFrame({ art, onSelect }) {
   );
 }
 
+// 4'lü Poliptik Set Çerçevesi (Flamingo ve Piece İçin Tek Ortak Plaket)
+function Polyptych4Frame({ position, rotation, files, title, category, description, date, dimensions, onSelect }) {
+  const [textures, setTextures] = useState([]);
+  const [hovered, setHovered] = useState(false);
+
+  useEffect(() => {
+    const loader = new THREE.TextureLoader();
+    const loaded = files.map(file => {
+      const tex = loader.load(file);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    });
+    setTextures(loaded);
+  }, [files]);
+
+  const pW = 0.65;
+  const pH = 0.95;
+  const gap = 0.02;
+  const totalW = pW * 2 + gap;
+  const totalH = pH * 2 + gap;
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    onSelect({
+      title,
+      artist: 'Zeynep Ozcelik',
+      category,
+      date,
+      dimensions,
+      file: files[0],
+      description
+    });
+  };
+
+  return (
+    <group 
+      position={position} 
+      rotation={rotation}
+      onClick={handleClick}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        setHovered(true);
+        document.body.style.cursor = 'pointer';
+      }}
+      onPointerOut={() => {
+        setHovered(false);
+        document.body.style.cursor = 'default';
+      }}
+    >
+      <mesh position={[0, 0, -0.015]}>
+        <boxGeometry args={[totalW + 0.08, totalH + 0.08, 0.03]} />
+        <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
+      </mesh>
+
+      {/* Top Left */}
+      <mesh position={[-pW / 2 - gap / 2, pH / 2 + gap / 2, 0.01]}>
+        <planeGeometry args={[pW, pH]} />
+        {textures[0] ? <meshBasicMaterial map={textures[0]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
+      </mesh>
+      {/* Top Right */}
+      <mesh position={[pW / 2 + gap / 2, pH / 2 + gap / 2, 0.01]}>
+        <planeGeometry args={[pW, pH]} />
+        {textures[1] ? <meshBasicMaterial map={textures[1]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
+      </mesh>
+      {/* Bottom Left */}
+      <mesh position={[-pW / 2 - gap / 2, -pH / 2 - gap / 2, 0.01]}>
+        <planeGeometry args={[pW, pH]} />
+        {textures[2] ? <meshBasicMaterial map={textures[2]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
+      </mesh>
+      {/* Bottom Right */}
+      <mesh position={[pW / 2 + gap / 2, -pH / 2 - gap / 2, 0.01]}>
+        <planeGeometry args={[pW, pH]} />
+        {textures[3] ? <meshBasicMaterial map={textures[3]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
+      </mesh>
+
+      {/* Inner Dividing Strips */}
+      <mesh position={[0, 0, 0.02]}>
+        <boxGeometry args={[gap, totalH, 0.01]} />
+        <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
+      </mesh>
+      <mesh position={[0, 0, 0.02]}>
+        <boxGeometry args={[totalW, gap, 0.01]} />
+        <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
+      </mesh>
+
+      {/* Single Unified Plaque */}
+      <Html
+        position={[0, -(totalH / 2) - 0.08, 0.02]}
+        transform
+        distanceFactor={3.2}
+        occlude="blending"
+        center
+      >
+        <div className={`museum-plaque polyptych ${hovered ? 'hovered' : ''}`}>
+          <div className="plaque-title">{title}</div>
+          <div className="plaque-artist">Zeynep Ozcelik</div>
+        </div>
+      </Html>
+    </group>
+  );
+}
+
+// 2 Parçalı Gelincik Diptik Çerçevesi
 function PoppiesDiptychFrame({ onSelect }) {
   const [tex1, setTex1] = useState(null);
   const [tex2, setTex2] = useState(null);
-  const [aspect1, setAspect1] = useState(0.65);
-  const [aspect2, setAspect2] = useState(0.65);
   const [hovered, setHovered] = useState(false);
 
   useEffect(() => {
     const loader = new THREE.TextureLoader();
     loader.load('/artworks/poppy1.jpg', (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace;
-      if (tex.image && tex.image.height > 0) {
-        setAspect1(tex.image.width / tex.image.height);
-      }
       setTex1(tex);
     });
     loader.load('/artworks/poppy2.jpg', (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace;
-      if (tex.image && tex.image.height > 0) {
-        setAspect2(tex.image.width / tex.image.height);
-      }
       setTex2(tex);
     });
   }, []);
 
   const panelH = 1.35;
-  const w1 = panelH * aspect1;
-  const w2 = panelH * aspect2;
-  const totalW = w1 + w2;
+  const panelW = 0.7;
+  const totalW = panelW * 2 + 0.02;
 
   const handleClick = (e) => {
     e.stopPropagation();
@@ -854,25 +787,26 @@ function PoppiesDiptychFrame({ onSelect }) {
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} metalness={0.2} />
       </mesh>
 
-      <mesh position={[-totalW / 2 + w1 / 2, 0, 0.01]}>
-        <planeGeometry args={[w1, panelH]} />
+      <mesh position={[-panelW / 2 - 0.01, 0, 0.01]}>
+        <planeGeometry args={[panelW, panelH]} />
         {tex1 ? <meshBasicMaterial map={tex1} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" side={THREE.DoubleSide} />}
       </mesh>
 
-      <mesh position={[totalW / 2 - w2 / 2, 0, 0.01]}>
-        <planeGeometry args={[w2, panelH]} />
+      <mesh position={[panelW / 2 + 0.01, 0, 0.01]}>
+        <planeGeometry args={[panelW, panelH]} />
         {tex2 ? <meshBasicMaterial map={tex2} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" side={THREE.DoubleSide} />}
       </mesh>
 
-      <mesh position={[-totalW / 2 + w1, 0, 0.02]}>
+      <mesh position={[0, 0, 0.02]}>
         <boxGeometry args={[0.015, panelH, 0.01]} />
         <meshStandardMaterial color="#2d1a0e" roughness={0.5} />
       </mesh>
 
       <Html
-        position={[0, -(panelH / 2) - 0.085, 0.03]}
+        position={[0, -(panelH / 2) - 0.08, 0.02]}
         transform
-        distanceFactor={2.5}
+        distanceFactor={3.2}
+        occlude="blending"
         center
       >
         <div className={`museum-plaque diptych ${hovered ? 'hovered' : ''}`}>
@@ -936,6 +870,56 @@ function GalleryArchitecture() {
       <mesh position={[0, 3.7, 10.2]}><planeGeometry args={[3.4, 0.6]} /><meshStandardMaterial color={ecruColor} side={THREE.DoubleSide} /></mesh>
     </group>
   );
+}
+
+function PlayerMovement({ isLocked }) {
+  const { camera } = useThree();
+  const keys = useRef({});
+
+  useEffect(() => {
+    const handleKeyDown = (e) => (keys.current[e.code] = true);
+    const handleKeyUp = (e) => (keys.current[e.code] = false);
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, []);
+
+  useFrame((_, delta) => {
+    if (!isLocked) return;
+    const speed = 5.2 * delta;
+    const forward = new THREE.Vector3();
+    const right = new THREE.Vector3();
+
+    camera.getWorldDirection(forward);
+    forward.y = 0;
+    forward.normalize();
+    right.crossVectors(camera.up, forward).normalize();
+
+    if (keys.current['KeyW'] || keys.current['ArrowUp']) camera.position.addScaledVector(forward, speed);
+    if (keys.current['KeyS'] || keys.current['ArrowDown']) camera.position.addScaledVector(forward, -speed);
+    if (keys.current['KeyA'] || keys.current['ArrowLeft']) camera.position.addScaledVector(right, speed);
+    if (keys.current['KeyD'] || keys.current['ArrowRight']) camera.position.addScaledVector(right, -speed);
+
+    camera.position.y = 1.7;
+
+    if (camera.position.z > 0) {
+      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -2.4, 2.4);
+      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -17.2, 9.8);
+    } else {
+      camera.position.x = THREE.MathUtils.clamp(camera.position.x, -11.2, 11.2);
+      camera.position.z = THREE.MathUtils.clamp(camera.position.z, -17.2, 0.5);
+
+      if (Math.abs(camera.position.x) < 4.2 && camera.position.z > -8.8 && camera.position.z < -7.2) {
+        if (camera.position.z > -8.0) camera.position.z = -7.1;
+        else camera.position.z = -8.9;
+      }
+    }
+  });
+
+  return null;
 }
 
 export default function App() {
@@ -1008,10 +992,38 @@ export default function App() {
         <GalleryArchitecture />
         <OpenDoubleDoor />
 
+        {/* Regular Artworks */}
         {ARTWORKS.map((art, idx) => (
           <ArtFrame key={`${art.file}-${idx}`} art={art} onSelect={handleArtSelect} />
         ))}
 
+        {/* Flamingo 4-Piece Unified Polyptych */}
+        <Polyptych4Frame 
+          position={[-11.9, 2.0, -15.5]}
+          rotation={[0, Math.PI / 2, 0]}
+          files={['/artworks/Flamingo1.JPG', '/artworks/Flamingo2.JPG', '/artworks/Flamingo3.JPG', '/artworks/Flamingo4.JPG']}
+          title="Flamingo Polyptych"
+          category="Oil Painting (4-Piece Set)"
+          date="2023"
+          dimensions="40x40 cm (Unified)"
+          description="A four-panel polyptych converging into an elegant stylized flamingo silhouette surrounded by tropical geometries."
+          onSelect={handleArtSelect}
+        />
+
+        {/* Piece 4-Piece Unified Polyptych */}
+        <Polyptych4Frame 
+          position={[-11.9, 2.0, -12.2]}
+          rotation={[0, Math.PI / 2, 0]}
+          files={['/artworks/Piece1.JPG', '/artworks/Piece2.JPG', '/artworks/Piece3.JPG', '/artworks/Piece4.JPG']}
+          title="Chromatic Synthesis"
+          category="Abstract (4-Piece Set)"
+          date="2023"
+          dimensions="40x40 cm (Unified)"
+          description="A four-panel modernist abstract matrix investigating chromatic color blocks and geometric tension."
+          onSelect={handleArtSelect}
+        />
+
+        {/* Poppies Diptych */}
         <PoppiesDiptychFrame onSelect={handleArtSelect} />
       </Canvas>
 
@@ -1044,7 +1056,7 @@ export default function App() {
               </p>
               <p className="art-desc">{selectedArt.description}</p>
 
-              {/* Distinct & Elegant Contact Action Buttons */}
+              {/* Distinct & Separated Action Buttons */}
               <div className="modal-actions-row">
                 <a 
                   href={ARTIST_INFO.instagram} 
