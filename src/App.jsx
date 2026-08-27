@@ -360,15 +360,15 @@ const ARTWORKS = [
   },
   { 
     id: 34, 
-    title: 'Morning Daisies III', 
+      title: 'Gilded Sunflower', 
     artist: 'Zeynep Ozcelik',
-    category: 'Oil Painting', 
-    date: '2023', 
-    dimensions: '30x40 cm', 
-    file: '/artworks/b-daisies3.jpg', 
-    description: 'Lyrical arrangement of wild field daisies breathing natural simplicity.', 
-    position: [11.9, 2.0, -10.5], 
-    rotation: [0, -Math.PI / 2, 0], 
+    category: 'Pastel', 
+    date: '18.03.2023', 
+    dimensions: '29x21 cm', 
+    file: '/artworks/e-sunflower2.jpg', 
+    description: 'Warm luminous pastel portrait of a sunflower head turned directly toward the light.', 
+    position: [8.5, 2.0, 0.05], 
+    rotation: [0, 0, 0], 
     height: 1.35 
   },
   { 
@@ -506,19 +506,6 @@ const ARTWORKS = [
     rotation: [0, 0, 0], 
     height: 1.35 
   },
-  { 
-    id: 45, 
-    title: 'Gilded Sunflower', 
-    artist: 'Zeynep Ozcelik',
-    category: 'Pastel', 
-    date: '18.03.2023', 
-    dimensions: '29x21 cm', 
-    file: '/artworks/e-sunflower2.jpg', 
-    description: 'Warm luminous pastel portrait of a sunflower head turned directly toward the light.', 
-    position: [8.5, 2.0, 0.05], 
-    rotation: [0, 0, 0], 
-    height: 1.35 
-  }
 ];
 
 function getFileCandidates(file) {
