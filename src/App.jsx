@@ -11,31 +11,31 @@ const ARTIST_INFO = {
   email: 'nakiera@gmail.com'
 };
 
-// TEKİL ESERLER
+// TEKİL ESERLER (SOL VE SAĞ DUVARLAR)
 const ARTWORKS = [
   // --- SOL DUVAR (X = -11.88) ---
-  { id: 1, title: 'Balloon Float', file: '/artworks/1-baloon.png', position: [-11.88, 1.8, -12.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
-  { id: 2, title: 'Strawberry Bloom', file: '/artworks/2-straw.png', position: [-11.88, 1.8, -8.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
-  { id: 3, title: 'Botanical Study 3', file: '/artworks/3-DSC00648.JPG', position: [-11.88, 1.8, -4.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
-  { id: 4, title: 'Morning Daisies I', file: '/artworks/4-daisies1.jpg', position: [-11.88, 1.8, 0.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
-  { id: 5, title: 'Morning Daisies II', file: '/artworks/5-daisies2.JPG', position: [-11.88, 1.8, 4.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  { id: 1, title: 'Balloon Float', file: '/artworks/1-baloon.png', position: [-11.88, 1.8, -12.0], rotation: [0, Math.PI / 2, 0], height: 1.4 },
+  { id: 2, title: 'Strawberry Bloom', file: '/artworks/2-straw.png', position: [-11.88, 1.8, -7.5], rotation: [0, Math.PI / 2, 0], height: 1.4 },
+  { id: 3, title: 'Botanical Study 3', file: '/artworks/3-DSC00648.JPG', position: [-11.88, 1.8, -3.0], rotation: [0, Math.PI / 2, 0], height: 1.4 },
+  { id: 4, title: 'Morning Daisies I', file: '/artworks/4-daisies1.jpg', position: [-11.88, 1.8, 1.5], rotation: [0, Math.PI / 2, 0], height: 1.4 },
+  { id: 5, title: 'Morning Daisies II', file: '/artworks/5-daisies2.JPG', position: [-11.88, 1.8, 6.0], rotation: [0, Math.PI / 2, 0], height: 1.4 },
 
   // --- SAĞ DUVAR (X = 11.88) ---
-  { id: 6, title: 'Sentinel of the Tides', file: '/artworks/8-lighthouse1.jpg', position: [11.88, 1.8, -12.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
-  { id: 7, title: 'Lily in Monochrome', file: '/artworks/9-lillies4.jpg', position: [11.88, 1.8, -8.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
-  { id: 8, title: 'White Rose in Negative', file: '/artworks/10-rose1.jpg', position: [11.88, 1.8, -4.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
-  { id: 9, title: 'Whispering Stem', file: '/artworks/11-rose2.jpg', position: [11.88, 1.8, 0.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
-  { id: 10, title: 'Still Life with Decanter', file: '/artworks/12-roses3.jpg', position: [11.88, 1.8, 4.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 }
+  { id: 6, title: 'Sentinel of the Tides', file: '/artworks/8-lighthouse1.jpg', position: [11.88, 1.8, -12.0], rotation: [0, -Math.PI / 2, 0], height: 1.4 },
+  { id: 7, title: 'Lily in Monochrome', file: '/artworks/9-lillies4.jpg', position: [11.88, 1.8, -7.5], rotation: [0, -Math.PI / 2, 0], height: 1.4 },
+  { id: 8, title: 'White Rose in Negative', file: '/artworks/10-rose1.jpg', position: [11.88, 1.8, -3.0], rotation: [0, -Math.PI / 2, 0], height: 1.4 },
+  { id: 9, title: 'Whispering Stem', file: '/artworks/11-rose2.jpg', position: [11.88, 1.8, 1.5], rotation: [0, -Math.PI / 2, 0], height: 1.4 },
+  { id: 10, title: 'Still Life with Decanter', file: '/artworks/12-roses3.jpg', position: [11.88, 1.8, 6.0], rotation: [0, -Math.PI / 2, 0], height: 1.4 }
 ];
 
-// 4'LÜ SETLER (2x2 KARE BLOKLAR - ARKA VE ÖN DUVARDA)
+// 4'LÜ SETLER (BÜYÜTÜLMÜŞ ÖLÇEKTE 2x2 KARE BLOKLAR)
 const GRID_SETS = [
   {
     id: 'flamingo-set',
     title: 'Flamingo Polyptych',
     category: 'Oil Painting Set',
     description: 'A four-panel unified set forming an elegant stylized flamingo composition.',
-    position: [0.0, 1.8, -17.88], // Arka duvarın ortası
+    position: [-6.0, 1.8, -17.85], // Arka duvarın sol tarafı
     rotation: [0, 0, 0],
     files: [
       '/artworks/21Flamingo1.JPG',
@@ -49,8 +49,8 @@ const GRID_SETS = [
     title: 'Chromatic Synthesis',
     category: 'Abstract Set',
     description: 'A four-panel modernist abstract matrix investigating chromatic color blocks.',
-    position: [0.0, 1.8, 12.88], // Ön duvarın ortası
-    rotation: [0, Math.PI, 0],
+    position: [6.0, 1.8, -17.85], // Arka duvarın sağ tarafı
+    rotation: [0, 0, 0],
     files: [
       '/artworks/22Piece1.JPG',
       '/artworks/22Piece2.JPG',
@@ -76,8 +76,8 @@ function ArtFrame({ art, onSelect }) {
     });
   }, [art.file]);
 
-  const frameWidth = (art.height || 1.3) * aspect;
-  const frameHeight = art.height || 1.3;
+  const frameWidth = (art.height || 1.4) * aspect;
+  const frameHeight = art.height || 1.4;
 
   return (
     <group 
@@ -88,7 +88,7 @@ function ArtFrame({ art, onSelect }) {
       onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
     >
       <mesh position={[0, 0, -0.01]}>
-        <boxGeometry args={[frameWidth + 0.04, frameHeight + 0.04, 0.02]} />
+        <boxGeometry args={[frameWidth + 0.05, frameHeight + 0.05, 0.02]} />
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} />
       </mesh>
       <mesh position={[0, 0, 0.01]}>
@@ -117,9 +117,10 @@ function GridArtSet({ setInfo, onSelect }) {
     });
   }, [setInfo.files]);
 
-  const pW = 0.7;
-  const pH = 0.95;
-  const gap = 0.02;
+  // Boyutlar büyütüldü (Daha ihtişamlı durması için)
+  const pW = 0.95;
+  const pH = 1.3;
+  const gap = 0.03;
 
   return (
     <group 
@@ -149,9 +150,28 @@ function GridArtSet({ setInfo, onSelect }) {
         {textures[3] ? <meshBasicMaterial map={textures[3]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
       </mesh>
       <mesh position={[0, 0, -0.01]}>
-        <boxGeometry args={[pW*2 + gap + 0.05, pH*2 + gap + 0.05, 0.02]} />
+        <boxGeometry args={[pW*2 + gap + 0.08, pH*2 + gap + 0.08, 0.02]} />
         <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} />
       </mesh>
+    </group>
+  );
+}
+
+// GALERİ GİRİŞ KAPISI
+function GalleryDoor() {
+  return (
+    <group position={[0, 0, 13.9]}>
+      {/* Kasa */}
+      <mesh position={[-1.1, 1.8, 0]}><boxGeometry args={[0.2, 3.6, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
+      <mesh position={[1.1, 1.8, 0]}><boxGeometry args={[0.2, 3.6, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
+      <mesh position={[0, 3.55, 0]}><boxGeometry args={[2.4, 0.2, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
+      {/* Açık Kanatlar */}
+      <group position={[-1.0, 0, 0]} rotation={[0, Math.PI / 3, 0]}>
+        <mesh position={[0.5, 1.7, 0]}><boxGeometry args={[1.0, 3.3, 0.08]} /><meshStandardMaterial color="#4a2e18" /></mesh>
+      </group>
+      <group position={[1.0, 0, 0]} rotation={[0, -Math.PI / 3, 0]}>
+        <mesh position={[-0.5, 1.7, 0]}><boxGeometry args={[1.0, 3.3, 0.08]} /><meshStandardMaterial color="#4a2e18" /></mesh>
+      </group>
     </group>
   );
 }
@@ -170,7 +190,7 @@ function GalleryArchitecture() {
       <mesh position={[-12.0, 2.1, -2]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[34, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
       <mesh position={[12.0, 2.1, -2]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[34, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
       <mesh position={[0, 2.1, -18]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[0, 2.1, 13]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[0, 2.1, 14]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
     </group>
   );
 }
@@ -220,7 +240,7 @@ function PlayerMovement({ isLocked, mobileMove, mobileTurn }) {
 
     camera.position.y = 1.7;
     camera.position.x = THREE.MathUtils.clamp(camera.position.x, -11.2, 11.2);
-    camera.position.z = THREE.MathUtils.clamp(camera.position.z, -16.0, 10.0);
+    camera.position.z = THREE.MathUtils.clamp(camera.position.z, -16.0, 12.0);
   });
 
   return null;
@@ -252,7 +272,7 @@ export default function App() {
         </div>
       )}
 
-      {/* MOBİL KONTROLLER YUKARIYA TAŞINDI (ALT BARIN ÜSTÜNDE) */}
+      {/* MOBİL KONTROLLER ÜSTE TAŞINDI */}
       <div className="mobile-controls-overlay" style={{ bottom: '75px' }}>
         <div className="mobile-turn-group">
           <button onTouchStart={() => setMobileTurn(1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(1)} onMouseUp={() => setMobileTurn(0)}>↺ Turn Left</button>
@@ -268,13 +288,13 @@ export default function App() {
         </div>
       </div>
 
-      {/* KAMERA İÇERİYİ GÖRECEK ŞEKİLDE KONUMLANDIRILDI */}
-      <Canvas camera={{ position: [0, 1.7, 4.0], fov: 70 }}>
+      <Canvas camera={{ position: [0, 1.7, 8.0], fov: 70 }}>
         <ambientLight intensity={1.8} color="#ffffff" />
         <directionalLight position={[0, 10, 5]} intensity={1.8} color="#fffcf5" />
         <PointerLockControls ref={controlsRef} onLock={() => setIsLocked(true)} onUnlock={() => setIsLocked(false)} />
         <PlayerMovement isLocked={isLocked} mobileMove={mobileMove} mobileTurn={mobileTurn} />
         <GalleryArchitecture />
+        <GalleryDoor />
         {ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} onSelect={setSelectedArt} />)}
         {GRID_SETS.map((setInfo) => <GridArtSet key={setInfo.id} setInfo={setInfo} onSelect={setSelectedArt} />)}
       </Canvas>
