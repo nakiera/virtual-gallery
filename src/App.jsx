@@ -11,43 +11,32 @@ const ARTIST_INFO = {
   email: 'nakiera@gmail.com'
 };
 
-// SADECE VE SADECE DUVARLARIN ÜZERİNDE YER ALAN KUSURSUZ ESER DİZİLİMİ
+// DUVARLARLA YÜZEYİ TAM ÖRTÜŞEN KUSURSUZ KOORDİNATLAR
 const ARTWORKS = [
-  // --- SOL DUVAR (X = -11.75, İçeri Bakıyor) ---
-  { id: 1, title: 'Balloon Float', file: '/artworks/1-baloon.png', position: [-11.75, 1.8, -15.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
-  { id: 2, title: 'Strawberry Bloom', file: '/artworks/2-straw.png', position: [-11.75, 1.8, -11.5], rotation: [0, Math.PI / 2, 0], height: 1.3 },
-  { id: 3, title: 'Botanical Study 3', file: '/artworks/3-DSC00648.JPG', position: [-11.75, 1.8, -8.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
-  { id: 4, title: 'Morning Daisies I', file: '/artworks/4-daisies1.jpg', position: [-11.75, 1.8, -4.5], rotation: [0, Math.PI / 2, 0], height: 1.3 },
-  { id: 5, title: 'Morning Daisies II', file: '/artworks/5-daisies2.JPG', position: [-11.75, 1.8, -1.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
-  { id: 6, title: 'Morning Daisies III', file: '/artworks/6-daisies3.JPG', position: [-11.75, 1.8, 2.5], rotation: [0, Math.PI / 2, 0], height: 1.3 },
-  { id: 7, title: 'Drapery in Repose', file: '/artworks/7-bust1.jpg', position: [-11.75, 1.8, 6.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
-  { id: 8, title: 'Sentinel of the Tides', file: '/artworks/8-lighthouse1.jpg', position: [-11.75, 1.8, 9.5], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  // --- SOL DUVAR (X = -11.9, İçeri Bakıyor) ---
+  { id: 1, title: 'Balloon Float', file: '/artworks/1-baloon.png', position: [-11.88, 1.8, -14.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  { id: 2, title: 'Strawberry Bloom', file: '/artworks/2-straw.png', position: [-11.88, 1.8, -10.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  { id: 3, title: 'Botanical Study 3', file: '/artworks/3-DSC00648.JPG', position: [-11.88, 1.8, -6.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  { id: 4, title: 'Morning Daisies I', file: '/artworks/4-daisies1.jpg', position: [-11.88, 1.8, -2.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  { id: 5, title: 'Morning Daisies II', file: '/artworks/5-daisies2.JPG', position: [-11.88, 1.8, 2.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  { id: 6, title: 'Morning Daisies III', file: '/artworks/6-daisies3.JPG', position: [-11.88, 1.8, 6.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
+  { id: 7, title: 'Drapery in Repose', file: '/artworks/7-bust1.jpg', position: [-11.88, 1.8, 10.0], rotation: [0, Math.PI / 2, 0], height: 1.3 },
 
-  // --- SAĞ DUVAR (X = 11.75, İçeri Bakıyor) ---
-  { id: 9, title: 'Lily in Monochrome', file: '/artworks/9-lillies4.jpg', position: [11.75, 1.8, -15.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
-  { id: 10, title: 'White Rose in Negative', file: '/artworks/10-rose1.jpg', position: [11.75, 1.8, -11.5], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
-  { id: 11, title: 'Whispering Stem', file: '/artworks/11-rose2.jpg', position: [11.75, 1.8, -8.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
-  { id: 12, title: 'Still Life with Decanter', file: '/artworks/12-roses3.jpg', position: [11.75, 1.8, -4.5], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
-  { id: 13, title: 'Nocturne Botanical', file: '/artworks/13-inkflower1.jpg', position: [11.75, 1.8, -1.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
-  { id: 14, title: 'Midnight Vintage', file: '/artworks/14-wine1.jpg', position: [11.75, 1.8, 2.5], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
-  { id: 15, title: 'Bouquet of Grace', file: '/artworks/15-DSC00922.JPG', position: [11.75, 1.8, 6.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
-  { id: 16, title: 'November Serenity', file: '/artworks/16-flower11.11.23.png', position: [11.75, 1.8, 9.5], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
+  // --- SAĞ DUVAR (X = 11.9, İçeri Bakıyor) ---
+  { id: 8, title: 'Sentinel of the Tides', file: '/artworks/8-lighthouse1.jpg', position: [11.88, 1.8, -14.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
+  { id: 9, title: 'Lily in Monochrome', file: '/artworks/9-lillies4.jpg', position: [11.88, 1.8, -10.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
+  { id: 10, title: 'White Rose in Negative', file: '/artworks/10-rose1.jpg', position: [11.88, 1.8, -6.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
+  { id: 11, title: 'Whispering Stem', file: '/artworks/11-rose2.jpg', position: [11.88, 1.8, -2.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
+  { id: 12, title: 'Still Life with Decanter', file: '/artworks/12-roses3.jpg', position: [11.88, 1.8, 2.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
+  { id: 13, title: 'Nocturne Botanical', file: '/artworks/13-inkflower1.jpg', position: [11.88, 1.8, 6.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
+  { id: 14, title: 'Midnight Vintage', file: '/artworks/14-wine1.jpg', position: [11.88, 1.8, 10.0], rotation: [0, -Math.PI / 2, 0], height: 1.3 },
 
-  // --- ARKA DUVAR (Z = -17.75) ---
-  { id: 17, title: 'Azure Solitude', file: '/artworks/17-flower07-11-23.png', position: [-9.0, 1.8, -17.75], rotation: [0, 0, 0], height: 1.4 },
-  { id: 18, title: 'Mediterranean Reverie', file: '/artworks/18-bycycle1.jpg', position: [-5.4, 1.8, -17.75], rotation: [0, 0, 0], height: 1.4 },
-  { id: 19, title: 'Gilded Sunflower', file: '/artworks/19-sunflower2.jpg', position: [-1.8, 1.8, -17.75], rotation: [0, 0, 0], height: 1.4 },
-  { id: 20, title: 'Iris at Twilight', file: '/artworks/20-DSC00927.JPG', position: [1.8, 1.8, -17.75], rotation: [0, 0, 0], height: 1.4 },
-  { id: 21, title: 'Flamingo Panel 1', file: '/artworks/21Flamingo1.JPG', position: [5.4, 1.8, -17.75], rotation: [0, 0, 0], height: 1.4 },
-  { id: 22, title: 'Flamingo Panel 2', file: '/artworks/21Flamingo2.JPG', position: [9.0, 1.8, -17.75], rotation: [0, 0, 0], height: 1.4 },
-
-  // --- ÖN DUVAR (Z = 14.0) ---
-  { id: 23, title: 'Flamingo Panel 3', file: '/artworks/21Flamingo3.JPG', position: [-9.0, 1.8, 14.0], rotation: [0, Math.PI, 0], height: 1.3 },
-  { id: 24, title: 'Flamingo Panel 4', file: '/artworks/21Flamingo4.JPG', position: [-5.4, 1.8, 14.0], rotation: [0, Math.PI, 0], height: 1.3 },
-  { id: 25, title: 'Synthesis Piece 1', file: '/artworks/22Piece1.JPG', position: [-1.8, 1.8, 14.0], rotation: [0, Math.PI, 0], height: 1.3 },
-  { id: 26, title: 'Synthesis Piece 2', file: '/artworks/22Piece2.JPG', position: [1.8, 1.8, 14.0], rotation: [0, Math.PI, 0], height: 1.3 },
-  { id: 27, title: 'Synthesis Piece 3', file: '/artworks/22Piece3.JPG', position: [5.4, 1.8, 14.0], rotation: [0, Math.PI, 0], height: 1.3 },
-  { id: 28, title: 'Synthesis Piece 4', file: '/artworks/22Piece4.JPG', position: [9.0, 1.8, 14.0], rotation: [0, Math.PI, 0], height: 1.3 }
+  // --- ARKA DUVAR (Z = -17.88) ---
+  { id: 15, title: 'Bouquet of Grace', file: '/artworks/15-DSC00922.JPG', position: [-9.0, 1.8, -17.88], rotation: [0, 0, 0], height: 1.4 },
+  { id: 16, title: 'November Serenity', file: '/artworks/16-flower11.11.23.png', position: [-4.5, 1.8, -17.88], rotation: [0, 0, 0], height: 1.4 },
+  { id: 17, title: 'Azure Solitude', file: '/artworks/17-flower07-11-23.png', position: [0.0, 1.8, -17.88], rotation: [0, 0, 0], height: 1.4 },
+  { id: 18, title: 'Mediterranean Reverie', file: '/artworks/18-bycycle1.jpg', position: [4.5, 1.8, -17.88], rotation: [0, 0, 0], height: 1.4 },
+  { id: 19, title: 'Gilded Sunflower', file: '/artworks/19-sunflower2.jpg', position: [9.0, 1.8, -17.88], rotation: [0, 0, 0], height: 1.4 }
 ];
 
 function ArtFrame({ art, onSelect }) {
@@ -95,15 +84,15 @@ function GalleryArchitecture() {
   return (
     <group>
       {/* Zemin */}
-      <mesh position={[0, 0, -2]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[26, 36]} /><meshStandardMaterial color={floorColor} roughness={0.4} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[0, 0, -3]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[26, 34]} /><meshStandardMaterial color={floorColor} roughness={0.4} side={THREE.DoubleSide} /></mesh>
       {/* Tavan */}
-      <mesh position={[0, 4.2, -2]} rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[26, 36]} /><meshStandardMaterial color="#faf8f5" roughness={0.9} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[0, 4.2, -3]} rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[26, 34]} /><meshStandardMaterial color="#faf8f5" roughness={0.9} side={THREE.DoubleSide} /></mesh>
 
-      {/* Dış Duvarlar */}
-      <mesh position={[-13, 2.1, -2]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[36, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[13, 2.1, -2]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[36, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[0, 2.1, -18]}><planeGeometry args={[26, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[0, 2.1, 14]}><planeGeometry args={[26, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      {/* Dış Duvarlar (Hizaları Tam Kilitlendi) */}
+      <mesh position={[-12.0, 2.1, -3]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[34, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[12.0, 2.1, -3]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[34, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[0, 2.1, -18]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      <mesh position={[0, 2.1, 14]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
     </group>
   );
 }
@@ -152,7 +141,7 @@ function PlayerMovement({ isLocked, mobileMove, mobileTurn }) {
     }
 
     camera.position.y = 1.7;
-    camera.position.x = THREE.MathUtils.clamp(camera.position.x, -12.2, 12.2);
+    camera.position.x = THREE.MathUtils.clamp(camera.position.x, -11.2, 11.2);
     camera.position.z = THREE.MathUtils.clamp(camera.position.z, -17.0, 13.0);
   });
 
