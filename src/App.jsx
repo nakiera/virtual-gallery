@@ -330,7 +330,7 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - DÜZELTİLMİŞ)
+  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - ÇAKIŞMA ÖNLENDİ)
   // ========================================================
   { 
     id: 32, 
@@ -341,7 +341,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/b-daisies1.jpg', 
     description: 'Pristine white daisies in a blue ceramic vase evoking dawn stillness.', 
-    position: [11.9, 2.0, -16.5], 
+    position: [11.9, 2.0, -1.5], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -354,7 +354,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/b-daisies2.JPG', 
     description: 'Close-up botanical perspective focusing on delicate white petals and morning light reflections.', 
-    position: [11.9, 2.0, -13.8], 
+    position: [11.9, 2.0, -3.8], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -367,7 +367,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/b-daisies3.JPG', 
     description: 'Lyrical arrangement of wild field daisies breathing natural simplicity.', 
-    position: [11.9, 2.0, -11.1], 
+    position: [11.9, 2.0, -6.1], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -393,7 +393,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/g-DSC00670.JPG', 
     description: 'A deep crimson rose blooming amid deep emerald foliage.', 
-    position: [11.9, 2.0, -5.7], 
+    position: [11.9, 2.0, -10.7], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -406,7 +406,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/t-DSC00662.JPG', 
     description: 'Lush pastel pink and white bouquet radiating springtime fragrance.', 
-    position: [11.9, 2.0, -3.0], 
+    position: [11.9, 2.0, -13.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -419,7 +419,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/c-tulip1.jpg', 
     description: 'A pair of graceful scarlet tulips ascending against pure velvet darkness.', 
-    position: [11.9, 2.0, -0.3], 
+    position: [11.9, 2.0, -15.3], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
