@@ -227,7 +227,7 @@ const ARTWORKS = [
     category: 'Soft Pastel', 
     date: '16.03.2023', 
     dimensions: '32.8x24 cm', 
-    file: '/artworks/g-dandelion1.jpg', 
+    file: '/artworks/g-dandelion1.png', 
     description: 'Weightless dandelion seeds taking flight into azure ether, executed in soft powdered pastels.', 
     position: [2.6, 2.0, -8.15], 
     rotation: [0, Math.PI, 0], 
@@ -332,9 +332,6 @@ const ARTWORKS = [
   // ========================================================
   // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - DÜZELTİLMİŞ)
   // ========================================================
-  // ========================================================
-  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - DOĞRU DOSYALARLA)
-  // ========================================================
   { 
     id: 32, 
     title: 'Morning Daisies I', 
@@ -355,7 +352,7 @@ const ARTWORKS = [
     category: 'Oil Painting', 
     date: '2023', 
     dimensions: '30x40 cm', 
-    file: '/artworks/b-daisies2.jpg', 
+    file: '/artworks/b-daisies2.JPG', 
     description: 'Close-up botanical perspective focusing on delicate white petals and morning light reflections.', 
     position: [11.9, 2.0, -13.8], 
     rotation: [0, -Math.PI / 2, 0], 
@@ -368,7 +365,7 @@ const ARTWORKS = [
     category: 'Oil Painting', 
     date: '2023', 
     dimensions: '30x40 cm', 
-    file: '/artworks/b-daisies3.jpg', 
+    file: '/artworks/b-daisies3.JPG', 
     description: 'Lyrical arrangement of wild field daisies breathing natural simplicity.', 
     position: [11.9, 2.0, -11.1], 
     rotation: [0, -Math.PI / 2, 0], 
@@ -490,7 +487,7 @@ const ARTWORKS = [
     category: 'Oil Painting', 
     date: '2023', 
     dimensions: '30x40 cm', 
-    file: '/artworks/d-calla-lilies1.jpg', 
+    file: '/artworks/d-calla-lillies1.jpg', 
     description: 'Sleek, minimalist pink calla lilies positioned with quiet dignity.', 
     position: [3.5, 2.0, 0.05], 
     rotation: [0, 0, 0], 
