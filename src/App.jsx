@@ -330,7 +330,7 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - DOĞRU SIRALAMA & EKSİK DAISIES EKLENDİ)
+  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - DOĞRU SIRALAMA & EKSİK DAISIES)
   // ========================================================
   { 
     id: 32, 
@@ -425,7 +425,7 @@ const ARTWORKS = [
   },
 
   // ========================================================
-  // ZONE 6: WING PANELS (ORTADAKİ FAZLALIK RESİM BURAYA TAŞINDI: Crimson Solitary)
+  // ZONE 6: WING PANELS
   // ========================================================
   { 
     id: 39, 
@@ -900,9 +900,10 @@ function GalleryArchitecture() {
   );
 }
 
-function PlayerMovement({ isLocked }) {
+function PlayerMovement({ isLocked, mobileMove, mobileLook }) {
   const { camera } = useThree();
   const keys = useRef({});
+  const rotationEuler = useRef(new THREE.Euler(0, 0, 0, 'YXZ'));
 
   useEffect(() => {
     const handleKeyDown = (e) => (keys.current[e.code] = true);
@@ -916,23 +917,41 @@ function PlayerMovement({ isLocked }) {
   }, []);
 
   useFrame((_, delta) => {
-    if (!isLocked) return;
     const speed = 5.2 * delta;
     const forward = new THREE.Vector3();
     const right = new THREE.Vector3();
+
+    // Mobil dokunmatik bakış (sağ joystick/ekran kaydırma)
+    if (mobileLook && (mobileLook.x !== 0 || mobileLook.y !== 0)) {
+      rotationEuler.current.setFromQuaternion(camera.quaternion);
+      rotationEuler.current.y -= mobileLook.x * 2.2 * delta;
+      rotationEuler.current.x -= mobileLook.y * 2.2 * delta;
+      rotationEuler.current.x = Math.max(-Math.PI / 2.2, Math.min(Math.PI / 2.2, rotationEuler.current.x));
+      camera.quaternion.setFromEuler(rotationEuler.current);
+    }
+
+    if (!isLocked && !mobileMove && !mobileLook) return;
 
     camera.getWorldDirection(forward);
     forward.y = 0;
     forward.normalize();
     right.crossVectors(camera.up, forward).normalize();
 
+    // Klavye Hareketleri
     if (keys.current['KeyW'] || keys.current['ArrowUp']) camera.position.addScaledVector(forward, speed);
     if (keys.current['KeyS'] || keys.current['ArrowDown']) camera.position.addScaledVector(forward, -speed);
     if (keys.current['KeyA'] || keys.current['ArrowLeft']) camera.position.addScaledVector(right, speed);
     if (keys.current['KeyD'] || keys.current['ArrowRight']) camera.position.addScaledVector(right, -speed);
 
+    // Mobil Joystick Hareketleri
+    if (mobileMove) {
+      if (mobileMove.forward !== 0) camera.position.addScaledVector(forward, mobileMove.forward * speed);
+      if (mobileMove.right !== 0) camera.position.addScaledVector(right, mobileMove.right * speed);
+    }
+
     camera.position.y = 1.7;
 
+    // Sınırlar (Duvarların dışına çıkmasın)
     if (camera.position.z > 0) {
       camera.position.x = THREE.MathUtils.clamp(camera.position.x, -2.4, 2.4);
       camera.position.z = THREE.MathUtils.clamp(camera.position.z, -17.2, 9.8);
@@ -955,6 +974,11 @@ export default function App() {
   const [selectedArt, setSelectedArt] = useState(null);
   const controlsRef = useRef();
 
+  // Mobil Kontrol State'leri
+  const [mobileMove, setMobileMove] = useState(null);
+  const [mobileLook, setMobileLook] = useState(null);
+  const touchStartRef = useRef(null);
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && selectedArt) setSelectedArt(null);
@@ -972,8 +996,39 @@ export default function App() {
     setSelectedArt(art);
   };
 
+  // Mobil Dokunmatik Yürüme Kontrolleri (Sol Düğmeler)
+  const handleTouchMove = (forwardVal, rightVal) => {
+    setMobileMove({ forward: forwardVal, right: rightVal });
+  };
+
+  // Mobil Sağa/Sola Bakış (Ekran Kaydırma)
+  const handleTouchStart = (e) => {
+    if (e.touches.length === 1 && e.clientX > window.innerWidth / 2) {
+      touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+  };
+
+  const handleTouchMoveScreen = (e) => {
+    if (touchStartRef.current && e.touches.length === 1) {
+      const deltaX = e.touches[0].clientX - touchStartRef.current.x;
+      const deltaY = e.touches[0].clientY - touchStartRef.current.y;
+      setMobileLook({ x: deltaX * 0.005, y: deltaY * 0.005 });
+      touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+  };
+
+  const handleTouchEnd = () => {
+    touchStartRef.current = null;
+    setMobileLook(null);
+  };
+
   return (
-    <div className="canvas-container">
+    <div 
+      className="canvas-container"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMoveScreen}
+      onTouchEnd={handleTouchEnd}
+    >
       {isLocked && <div className="crosshair" />}
 
       {!isLocked && !selectedArt && (
@@ -1002,12 +1057,44 @@ export default function App() {
             </div>
 
             <div className="controls-hint">
-              <strong>[W, A, S, D]</strong> Walk &nbsp;|&nbsp; <strong>[Mouse]</strong> Look Around &nbsp;|&nbsp; <strong>[Click Artwork]</strong> Inspect
+              <strong>[W, A, S, D]</strong> Walk &nbsp;|&nbsp; <strong>[Mouse/Touch]</strong> Look Around &nbsp;|&nbsp; <strong>[Click Artwork]</strong> Inspect
             </div>
-            <div className="start-prompt">▶ Click Anywhere to Enter the Gallery</div>
+            <div className="start-prompt">▶ Click or Tap Anywhere to Enter the Gallery</div>
           </div>
         </div>
       )}
+
+      {/* TELEFONLAR İÇİN EKRAN İÇİ SANAL YÖN TUŞLARI */}
+      <div className="mobile-controls-overlay">
+        <div className="mobile-dpad">
+          <button 
+            onTouchStart={() => handleTouchMove(1, 0)} 
+            onTouchEnd={() => handleTouchMove(0, 0)}
+            onMouseDown={() => handleTouchMove(1, 0)}
+            onMouseUp={() => handleTouchMove(0, 0)}
+          >▲</button>
+          <div className="dpad-row">
+            <button 
+              onTouchStart={() => handleTouchMove(0, 1)} 
+              onTouchEnd={() => handleTouchMove(0, 0)}
+              onMouseDown={() => handleTouchMove(0, 1)}
+              onMouseUp={() => handleTouchMove(0, 0)}
+            >◀</button>
+            <button 
+              onTouchStart={() => handleTouchMove(-1, 0)} 
+              onTouchEnd={() => handleTouchMove(0, 0)}
+              onMouseDown={() => handleTouchMove(-1, 0)}
+              onMouseUp={() => handleTouchMove(0, 0)}
+            >▼</button>
+            <button 
+              onTouchStart={() => handleTouchMove(0, -1)} 
+              onTouchEnd={() => handleTouchMove(0, 0)}
+              onMouseDown={() => handleTouchMove(0, -1)}
+              onMouseUp={() => handleTouchMove(0, 0)}
+            >▶</button>
+          </div>
+        </div>
+      </div>
 
       <Canvas camera={{ position: [0, 1.7, 8.8], fov: 70 }}>
         <ambientLight intensity={1.8} color="#ffffff" />
@@ -1015,7 +1102,7 @@ export default function App() {
         <directionalLight position={[0, 6, -10]} intensity={1.5} color="#ffffff" />
 
         <PointerLockControls ref={controlsRef} onLock={() => setIsLocked(true)} onUnlock={() => setIsLocked(false)} />
-        <PlayerMovement isLocked={isLocked} />
+        <PlayerMovement isLocked={isLocked} mobileMove={mobileMove} mobileLook={mobileLook} />
 
         <GalleryArchitecture />
         <OpenDoubleDoor />
