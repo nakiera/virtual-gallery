@@ -24,7 +24,7 @@ const ARTWORKS = [
     dimensions: '25x35 cm', 
     file: '/artworks/k-bust1.jpg', 
     description: 'An academic draping etude investigating tactile tension, sculptural folds, and chiaroscuro depths of hanging fabric.', 
-    position: [-2.9, 1.8, 8.2], 
+    position: [-2.85, 1.8, 8.2], 
     rotation: [0, Math.PI / 2, 0], 
     height: 1.2 
   },
@@ -37,7 +37,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/k-lighthouse1.jpg', 
     description: 'Monochromatic coastal study capturing a lone maritime lighthouse enduring the winds alongside circling gulls.', 
-    position: [-2.9, 1.8, 6.0], 
+    position: [-2.85, 1.8, 6.0], 
     rotation: [0, Math.PI / 2, 0], 
     height: 1.2 
   },
@@ -50,7 +50,7 @@ const ARTWORKS = [
     dimensions: '40x30 cm', 
     file: '/artworks/k-lillies4.jpg', 
     description: 'An intimate botanical study focusing on the velvety gradations and delicate curvature of lily petals.', 
-    position: [-2.9, 1.8, 3.8], 
+    position: [-2.85, 1.8, 3.8], 
     rotation: [0, Math.PI / 2, 0], 
     height: 1.2 
   },
@@ -63,7 +63,7 @@ const ARTWORKS = [
     dimensions: '24x32.8 cm', 
     file: '/artworks/g-inkflower1.jpg', 
     description: 'Classical pen-and-ink still life rendered through precise hatched contours and rhythmic botanical gestures.', 
-    position: [-2.9, 1.8, 1.6], 
+    position: [-2.85, 1.8, 1.6], 
     rotation: [0, Math.PI / 2, 0], 
     height: 1.2 
   },
@@ -77,7 +77,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/k-rose1.jpg', 
     description: 'A luminous white rose blooming out of a deep charcoal shadow field, capturing organic spirals and textured foliage.', 
-    position: [2.9, 1.8, 8.2], 
+    position: [2.85, 1.8, 8.2], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.2 
   },
@@ -90,7 +90,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/k-rose2.jpg', 
     description: 'Vertical graphite exploration of rose stems, subtle thorn silhouettes, and emerging petals.', 
-    position: [2.9, 1.8, 6.0], 
+    position: [2.85, 1.8, 6.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.2 
   },
@@ -103,7 +103,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/k-roses3.jpg', 
     description: 'Academic composition observing glass reflections, ceramic curves, and a soft bouquet of wild roses.', 
-    position: [2.9, 1.8, 3.8], 
+    position: [2.85, 1.8, 3.8], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.2 
   },
@@ -116,7 +116,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/c-seashell08-11-23.png', 
     description: 'A tactile relief painting honoring the calcified spiral geometry and quiet eternity of the marine shell.', 
-    position: [2.9, 1.8, 1.6], 
+    position: [2.85, 1.8, 1.6], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.2 
   },
@@ -133,7 +133,7 @@ const ARTWORKS = [
     dimensions: '40x50 cm', 
     file: '/artworks/poppies4.jpg', 
     description: 'An open meadow of wild scarlet poppies caught in mid-motion, textured with energetic impasto brushwork.', 
-    position: [-11.9, 2.0, -5.5], 
+    position: [-11.85, 2.0, -5.5], 
     rotation: [0, Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -146,7 +146,7 @@ const ARTWORKS = [
     dimensions: '49.5x34 cm', 
     file: '/artworks/poppy3.jpg', 
     description: 'Horizontal botanical canvas emphasizing lush velvet reds and wild vitality of blossoming poppies.', 
-    position: [-11.9, 2.0, -2.8], 
+    position: [-11.85, 2.0, -2.5], 
     rotation: [0, Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -163,7 +163,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/s-DSC00655.JPG', 
     description: 'An evocative spiral composition pulling the viewer into celestial dimensions through tactile pigments.', 
-    position: [-2.6, 2.0, -7.85], 
+    position: [-2.6, 2.0, -7.82], 
     rotation: [0, 0, 0], 
     height: 1.45 
   },
@@ -176,7 +176,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/s-DSC00657.JPG', 
     description: 'A mysterious figurative presence emerging from warm earth reliefs and weathered gold pigments.', 
-    position: [0, 2.0, -7.85], 
+    position: [0, 2.0, -7.82], 
     rotation: [0, 0, 0], 
     height: 1.45 
   },
@@ -189,7 +189,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/s-DSC00659.JPG', 
     description: 'Passionate multi-directional palette knife gestures capturing the unfiltered energy of chromatic eruption.', 
-    position: [2.6, 2.0, -7.85], 
+    position: [2.6, 2.0, -7.82], 
     rotation: [0, 0, 0], 
     height: 1.45 
   },
@@ -203,7 +203,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/c-straw07-11-23.png', 
     description: 'Textured close-up celebrating the vibrant vitality of ripening strawberries and pure white blossoms.', 
-    position: [-2.6, 2.0, -8.15], 
+    position: [-2.6, 2.0, -8.18], 
     rotation: [0, Math.PI, 0], 
     height: 1.45 
   },
@@ -216,7 +216,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/c-baloon10-11-23.png', 
     description: 'Whimsical hot air balloons ascending over a sunlit wild meadow of pink and white cosmos flowers.', 
-    position: [0, 2.0, -8.15], 
+    position: [0, 2.0, -8.18], 
     rotation: [0, Math.PI, 0], 
     height: 1.45 
   },
@@ -229,7 +229,7 @@ const ARTWORKS = [
     dimensions: '32.8x24 cm', 
     file: '/artworks/g-dandelion1.png', 
     description: 'Weightless dandelion seeds taking flight into azure ether, executed in soft powdered pastels.', 
-    position: [2.6, 2.0, -8.15], 
+    position: [2.6, 2.0, -8.18], 
     rotation: [0, Math.PI, 0], 
     height: 1.45 
   },
@@ -246,7 +246,7 @@ const ARTWORKS = [
     dimensions: '24x32.8 cm', 
     file: '/artworks/g-wine1.jpg', 
     description: 'Classical chiaroscuro still life capturing the ruby brilliance of wine in crystalline glassware.', 
-    position: [-9.5, 2.1, -17.9], 
+    position: [-9.5, 2.1, -17.85], 
     rotation: [0, 0, 0], 
     height: 1.6 
   },
@@ -259,7 +259,7 @@ const ARTWORKS = [
     dimensions: '35x70 cm', 
     file: '/artworks/a-DSC00923.JPG', 
     description: 'Left wing of the monumental three-panel sunflower centerpiece celebrating sunlight and vitality.', 
-    position: [-4.2, 2.1, -17.9], 
+    position: [-4.2, 2.1, -17.85], 
     rotation: [0, 0, 0], 
     height: 1.6 
   },
@@ -272,7 +272,7 @@ const ARTWORKS = [
     dimensions: '35x70 cm', 
     file: '/artworks/a-DSC00924.JPG', 
     description: 'Central focal panel of the panoramic sunflower triptych radiating warmth and raw botanical energy.', 
-    position: [-2.4, 2.1, -17.9], 
+    position: [-2.4, 2.1, -17.85], 
     rotation: [0, 0, 0], 
     height: 1.6 
   },
@@ -285,7 +285,7 @@ const ARTWORKS = [
     dimensions: '35x70 cm', 
     file: '/artworks/a-DSC00925.JPG', 
     description: 'Right wing concluding the three-piece solar hymn triptych installation.', 
-    position: [-0.6, 2.1, -17.9], 
+    position: [-0.6, 2.1, -17.85], 
     rotation: [0, 0, 0], 
     height: 1.6 
   },
@@ -298,7 +298,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/d-DSC00644.JPG', 
     description: 'Vibrant Fauvist harmony contrasting deep cobalt blue ceramic with blazing golden petals.', 
-    position: [2.6, 2.1, -17.9], 
+    position: [2.6, 2.1, -17.85], 
     rotation: [0, 0, 0], 
     height: 1.6 
   },
@@ -311,7 +311,7 @@ const ARTWORKS = [
     dimensions: '40x50 cm', 
     file: '/artworks/d-sunflower6-11-23.jpg', 
     description: 'Rich amber and russet undertones portraying the mature elegance of late autumn sunflowers.', 
-    position: [6.0, 2.1, -17.9], 
+    position: [6.0, 2.1, -17.85], 
     rotation: [0, 0, 0], 
     height: 1.6 
   },
@@ -324,13 +324,13 @@ const ARTWORKS = [
     dimensions: '30x50 cm', 
     file: '/artworks/g-flower11.11.23.png', 
     description: 'A stately urn holding pure white floral blooms rendered in tactile brushwork against soft cerulean.', 
-    position: [9.5, 2.1, -17.9], 
+    position: [9.5, 2.1, -17.85], 
     rotation: [0, 0, 0], 
     height: 1.6 
   },
 
   // ========================================================
-  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - ÇAKIŞMA ÖNLENDİ)
+  // ZONE 5: RIGHT WALL (BOTANICAL SANCTUARY - HATASIZ HİZALAMA)
   // ========================================================
   { 
     id: 32, 
@@ -341,7 +341,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/b-daisies1.jpg', 
     description: 'Pristine white daisies in a blue ceramic vase evoking dawn stillness.', 
-    position: [11.9, 2.0, -1.5], 
+    position: [11.85, 2.0, -15.5], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -354,7 +354,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/b-daisies2.JPG', 
     description: 'Close-up botanical perspective focusing on delicate white petals and morning light reflections.', 
-    position: [11.9, 2.0, -3.8], 
+    position: [11.85, 2.0, -13.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -367,7 +367,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/b-daisies3.JPG', 
     description: 'Lyrical arrangement of wild field daisies breathing natural simplicity.', 
-    position: [11.9, 2.0, -6.1], 
+    position: [11.85, 2.0, -10.5], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -380,7 +380,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/g-DSC00922.JPG', 
     description: 'Rich tabletop vase filled with layered pink and crimson roses.', 
-    position: [11.9, 2.0, -8.4], 
+    position: [11.85, 2.0, -8.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -393,7 +393,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/g-DSC00670.JPG', 
     description: 'A deep crimson rose blooming amid deep emerald foliage.', 
-    position: [11.9, 2.0, -10.7], 
+    position: [11.85, 2.0, -5.5], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -406,7 +406,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/t-DSC00662.JPG', 
     description: 'Lush pastel pink and white bouquet radiating springtime fragrance.', 
-    position: [11.9, 2.0, -13.0], 
+    position: [11.85, 2.0, -3.0], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -419,7 +419,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/c-tulip1.jpg', 
     description: 'A pair of graceful scarlet tulips ascending against pure velvet darkness.', 
-    position: [11.9, 2.0, -15.3], 
+    position: [11.85, 2.0, -0.5], 
     rotation: [0, -Math.PI / 2, 0], 
     height: 1.35 
   },
@@ -436,7 +436,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/t-DSC00660.JPG', 
     description: 'A solitary crimson rosebud standing proudly before a soft azure horizon.', 
-    position: [-11.0, 2.0, 0.05], 
+    position: [-11.0, 2.0, 0.02], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -449,7 +449,7 @@ const ARTWORKS = [
     dimensions: '24x32.8 cm', 
     file: '/artworks/f-bycycle1.jpg', 
     description: 'A tranquil nostalgic scene with a classic bicycle leaning against a weathered Aegean door.', 
-    position: [-8.5, 2.0, 0.05], 
+    position: [-8.5, 2.0, 0.02], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -462,7 +462,7 @@ const ARTWORKS = [
     dimensions: '40x30 cm', 
     file: '/artworks/f-iris1.jpg', 
     description: 'Regal purple iris petals accented with golden filaments and lively emerald leaves.', 
-    position: [-6.0, 2.0, 0.05], 
+    position: [-6.0, 2.0, 0.02], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -475,7 +475,7 @@ const ARTWORKS = [
     dimensions: '40x50 cm', 
     file: '/artworks/e-DSC00927.JPG', 
     description: 'Deep violet iris blossoms glowing out of velvety night shadows.', 
-    position: [-3.5, 2.0, 0.05], 
+    position: [-3.5, 2.0, 0.02], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -489,7 +489,7 @@ const ARTWORKS = [
     dimensions: '30x40 cm', 
     file: '/artworks/d-calla-lillies1.jpg', 
     description: 'Sleek, minimalist pink calla lilies positioned with quiet dignity.', 
-    position: [3.5, 2.0, 0.05], 
+    position: [3.5, 2.0, 0.02], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -502,7 +502,7 @@ const ARTWORKS = [
     dimensions: '50x70 cm', 
     file: '/artworks/d-flower07-11-23.png', 
     description: 'A singular azure flower rising like a monument against misted grey canvas.', 
-    position: [6.0, 2.0, 0.05], 
+    position: [6.0, 2.0, 0.02], 
     rotation: [0, 0, 0], 
     height: 1.35 
   },
@@ -515,7 +515,7 @@ const ARTWORKS = [
     dimensions: '29x21 cm', 
     file: '/artworks/e-sunflower2.jpg', 
     description: 'Warm luminous pastel portrait of a sunflower head turned directly toward the light.', 
-    position: [8.5, 2.0, 0.05], 
+    position: [8.5, 2.0, 0.02], 
     rotation: [0, 0, 0], 
     height: 1.35 
   }
@@ -806,7 +806,7 @@ function PoppiesDiptychFrame({ onSelect }) {
 
   return (
     <group 
-      position={[-11.9, 2.0, -8.6]} 
+      position={[-11.85, 2.0, -8.6]} 
       rotation={[0, Math.PI / 2, 0]}
       onClick={handleClick}
       onPointerOver={(e) => {
@@ -1131,7 +1131,7 @@ export default function App() {
         ))}
 
         <Polyptych4Frame 
-          position={[-11.9, 2.0, -15.5]}
+          position={[-11.85, 2.0, -15.5]}
           rotation={[0, Math.PI / 2, 0]}
           files={['/artworks/Flamingo1.JPG', '/artworks/Flamingo2.JPG', '/artworks/Flamingo3.JPG', '/artworks/Flamingo4.JPG']}
           title="Flamingo Polyptych"
@@ -1143,7 +1143,7 @@ export default function App() {
         />
 
         <Polyptych4Frame 
-          position={[-11.9, 2.0, -12.2]}
+          position={[-11.85, 2.0, -12.2]}
           rotation={[0, Math.PI / 2, 0]}
           files={['/artworks/Piece1.JPG', '/artworks/Piece2.JPG', '/artworks/Piece3.JPG', '/artworks/Piece4.JPG']}
           title="Chromatic Synthesis"
