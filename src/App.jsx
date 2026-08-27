@@ -887,7 +887,6 @@ function GalleryArchitecture() {
       <mesh position={[12, 2.1, -9]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[18, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
       <mesh position={[0, 2.1, -18]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
 
-      {/* Center Island Wall */}
       <mesh position={[0, 2.0, -8.0]}><boxGeometry args={[8.0, 3.4, 0.3]} /><meshStandardMaterial color={ecruColor} roughness={0.8} /></mesh>
 
       <mesh position={[-7.5, 2.1, 0]}><planeGeometry args={[9, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
@@ -900,7 +899,7 @@ function GalleryArchitecture() {
   );
 }
 
-function PlayerMovement({ isLocked, mobileMove, mobileLook }) {
+function PlayerMovement({ isLocked, mobileMove, mobileLook, mobileTurn }) {
   const { camera } = useThree();
   const keys = useRef({});
   const rotationEuler = useRef(new THREE.Euler(0, 0, 0, 'YXZ'));
@@ -918,10 +917,16 @@ function PlayerMovement({ isLocked, mobileMove, mobileLook }) {
 
   useFrame((_, delta) => {
     const speed = 5.2 * delta;
+    const turnSpeed = 2.2 * delta;
     const forward = new THREE.Vector3();
     const right = new THREE.Vector3();
 
-    // Mobil dokunmatik bakış (sağ joystick/ekran kaydırma)
+    if (mobileTurn) {
+      rotationEuler.current.setFromQuaternion(camera.quaternion);
+      rotationEuler.current.y += mobileTurn * turnSpeed;
+      camera.quaternion.setFromEuler(rotationEuler.current);
+    }
+
     if (mobileLook && (mobileLook.x !== 0 || mobileLook.y !== 0)) {
       rotationEuler.current.setFromQuaternion(camera.quaternion);
       rotationEuler.current.y -= mobileLook.x * 2.2 * delta;
@@ -930,20 +935,18 @@ function PlayerMovement({ isLocked, mobileMove, mobileLook }) {
       camera.quaternion.setFromEuler(rotationEuler.current);
     }
 
-    if (!isLocked && !mobileMove && !mobileLook) return;
+    if (!isLocked && !mobileMove && !mobileLook && !mobileTurn) return;
 
     camera.getWorldDirection(forward);
     forward.y = 0;
     forward.normalize();
     right.crossVectors(camera.up, forward).normalize();
 
-    // Klavye Hareketleri
     if (keys.current['KeyW'] || keys.current['ArrowUp']) camera.position.addScaledVector(forward, speed);
     if (keys.current['KeyS'] || keys.current['ArrowDown']) camera.position.addScaledVector(forward, -speed);
     if (keys.current['KeyA'] || keys.current['ArrowLeft']) camera.position.addScaledVector(right, speed);
     if (keys.current['KeyD'] || keys.current['ArrowRight']) camera.position.addScaledVector(right, -speed);
 
-    // Mobil Joystick Hareketleri
     if (mobileMove) {
       if (mobileMove.forward !== 0) camera.position.addScaledVector(forward, mobileMove.forward * speed);
       if (mobileMove.right !== 0) camera.position.addScaledVector(right, mobileMove.right * speed);
@@ -951,7 +954,6 @@ function PlayerMovement({ isLocked, mobileMove, mobileLook }) {
 
     camera.position.y = 1.7;
 
-    // Sınırlar (Duvarların dışına çıkmasın)
     if (camera.position.z > 0) {
       camera.position.x = THREE.MathUtils.clamp(camera.position.x, -2.4, 2.4);
       camera.position.z = THREE.MathUtils.clamp(camera.position.z, -17.2, 9.8);
@@ -974,9 +976,9 @@ export default function App() {
   const [selectedArt, setSelectedArt] = useState(null);
   const controlsRef = useRef();
 
-  // Mobil Kontrol State'leri
   const [mobileMove, setMobileMove] = useState(null);
   const [mobileLook, setMobileLook] = useState(null);
+  const [mobileTurn, setMobileTurn] = useState(null);
   const touchStartRef = useRef(null);
 
   useEffect(() => {
@@ -996,12 +998,14 @@ export default function App() {
     setSelectedArt(art);
   };
 
-  // Mobil Dokunmatik Yürüme Kontrolleri (Sol Düğmeler)
   const handleTouchMove = (forwardVal, rightVal) => {
     setMobileMove({ forward: forwardVal, right: rightVal });
   };
 
-  // Mobil Sağa/Sola Bakış (Ekran Kaydırma)
+  const handleTouchTurn = (turnVal) => {
+    setMobileTurn(turnVal);
+  };
+
   const handleTouchStart = (e) => {
     if (e.touches.length === 1 && e.clientX > window.innerWidth / 2) {
       touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -1064,8 +1068,23 @@ export default function App() {
         </div>
       )}
 
-      {/* TELEFONLAR İÇİN EKRAN İÇİ SANAL YÖN TUŞLARI */}
+      {/* MOBILE CONTROLS OVERLAY (TURN & MOVE) */}
       <div className="mobile-controls-overlay">
+        <div className="mobile-turn-group">
+          <button 
+            onTouchStart={() => handleTouchTurn(1)} 
+            onTouchEnd={() => handleTouchTurn(0)}
+            onMouseDown={() => handleTouchTurn(1)}
+            onMouseUp={() => handleTouchTurn(0)}
+          >↺ Sol</button>
+          <button 
+            onTouchStart={() => handleTouchTurn(-1)} 
+            onTouchEnd={() => handleTouchTurn(0)}
+            onMouseDown={() => handleTouchTurn(-1)}
+            onMouseUp={() => handleTouchTurn(0)}
+          >Sağ ↻</button>
+        </div>
+
         <div className="mobile-dpad">
           <button 
             onTouchStart={() => handleTouchMove(1, 0)} 
@@ -1102,17 +1121,15 @@ export default function App() {
         <directionalLight position={[0, 6, -10]} intensity={1.5} color="#ffffff" />
 
         <PointerLockControls ref={controlsRef} onLock={() => setIsLocked(true)} onUnlock={() => setIsLocked(false)} />
-        <PlayerMovement isLocked={isLocked} mobileMove={mobileMove} mobileLook={mobileLook} />
+        <PlayerMovement isLocked={isLocked} mobileMove={mobileMove} mobileLook={mobileLook} mobileTurn={mobileTurn} />
 
         <GalleryArchitecture />
         <OpenDoubleDoor />
 
-        {/* Regular Artworks */}
         {ARTWORKS.map((art, idx) => (
           <ArtFrame key={`${art.file}-${idx}`} art={art} onSelect={handleArtSelect} />
         ))}
 
-        {/* Flamingo 4-Piece Unified Polyptych */}
         <Polyptych4Frame 
           position={[-11.9, 2.0, -15.5]}
           rotation={[0, Math.PI / 2, 0]}
@@ -1125,7 +1142,6 @@ export default function App() {
           onSelect={handleArtSelect}
         />
 
-        {/* Piece 4-Piece Unified Polyptych */}
         <Polyptych4Frame 
           position={[-11.9, 2.0, -12.2]}
           rotation={[0, Math.PI / 2, 0]}
@@ -1138,7 +1154,6 @@ export default function App() {
           onSelect={handleArtSelect}
         />
 
-        {/* Poppies Diptych */}
         <PoppiesDiptychFrame onSelect={handleArtSelect} />
       </Canvas>
 
