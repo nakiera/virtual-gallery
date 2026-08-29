@@ -202,16 +202,13 @@ function GalleryDoor() {
 
 function GalleryArchitecture() {
   const ecruColor = '#ede7db';
-  // ANTRASİT MERMER ZEMİN RENGİ
   const floorColor = '#1e2124';
   return (
     <group>
-      {/* Zemin - Antrasit Mermer Görünümü */}
       <mesh position={[0, 0, -2]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[26, 36]} />
         <meshStandardMaterial color={floorColor} roughness={0.15} metalness={0.1} side={THREE.DoubleSide} />
       </mesh>
-      {/* Tavan */}
       <mesh position={[0, 4.2, -2]} rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[26, 36]} /><meshStandardMaterial color="#faf8f5" roughness={0.9} side={THREE.DoubleSide} /></mesh>
 
       <mesh position={[-12.0, 2.1, -2]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[36, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
@@ -342,13 +339,13 @@ export default function App() {
   return (
     <div className="canvas-container">
       <div className="instructions-overlay-hint" style={{ position: 'absolute', top: 15, left: '50%', transform: 'translateX(-50%)', zIndex: 10, background: 'rgba(0,0,0,0.6)', color: '#fff', padding: '6px 16px', borderRadius: '20px', fontSize: '13px', pointerEvents: 'none' }}>
-        💡 Trackpad / Ekranı parmağınızla basılı tutup sürükleyerek etrafa bakabilirsiniz.
+        💡 Click &amp; drag or touch &amp; swipe to look around.
       </div>
 
       <div className="mobile-controls-overlay" style={{ bottom: '75px' }}>
         <div className="mobile-turn-group">
-          <button onTouchStart={() => setMobileTurn(1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(1)} onMouseUp={() => setMobileTurn(0)}>↺ Dön</button>
-          <button onTouchStart={() => setMobileTurn(-1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(-1)} onMouseUp={() => setMobileTurn(0)}>Dön ↻</button>
+          <button onTouchStart={() => setMobileTurn(1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(1)} onMouseUp={() => setMobileTurn(0)}>↺ Turn</button>
+          <button onTouchStart={() => setMobileTurn(-1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(-1)} onMouseUp={() => setMobileTurn(0)}>Turn ↻</button>
         </div>
         <div className="mobile-dpad">
           <button onTouchStart={() => setMobileMove({ forward: 1, right: 0 })} onTouchEnd={() => setMobileMove(null)} onMouseDown={() => setMobileMove({ forward: 1, right: 0 })} onMouseUp={() => setMobileMove(null)}>▲</button>
