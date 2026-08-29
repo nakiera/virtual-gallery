@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { PointerLockControls, Text } from '@react-three/drei';
+import { Text } from '@react-three/drei';
 import * as THREE from 'three';
 import './App.css';
 
@@ -11,7 +11,6 @@ const ARTIST_INFO = {
   email: 'nakiera@gmail.com'
 };
 
-// 37 ESER - SOL, SAĞ VE ARKA DUVARLARDA TEK SIRA
 const ARTWORKS = [
   // --- SOL DUVAR (X = -11.88) - Tek Sıra ---
   { id: 1, title: 'Balloon Float', file: '/artworks/1-baloon.png', position: [-11.88, 1.8, -15.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
@@ -51,7 +50,6 @@ const ARTWORKS = [
   { id: 33, title: 'Sunflower Vase I', file: '/artworks/33-DSC00923.JPG', position: [10.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 }
 ];
 
-// ÖZEL 2 ADET 4'LÜ SET (GİRİŞ KAPISININ İKİ YANINDA)
 const GRID_SETS = [
   {
     id: 'flamingo-set',
@@ -83,13 +81,9 @@ const GRID_SETS = [
   }
 ];
 
-// 4'LÜLERİN İKİ YANINA (SOLA VE SAĞA İKİŞER) EKLENEN 4 ORTA BOY RESİM
 const WING_ARTWORKS = [
-  // Sol tarafın iki yanındaki resimler
   { id: 981, title: 'Sunflower Vase II', file: '/artworks/33-DSC00924.JPG', position: [-8.2, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 },
   { id: 982, title: 'Sunflower Vase III', file: '/artworks/33-DSC00925.JPG', position: [-6.0, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 },
-  
-  // Sağ tarafın iki yanındaki resimler
   { id: 983, title: 'Emerald Rose', file: '/artworks/34-DSC00670.JPG', position: [6.0, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 },
   { id: 984, title: 'Tulips', file: '/artworks/35-tulip1.jpg', position: [8.2, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 }
 ];
@@ -221,20 +215,92 @@ function GalleryArchitecture() {
   );
 }
 
-function PlayerMovement({ isLocked, mobileMove, mobileTurn }) {
-  const { camera } = useThree();
-  const keys = useRef({});
+// Trackpad & Touch Drag Look + Pinch Zoom Desteği
+function TouchAndTrackpadControls({ mobileMove, mobileTurn }) {
+  const { camera, gl } = useThree();
+  const isDragging = useRef(false);
+  const previousTouchPosition = useRef({ x: 0, y: 0 });
+  const previousPinchDistance = useRef(null);
+  const euler = useRef(new THREE.Euler(0, 0, 0, 'YXZ'));
 
   useEffect(() => {
-    const handleKeyDown = (e) => (keys.current[e.code] = true);
-    const handleKeyUp = (e) => (keys.current[e.code] = false);
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
+    const domElement = gl.domElement;
+
+    const onPointerDown = (e) => {
+      // Sadece sol tık veya tek parmak dokunması
+      if (e.button === 0 || e.pointerType === 'touch') {
+        isDragging.current = true;
+        previousTouchPosition.current = { x: e.clientX, y: e.clientY };
+      }
     };
-  }, []);
+
+    const onPointerMove = (e) => {
+      if (!isDragging.current) return;
+
+      const deltaX = e.clientX - previousTouchPosition.current.x;
+      const deltaY = e.clientY - previousTouchPosition.current.y;
+
+      previousTouchPosition.current = { x: e.clientX, y: e.clientY };
+
+      euler.current.setFromQuaternion(camera.quaternion);
+      euler.current.y -= deltaX * 0.003;
+      euler.current.x -= deltaY * 0.003;
+      euler.current.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, euler.current.x));
+      camera.quaternion.setFromEuler(euler.current);
+    };
+
+    const onPointerUp = () => {
+      isDragging.current = false;
+    };
+
+    // Pinch Zoom (İki parmakla zoom) ve Trackpad scroll desteği
+    const onTouchMove = (e) => {
+      if (e.touches.length === 2) {
+        const touch1 = e.touches[0];
+        const touch2 = e.touches[1];
+        const dist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+
+        if (previousPinchDistance.current !== null) {
+          const deltaDist = dist - previousPinchDistance.current;
+          const forward = new THREE.Vector3();
+          camera.getWorldDirection(forward);
+          forward.y = 0;
+          forward.normalize();
+          camera.position.addScaledVector(forward, deltaDist * 0.02);
+        }
+        previousPinchDistance.current = dist;
+      }
+    };
+
+    const onTouchEnd = () => {
+      previousPinchDistance.current = null;
+    };
+
+    const onWheel = (e) => {
+      // Trackpad iki parmak kaydırma veya fare tekerleği ile ileri-geri yürüme
+      const forward = new THREE.Vector3();
+      camera.getWorldDirection(forward);
+      forward.y = 0;
+      forward.normalize();
+      camera.position.addScaledVector(forward, -e.deltaY * 0.005);
+    };
+
+    domElement.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+    domElement.addEventListener('touchmove', onTouchMove);
+    domElement.addEventListener('touchend', onTouchEnd);
+    domElement.addEventListener('wheel', onWheel, { passive: true });
+
+    return () => {
+      domElement.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      domElement.removeEventListener('touchmove', onTouchMove);
+      domElement.removeEventListener('touchend', onTouchEnd);
+      domElement.removeEventListener('wheel', onWheel);
+    };
+  }, [camera, gl]);
 
   useFrame((_, delta) => {
     const speed = 5.2 * delta;
@@ -242,22 +308,15 @@ function PlayerMovement({ isLocked, mobileMove, mobileTurn }) {
     const right = new THREE.Vector3();
 
     if (mobileTurn) {
-      const euler = new THREE.Euler(0, 0, 0, 'YXZ').setFromQuaternion(camera.quaternion);
-      euler.y += mobileTurn * 2.2 * delta;
-      camera.quaternion.setFromEuler(euler);
+      euler.current.setFromQuaternion(camera.quaternion);
+      euler.current.y += mobileTurn * 2.2 * delta;
+      camera.quaternion.setFromEuler(euler.current);
     }
-
-    if (!isLocked && !mobileMove && !mobileTurn) return;
 
     camera.getWorldDirection(forward);
     forward.y = 0;
     forward.normalize();
     right.crossVectors(camera.up, forward).normalize();
-
-    if (keys.current['KeyW'] || keys.current['ArrowUp']) camera.position.addScaledVector(forward, speed);
-    if (keys.current['KeyS'] || keys.current['ArrowDown']) camera.position.addScaledVector(forward, -speed);
-    if (keys.current['KeyA'] || keys.current['ArrowLeft']) camera.position.addScaledVector(right, speed);
-    if (keys.current['KeyD'] || keys.current['ArrowRight']) camera.position.addScaledVector(right, -speed);
 
     if (mobileMove) {
       if (mobileMove.forward !== 0) camera.position.addScaledVector(forward, mobileMove.forward * speed);
@@ -273,35 +332,20 @@ function PlayerMovement({ isLocked, mobileMove, mobileTurn }) {
 }
 
 export default function App() {
-  const [isLocked, setIsLocked] = useState(false);
   const [selectedArt, setSelectedArt] = useState(null);
-  const controlsRef = useRef();
   const [mobileMove, setMobileMove] = useState(null);
   const [mobileTurn, setMobileTurn] = useState(null);
 
   return (
     <div className="canvas-container">
-      {isLocked && <div className="crosshair" />}
-
-      {!isLocked && !selectedArt && (
-        <div className="instructions-overlay" onClick={() => controlsRef.current?.lock()}>
-          <div className="instructions-card">
-            <h1>ZEYNEP OZCELIK</h1>
-            <p className="subtitle">Virtual Fine Art Gallery &amp; Retrospective</p>
-            <div className="artist-links">
-              <a href={ARTIST_INFO.instagram} target="_blank" rel="noreferrer" className="artist-link-badge ig" onClick={e => e.stopPropagation()}>📸 {ARTIST_INFO.instagramHandle}</a>
-              <a href={`mailto:${ARTIST_INFO.email}`} className="artist-link-badge mail" onClick={e => e.stopPropagation()}>✉️ {ARTIST_INFO.email}</a>
-            </div>
-            <div className="controls-hint"><strong>[W, A, S, D]</strong> Walk &nbsp;|&nbsp; <strong>[Click Artwork]</strong> Inspect</div>
-            <div className="start-prompt">▶ Click or Tap Anywhere to Enter the Gallery</div>
-          </div>
-        </div>
-      )}
+      <div className="instructions-overlay-hint" style={{ position: 'absolute', top: 15, left: '50%', transform: 'translateX(-50%)', zIndex: 10, background: 'rgba(0,0,0,0.6)', color: '#fff', padding: '6px 16px', borderRadius: '20px', fontSize: '13px', pointerEvents: 'none' }}>
+        💡 Trackpad / Ekranı parmağınızla basılı tutup sürükleyerek etrafa bakabilirsiniz.
+      </div>
 
       <div className="mobile-controls-overlay" style={{ bottom: '75px' }}>
         <div className="mobile-turn-group">
-          <button onTouchStart={() => setMobileTurn(1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(1)} onMouseUp={() => setMobileTurn(0)}>↺ Turn Left</button>
-          <button onTouchStart={() => setMobileTurn(-1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(-1)} onMouseUp={() => setMobileTurn(0)}>Turn Right ↻</button>
+          <button onTouchStart={() => setMobileTurn(1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(1)} onMouseUp={() => setMobileTurn(0)}>↺ Dön</button>
+          <button onTouchStart={() => setMobileTurn(-1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(-1)} onMouseUp={() => setMobileTurn(0)}>Dön ↻</button>
         </div>
         <div className="mobile-dpad">
           <button onTouchStart={() => setMobileMove({ forward: 1, right: 0 })} onTouchEnd={() => setMobileMove(null)} onMouseDown={() => setMobileMove({ forward: 1, right: 0 })} onMouseUp={() => setMobileMove(null)}>▲</button>
@@ -316,8 +360,7 @@ export default function App() {
       <Canvas camera={{ position: [0, 1.7, 8.0], fov: 70 }}>
         <ambientLight intensity={1.8} color="#ffffff" />
         <directionalLight position={[0, 10, 5]} intensity={1.8} color="#fffcf5" />
-        <PointerLockControls ref={controlsRef} onLock={() => setIsLocked(true)} onUnlock={() => setIsLocked(false)} />
-        <PlayerMovement isLocked={isLocked} mobileMove={mobileMove} mobileTurn={mobileTurn} />
+        <TouchAndTrackpadControls mobileMove={mobileMove} mobileTurn={mobileTurn} />
         <GalleryArchitecture />
         <GalleryDoor />
         {ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} onSelect={setSelectedArt} />)}
