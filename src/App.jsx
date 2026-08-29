@@ -202,11 +202,18 @@ function GalleryDoor() {
 
 function GalleryArchitecture() {
   const ecruColor = '#ede7db';
-  const floorColor = '#8a5e3d';
+  // ANTRASİT MERMER ZEMİN RENGİ
+  const floorColor = '#1e2124';
   return (
     <group>
-      <mesh position={[0, 0, -2]} rotation={[-Math.PI / 2, 0, 0]}><planeGeometry args={[26, 36]} /><meshStandardMaterial color={floorColor} roughness={0.4} side={THREE.DoubleSide} /></mesh>
+      {/* Zemin - Antrasit Mermer Görünümü */}
+      <mesh position={[0, 0, -2]} rotation={[-Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[26, 36]} />
+        <meshStandardMaterial color={floorColor} roughness={0.15} metalness={0.1} side={THREE.DoubleSide} />
+      </mesh>
+      {/* Tavan */}
       <mesh position={[0, 4.2, -2]} rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[26, 36]} /><meshStandardMaterial color="#faf8f5" roughness={0.9} side={THREE.DoubleSide} /></mesh>
+
       <mesh position={[-12.0, 2.1, -2]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[36, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
       <mesh position={[12.0, 2.1, -2]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[36, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
       <mesh position={[0, 2.1, -19]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
@@ -215,7 +222,6 @@ function GalleryArchitecture() {
   );
 }
 
-// Trackpad & Touch Drag Look + Pinch Zoom Desteği
 function TouchAndTrackpadControls({ mobileMove, mobileTurn }) {
   const { camera, gl } = useThree();
   const isDragging = useRef(false);
@@ -227,7 +233,6 @@ function TouchAndTrackpadControls({ mobileMove, mobileTurn }) {
     const domElement = gl.domElement;
 
     const onPointerDown = (e) => {
-      // Sadece sol tık veya tek parmak dokunması
       if (e.button === 0 || e.pointerType === 'touch') {
         isDragging.current = true;
         previousTouchPosition.current = { x: e.clientX, y: e.clientY };
@@ -253,7 +258,6 @@ function TouchAndTrackpadControls({ mobileMove, mobileTurn }) {
       isDragging.current = false;
     };
 
-    // Pinch Zoom (İki parmakla zoom) ve Trackpad scroll desteği
     const onTouchMove = (e) => {
       if (e.touches.length === 2) {
         const touch1 = e.touches[0];
@@ -277,7 +281,6 @@ function TouchAndTrackpadControls({ mobileMove, mobileTurn }) {
     };
 
     const onWheel = (e) => {
-      // Trackpad iki parmak kaydırma veya fare tekerleği ile ileri-geri yürüme
       const forward = new THREE.Vector3();
       camera.getWorldDirection(forward);
       forward.y = 0;
