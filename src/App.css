@@ -390,3 +390,51 @@ body, html {
 @media (prefers-reduced-motion: reduce) {
   .gallery-actions button { transition: none; }
 }
+
+
+/* IAAF 2026 immersive exhibition — isolated UI */
+.iaaf-page,.iaaf-page *{box-sizing:border-box}
+.iaaf-page{position:relative;width:100vw;height:100dvh;overflow:hidden;background:#c9c6bf;color:#f4f0e9;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.iaaf-scene{position:absolute;inset:0;z-index:0}
+.iaaf-scene canvas{display:block}
+.iaaf-page button{font-family:inherit;cursor:pointer;touch-action:manipulation}
+.iaaf-topbar{position:absolute;z-index:6;top:0;left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:27px clamp(22px,4vw,74px);background:linear-gradient(180deg,rgba(18,20,21,.7),transparent);letter-spacing:.19em;font-size:10px;font-weight:700}
+.iaaf-mark{font-size:13px;letter-spacing:.22em}
+.iaaf-mark span,.iaaf-place span{color:#d7b988;padding:0 9px}
+.iaaf-place{font-size:10px;letter-spacing:.13em}
+.iaaf-welcome{position:absolute;z-index:4;top:0;left:0;bottom:0;width:min(640px,100%);padding:clamp(130px,20vh,230px) clamp(28px,6vw,95px) 60px;background:linear-gradient(90deg,rgba(19,22,23,.97),rgba(19,22,23,.9) 72%,rgba(19,22,23,.02));display:flex;flex-direction:column;justify-content:center}
+.iaaf-eyebrow{font-size:10px;font-weight:700;letter-spacing:.29em;color:#d5bd96;margin:0 0 22px}
+.iaaf-welcome h1{font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:clamp(47px,5.5vw,90px);line-height:1.06;letter-spacing:-.04em;margin:0 0 26px}
+.iaaf-welcome h1 em{font-weight:normal;color:#dfc9a9}
+.iaaf-welcome>p:not(.iaaf-eyebrow){max-width:440px;color:#d1cfcb;line-height:1.85;font-size:14px;margin:0 0 29px}
+.iaaf-welcome-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.iaaf-welcome-actions button{border:1px solid #d8b98a;padding:15px 20px;background:#d8b98a;color:#211e1c;font-weight:650;font-size:12px;border-radius:2px;letter-spacing:.03em}
+.iaaf-welcome-actions button span{margin-left:26px}
+.iaaf-welcome-actions .iaaf-secondary{background:transparent;border-color:#aaa39a;color:#f7f2ea}
+.iaaf-welcome>small{display:block;max-width:450px;color:#99948c;font-size:10px;line-height:1.6;margin-top:28px}
+.iaaf-controls{position:absolute;z-index:8;left:clamp(16px,4vw,70px);bottom:61px;right:clamp(16px,4vw,70px);background:rgba(20,23,23,.91);backdrop-filter:blur(12px);border:1px solid rgba(218,203,177,.22);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding:16px 20px;box-shadow:0 20px 50px rgba(0,0,0,.16)}
+.iaaf-stage{font-size:10px;letter-spacing:.16em;font-weight:700;display:flex;align-items:center;gap:12px}
+.iaaf-dot{width:7px;height:7px;background:#c8ad80;border-radius:50%;display:inline-block}
+.iaaf-counter{color:#afac9f;font-weight:400;white-space:nowrap}
+.iaaf-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.iaaf-buttons button{padding:10px 15px;min-height:38px;background:transparent;color:#f1ede5;border:1px solid #77736c;font-weight:550;font-size:11px}
+.iaaf-buttons button.iaaf-main{background:#dac5a4;border-color:#dac5a4;color:#25211e}
+.iaaf-buttons button:hover,.iaaf-welcome-actions button:hover{filter:brightness(1.15)}
+.iaaf-page button:focus-visible{outline:3px solid #e4bc79;outline-offset:3px}
+.iaaf-workdetail{position:absolute;z-index:7;right:clamp(16px,4vw,70px);top:clamp(90px,15vh,180px);width:min(370px,calc(100vw - 32px));padding:31px 30px;background:rgba(20,22,23,.94);border:1px solid #9d8e78;box-shadow:0 16px 55px rgba(0,0,0,.22)}
+.iaaf-workdetail h2{font:normal clamp(25px,3vw,37px)/1.2 Georgia,serif;margin:0 0 12px}
+.iaaf-workdetail .iaaf-artist{font-size:14px;color:#e1d7c9;margin:0 0 18px}
+.iaaf-workdetail .iaaf-size{font-size:12px;color:#c6a979;letter-spacing:.06em}
+.iaaf-workdetail .iaaf-disclaimer{margin:24px 0 0;border-top:1px solid #625950;padding-top:16px;font-size:11px;line-height:1.6;color:#a6a39d}
+.iaaf-close{position:absolute;top:8px;right:15px;border:0;background:transparent;color:#fff;font-size:30px}
+.iaaf-footer{position:absolute;left:0;right:0;bottom:0;z-index:6;display:flex;justify-content:space-between;gap:12px;padding:15px clamp(20px,4vw,74px);color:#f4f0e9;font-size:9px;font-weight:650;letter-spacing:.15em;background:linear-gradient(0deg,rgba(17,17,17,.65),transparent)}
+@media(max-width:740px){
+ .iaaf-topbar{padding:16px 18px}.iaaf-mark{font-size:11px}.iaaf-place{font-size:8px;letter-spacing:0}
+ .iaaf-welcome{padding:115px 24px 45px;background:linear-gradient(90deg,rgba(19,22,23,.94),rgba(19,22,23,.72));justify-content:center}
+ .iaaf-welcome h1{font-size:clamp(48px,11vw,72px)}.iaaf-welcome>p:not(.iaaf-eyebrow){font-size:13px}
+ .iaaf-controls{left:12px;right:12px;bottom:42px;padding:12px 14px;gap:10px}
+ .iaaf-stage{width:100%;font-size:9px}.iaaf-buttons{width:100%}.iaaf-buttons button{flex:1;padding:9px 6px;font-size:10px}
+ .iaaf-workdetail{right:12px;top:78px;padding:20px;max-width:80vw}
+ .iaaf-footer{padding:12px;font-size:7px;letter-spacing:.08em}
+}
+@media(prefers-reduced-motion:reduce){.iaaf-page button{transition:none!important}}
