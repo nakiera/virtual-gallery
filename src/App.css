@@ -154,3 +154,37 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ae8760; outline-offs
 @media (max-width: 700px) {
   .modal-img-wrapper.set-preview img { max-height: 20vh; }
 }
+
+/* Grand-gallery finishes: warm parchment glass over a dark architectural frame. */
+.museum-header {
+  background: linear-gradient(180deg, rgba(32,32,31,.97), rgba(38,37,35,.93));
+  border-bottom: 1px solid rgba(209,186,145,.32);
+  box-shadow: 0 8px 24px rgba(18,17,15,.12);
+}
+.museum-kicker { color: #c7af90; }
+.museum-name { color: #f1ebe1; }
+.museum-name i { color: #bfa17c; }
+.museum-header-actions button {
+  color: #eee5d8;
+  background: rgba(255,255,255,.055);
+  border-color: rgba(210,185,151,.4);
+}
+.museum-header-actions button:first-child { background: #d8c19d; color: #292722; border-color: #d8c19d; }
+.museum-header-actions button:hover, .museum-header-actions button.is-active { background: #c2a279; color: #292722; }
+.welcome-card {
+  background: linear-gradient(150deg, rgba(248,243,235,.98), rgba(236,230,220,.97));
+  border: 1px solid rgba(173,147,106,.36);
+  box-shadow: 0 30px 88px rgba(26,23,20,.24), inset 0 0 0 5px rgba(255,255,255,.28);
+}
+.welcome-eyebrow, .welcome-rule { color: #927a60; }
+.welcome-card h1 em { color: #8b6a47; }
+.welcome-actions .primary-action { background: #302c28; border-color: #302c28; }
+.museum-footer {
+  background: linear-gradient(0deg, rgba(30,30,29,.94), rgba(38,37,35,.89));
+  color: #ece2d2;
+  border-top: 1px solid rgba(211,184,146,.24);
+}
+.museum-help { color: #e4dbcf; }
+.museum-footer button { color: #e6cfaa; }
+.help-separator { color: #8c7762; }
+.help-dot { background: #c6a77f; }
