@@ -445,3 +445,12 @@ body, html {
 .iaaf-navigation-tip{position:absolute;left:clamp(18px,4vw,70px);bottom:149px;z-index:5;max-width:min(550px,calc(100vw - 36px));padding:10px 14px;color:#f4eee5;background:rgba(24,26,27,.75);border-left:2px solid #d7b98e;backdrop-filter:blur(7px);font-size:10px;letter-spacing:.06em;line-height:1.5;pointer-events:none}
 .iaaf-scene canvas{cursor:crosshair}
 @media(max-width:740px){.iaaf-navigation-tip{left:12px;right:12px;bottom:150px;font-size:9px;max-width:none}}
+
+/* IAAF bilingual footer: Turkish first, English optional */
+.iaaf-footer{align-items:center;justify-content:space-between;flex-wrap:wrap}
+.iaaf-language{display:inline-flex;align-items:center;gap:6px;background:rgba(18,19,20,.88);border:1px solid rgba(232,211,177,.43);padding:4px 6px;border-radius:3px}
+.iaaf-language button{min-width:33px;min-height:28px;padding:4px 7px;border:0;background:transparent;color:#bdb7ab;font-size:11px;font-weight:700;letter-spacing:.06em}
+.iaaf-language button[aria-pressed="true"]{background:#dec6a2;color:#25211b}
+.iaaf-language button:hover{color:#fff}
+.iaaf-language span{opacity:.5}
+@media(max-width:740px){.iaaf-footer{justify-content:center;gap:7px;padding:7px 11px}.iaaf-footer>span{font-size:7px}.iaaf-controls{bottom:65px}.iaaf-navigation-tip{bottom:177px}}
