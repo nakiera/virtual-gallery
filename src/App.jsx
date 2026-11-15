@@ -461,7 +461,7 @@ function artworkDestination(art) {
 
 // Navigation uses the existing rectangular walkable gallery. A real fair hall will
 // require a measured walkable navigation mesh before entrance routing is enabled.
-function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFinished, onTourInterrupted }) {
+function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFinished, onTourInterrupted, onTourArrived, onTourDeparted }) {
   const { camera, gl, scene } = useThree();
   const pointer = useRef(null);
   const raycaster = useMemo(() => new THREE.Raycaster(), []);
@@ -477,20 +477,25 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
   const onArtworkReachedRef = useRef(onArtworkReached);
   const onTourFinishedRef = useRef(onTourFinished);
   const onTourInterruptedRef = useRef(onTourInterrupted);
+  const onTourArrivedRef = useRef(onTourArrived);
+  const onTourDepartedRef = useRef(onTourDeparted);
 
   useEffect(() => { onArtworkReachedRef.current = onArtworkReached; }, [onArtworkReached]);
   useEffect(() => { onTourFinishedRef.current = onTourFinished; }, [onTourFinished]);
   useEffect(() => { onTourInterruptedRef.current = onTourInterrupted; }, [onTourInterrupted]);
+  useEffect(() => { onTourArrivedRef.current = onTourArrived; }, [onTourArrived]);
+  useEffect(() => { onTourDepartedRef.current = onTourDeparted; }, [onTourDeparted]);
 
   useEffect(() => {
     navigationRef.current = {
-      stop() { destination.current = null; pendingArt.current = null; lookAt.current = null; tourHoldRemaining.current = 0; tourRef.current = false; },
+      stop() { destination.current = null; pendingArt.current = null; lookAt.current = null; tourHoldRemaining.current = 0; tourRef.current = false; onTourDepartedRef.current(); },
       goTo(art) {
         destination.current = artworkDestination(art);
         lookAt.current = new THREE.Vector3(...art.position);
         pendingArt.current = art;
       },
       startTour() {
+        onTourDepartedRef.current();
         tourRef.current = true;
         currentTourIndex.current = 0;
         tourHoldRemaining.current = 0;
@@ -500,6 +505,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
         pendingArt.current = null;
       },
       next() {
+        onTourDepartedRef.current();
         tourRef.current = true;
         tourHoldRemaining.current = 0;
         currentTourIndex.current = (currentTourIndex.current + 1) % ALL_STOPS.length;
@@ -509,6 +515,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
         pendingArt.current = null;
       },
       previous() {
+        onTourDepartedRef.current();
         tourRef.current = true;
         tourHoldRemaining.current = 0;
         currentTourIndex.current = (currentTourIndex.current - 1 + ALL_STOPS.length) % ALL_STOPS.length;
@@ -539,6 +546,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
       tourHoldRemaining.current = 0;
       tourRef.current = false;
       onTourInterruptedRef.current();
+      onTourDepartedRef.current();
       pendingArt.current = null;
       lookAt.current = null;
       euler.current.setFromQuaternion(camera.quaternion);
@@ -577,6 +585,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
         tourHoldRemaining.current = 0;
         tourRef.current = false;
         onTourInterruptedRef.current();
+        onTourDepartedRef.current();
         return;
       }
       const ground = new THREE.Vector3();
@@ -626,6 +635,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
     if (!destination.current && tourRef.current && tourHoldRemaining.current > 0) {
       tourHoldRemaining.current = Math.max(0, tourHoldRemaining.current - dt);
       if (tourHoldRemaining.current === 0) {
+        onTourDepartedRef.current();
         currentTourIndex.current += 1;
         if (currentTourIndex.current >= ALL_STOPS.length) {
           tourRef.current = false;
@@ -654,6 +664,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
         if (tourRef.current) {
           // Keep looking at the artwork instead of moving to the next one instantly.
           tourHoldRemaining.current = TOUR_STOP_SECONDS;
+          onTourArrivedRef.current(ALL_STOPS[currentTourIndex.current]);
         }
       }
     }
@@ -669,15 +680,90 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
 }
 
 
+
+/**
+ * Guided-tour presentation.
+ * The first three seconds focus exclusively on the original painting.
+ * A split editorial panel then opens and the verified description types in.
+ * The image remains unaltered; this is an interface-level movement.
+ */
+function artworkInfoText(art) {
+  const dimensions = art.physicalWidthCm && art.physicalHeightCm
+    ? `Dimensions: ${art.physicalWidthCm} × ${art.physicalHeightCm} cm.`
+    : 'Dimensions: awaiting confirmation.';
+  const category = art.category ? `Category: ${art.category}.` : '';
+  const description = art.description || '';
+  return [`Artist: ${ARTIST_INFO.name}.`, dimensions, category, description].filter(Boolean).join('  ');
+}
+
+function GuidedArtworkPresentation({ art, onClose }) {
+  const [expanded, setExpanded] = useState(false);
+  const [count, setCount] = useState(0);
+  const copy = useMemo(() => artworkInfoText(art), [art]);
+
+  useEffect(() => {
+    setExpanded(false);
+    setCount(0);
+    const timeout = window.setTimeout(() => setExpanded(true), 3000);
+    return () => window.clearTimeout(timeout);
+  }, [art]);
+
+  useEffect(() => {
+    if (!expanded) return undefined;
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) {
+      setCount(copy.length);
+      return undefined;
+    }
+    const interval = window.setInterval(() => {
+      setCount(previous => Math.min(copy.length, previous + 2));
+    }, 38);
+    return () => window.clearInterval(interval);
+  }, [expanded, copy]);
+
+  const files = art.files || [art.file];
+  return (
+    <aside className={`tour-feature ${expanded ? 'tour-feature--expanded' : ''}`}
+      aria-label={`Guided tour information: ${art.title}`}>
+      <div className="tour-feature-backdrop" />
+      <div className="tour-feature-inner">
+        <div className="tour-feature-art">
+          <div className={`tour-feature-images ${files.length > 1 ? 'tour-feature-images--set' : ''}`}>
+            {files.map((file, index) =>
+              <img key={file} src={file} alt={files.length > 1 ? `${art.title}, panel ${index + 1}` : art.title} />
+            )}
+          </div>
+          <span className="tour-feature-art-index">PRIVATE COLLECTION <span> / </span> Z. ÖZÇELİK</span>
+        </div>
+        <div className="tour-feature-information" aria-hidden={!expanded}>
+          <div className="tour-feature-information-inner">
+            <span className="tour-feature-eyebrow">WORKS & STORIES</span>
+            <h2>{art.title}</h2>
+            <div className="tour-feature-rule" />
+            <p className="tour-feature-typewriter" aria-label={copy}>
+              <span aria-hidden="true">{copy.slice(0, count)}</span>
+              {count < copy.length && <span aria-hidden="true" className="tour-feature-caret">▍</span>}
+            </p>
+            <span className="tour-feature-footnote">GUIDED EXHIBITION · ORIGINAL ARTWORK</span>
+          </div>
+        </div>
+      </div>
+      <button type="button" onClick={onClose} className="tour-feature-dismiss"
+        aria-label="Exit the artwork presentation and stop guided tour">×</button>
+    </aside>
+  );
+}
+
 export default function App() {
   const [selectedArt, setSelectedArt] = useState(null);
   const [entered, setEntered] = useState(false);
   const [tourActive, setTourActive] = useState(false);
+  const [tourArtwork, setTourArtwork] = useState(null);
   const navigationRef = useRef(null);
   const tourRef = useRef(false);
-  const startTour = () => { setEntered(true); setSelectedArt(null); navigationRef.current?.startTour(); setTourActive(true); };
-  const stopTour = () => { navigationRef.current?.stop(); setTourActive(false); };
-  const nextStop = () => { setEntered(true); setSelectedArt(null); navigationRef.current?.next(); setTourActive(true); };
+  const startTour = () => { setEntered(true); setSelectedArt(null); setTourArtwork(null); navigationRef.current?.startTour(); setTourActive(true); };
+  const stopTour = () => { navigationRef.current?.stop(); setTourArtwork(null); setTourActive(false); };
+  const nextStop = () => { setEntered(true); setSelectedArt(null); setTourArtwork(null); navigationRef.current?.next(); setTourActive(true); };
 
   return (
     <main className="canvas-container">
@@ -698,8 +784,10 @@ export default function App() {
         <directionalLight position={[-2, 12, 8]} intensity={1.1} color="#fff1de" />
         <GalleryNavigation navigationRef={navigationRef} tourRef={tourRef}
           onArtworkReached={(art) => { setSelectedArt(art); setTourActive(false); }}
-          onTourInterrupted={() => setTourActive(false)}
-          onTourFinished={() => setTourActive(false)} />
+          onTourInterrupted={() => { setTourActive(false); setTourArtwork(null); }}
+          onTourArrived={(art) => setTourArtwork(art)}
+          onTourDeparted={() => setTourArtwork(null)}
+          onTourFinished={() => { setTourActive(false); setTourArtwork(null); }} />
         <GalleryArchitecture />
         <GalleryDoor />
         {ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} />)}
@@ -738,6 +826,10 @@ export default function App() {
           <div className="museum-help"><span className="help-dot" aria-hidden="true"/> Click floor to walk <span className="help-separator">·</span> Click art to explore <span className="help-separator">·</span> Drag to look</div>
           <button type="button" onClick={stopTour} disabled={!tourActive}>Stop motion</button>
         </footer>
+      )}
+
+      {tourArtwork && tourActive && (
+        <GuidedArtworkPresentation key={tourArtwork.id} art={tourArtwork} onClose={stopTour} />
       )}
 
       {selectedArt && (
