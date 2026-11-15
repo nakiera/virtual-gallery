@@ -389,6 +389,7 @@ function GalleryArchitecture() {
 }
 
 
+const TOUR_STOP_SECONDS = 12; // Curated viewing pause for each work.
 const CAMERA_HEIGHT = 1.7;
 const WALK_BOUNDS = { minX: -11.1, maxX: 11.1, minZ: -16.9, maxZ: 12.9 };
 const WALK_SPEED = 3.9;
@@ -422,6 +423,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
   const lookAt = useRef(null);
   const pendingArt = useRef(null);
   const currentTourIndex = useRef(-1);
+  const tourHoldRemaining = useRef(0);
   const onArtworkReachedRef = useRef(onArtworkReached);
   const onTourFinishedRef = useRef(onTourFinished);
   const onTourInterruptedRef = useRef(onTourInterrupted);
@@ -432,7 +434,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
 
   useEffect(() => {
     navigationRef.current = {
-      stop() { destination.current = null; pendingArt.current = null; tourRef.current = false; },
+      stop() { destination.current = null; pendingArt.current = null; lookAt.current = null; tourHoldRemaining.current = 0; tourRef.current = false; },
       goTo(art) {
         destination.current = artworkDestination(art);
         lookAt.current = new THREE.Vector3(...art.position);
@@ -441,6 +443,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
       startTour() {
         tourRef.current = true;
         currentTourIndex.current = 0;
+        tourHoldRemaining.current = 0;
         const art = ALL_STOPS[0];
         destination.current = artworkDestination(art);
         lookAt.current = new THREE.Vector3(...art.position);
@@ -448,6 +451,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
       },
       next() {
         tourRef.current = true;
+        tourHoldRemaining.current = 0;
         currentTourIndex.current = (currentTourIndex.current + 1) % ALL_STOPS.length;
         const art = ALL_STOPS[currentTourIndex.current];
         destination.current = artworkDestination(art);
@@ -456,6 +460,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
       },
       previous() {
         tourRef.current = true;
+        tourHoldRemaining.current = 0;
         currentTourIndex.current = (currentTourIndex.current - 1 + ALL_STOPS.length) % ALL_STOPS.length;
         const art = ALL_STOPS[currentTourIndex.current];
         destination.current = artworkDestination(art);
@@ -481,6 +486,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
       if (Math.hypot(event.clientX - p.x, event.clientY - p.y) > 7) p.moved = true;
       if (!p.moved) return;
       destination.current = null;
+      tourHoldRemaining.current = 0;
       tourRef.current = false;
       onTourInterruptedRef.current();
       pendingArt.current = null;
@@ -518,6 +524,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
         destination.current = artworkDestination(art);
         lookAt.current = new THREE.Vector3(...art.position);
         pendingArt.current = art;
+        tourHoldRemaining.current = 0;
         tourRef.current = false;
         onTourInterruptedRef.current();
         return;
@@ -527,6 +534,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
         destination.current = validDestination(ground);
         lookAt.current = null;
         pendingArt.current = null;
+        tourHoldRemaining.current = 0;
         tourRef.current = false;
         onTourInterruptedRef.current();
       }
@@ -536,6 +544,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
       destination.current = null;
       lookAt.current = null;
       pendingArt.current = null;
+      tourHoldRemaining.current = 0;
       tourRef.current = false;
       onTourInterruptedRef.current();
       camera.getWorldDirection(forward.current);
@@ -561,21 +570,12 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
   }, [camera, gl, scene, raycaster, plane, navigationRef, tourRef]);
 
   useFrame((_, delta) => {
-    if (!destination.current) return;
-    const to = targetDirection.current.copy(destination.current).sub(camera.position);
-    to.y = 0;
-    const remaining = to.length();
-    if (remaining > 0.055) {
-      const step = Math.min(remaining, WALK_SPEED * Math.min(delta, 0.05));
-      camera.position.addScaledVector(to.normalize(), step);
-    } else {
-      camera.position.copy(destination.current);
-      destination.current = null;
-      if (pendingArt.current) {
-        onArtworkReachedRef.current(pendingArt.current);
-        pendingArt.current = null;
-      }
-      if (tourRef.current) {
+    // A deliberate museum-style pause after the camera arrives at each artwork.
+    // Use the render loop so stopping a tour cancels the pause immediately.
+    const dt = Math.min(delta, 0.05);
+    if (!destination.current && tourRef.current && tourHoldRemaining.current > 0) {
+      tourHoldRemaining.current = Math.max(0, tourHoldRemaining.current - dt);
+      if (tourHoldRemaining.current === 0) {
         currentTourIndex.current += 1;
         if (currentTourIndex.current >= ALL_STOPS.length) {
           tourRef.current = false;
@@ -587,12 +587,32 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
         }
       }
     }
+    if (destination.current) {
+      const to = targetDirection.current.copy(destination.current).sub(camera.position);
+      to.y = 0;
+      const remaining = to.length();
+      if (remaining > 0.055) {
+        const step = Math.min(remaining, WALK_SPEED * dt);
+        camera.position.addScaledVector(to.normalize(), step);
+      } else {
+        camera.position.copy(destination.current);
+        destination.current = null;
+        if (pendingArt.current) {
+          onArtworkReachedRef.current(pendingArt.current);
+          pendingArt.current = null;
+        }
+        if (tourRef.current) {
+          // Keep looking at the artwork instead of moving to the next one instantly.
+          tourHoldRemaining.current = TOUR_STOP_SECONDS;
+        }
+      }
+    }
     camera.position.y = CAMERA_HEIGHT;
     if (lookAt.current) {
       const desired = new THREE.Quaternion();
       const matrix = new THREE.Matrix4().lookAt(camera.position, lookAt.current, camera.up);
       desired.setFromRotationMatrix(matrix);
-      camera.quaternion.slerp(desired, Math.min(1, delta * 4));
+      camera.quaternion.slerp(desired, Math.min(1, dt * 4));
     }
   });
   return null;
@@ -643,8 +663,8 @@ export default function App() {
           <span className="museum-name">Zeynep Özçelik <i>—</i> Works</span>
         </div>
         <div className="museum-header-actions">
-          <button className={tourActive ? 'is-active' : ''} type="button" onClick={tourActive ? stopTour : startTour}>
-            {tourActive ? 'Pause tour' : 'Guided tour'}
+          <button className={tourActive ? 'is-active' : ''} type="button" onClick={tourActive ? stopTour : startTour} aria-label={tourActive ? 'Pause guided tour' : 'Start 12-second-per-artwork guided tour'}>
+            {tourActive ? 'Pause tour' : 'Guided tour · 12s / work'}
           </button>
           <button type="button" onClick={nextStop}>Next work <span aria-hidden="true">↗</span></button>
         </div>
