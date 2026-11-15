@@ -197,7 +197,10 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ae8760; outline-offs
   position: absolute; z-index: 60; inset: 0;
   display: grid; place-items: center; isolation: isolate;
   color: #f2eae0;
+  opacity: 0;
+  transition: opacity 1150ms cubic-bezier(.2,.75,.2,1);
 }
+.tour-feature--visible { opacity: 1; }
 .tour-feature-backdrop {
   position: absolute; inset: 0; z-index: -1;
   background: rgba(23,22,21,.96);
@@ -213,11 +216,12 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ae8760; outline-offs
   min-width: 0; min-height: 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 20px 10px 30px; gap: 13px;
-  transform: translateX(50%);
-  transition: transform 950ms cubic-bezier(.22,1,.36,1);
+  transform: translateX(50%) scale(.96);
+  transition: transform 1450ms cubic-bezier(.16,1,.3,1);
   position: relative; z-index: 2;
 }
-.tour-feature--expanded .tour-feature-art { transform: translateX(0); }
+.tour-feature--visible:not(.tour-feature--expanded) .tour-feature-art { transform: translateX(50%) scale(1); }
+.tour-feature--expanded .tour-feature-art { transform: translateX(0) scale(1); }
 .tour-feature-images {
   width: 100%; min-height: 0; flex: 1;
   display: flex; justify-content: center; align-items: center;
@@ -231,7 +235,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ae8760; outline-offs
   box-shadow: 0 20px 70px rgba(0,0,0,.42);
   transform: scale(1);
   transform-origin: center center;
-  transition: transform 1050ms cubic-bezier(.22,1,.36,1);
+  transition: transform 1550ms cubic-bezier(.16,1,.3,1);
 }
 .tour-feature--expanded .tour-feature-images img { transform: scale(1.14); }
 .tour-feature-images--set {
@@ -288,10 +292,11 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ae8760; outline-offs
     width: 96vw; height: min(87vh,780px);
   }
   .tour-feature-art {
-    transform: translateY(42%); padding: 12px 13px; gap: 6px;
-    transition: transform 850ms cubic-bezier(.22,1,.36,1);
+    transform: translateY(42%) scale(.96); padding: 12px 13px; gap: 6px;
+    transition: transform 1400ms cubic-bezier(.16,1,.3,1);
   }
-  .tour-feature--expanded .tour-feature-art { transform: translateY(0); }
+  .tour-feature--visible:not(.tour-feature--expanded) .tour-feature-art { transform: translateY(42%) scale(1); }
+  .tour-feature--expanded .tour-feature-art { transform: translateY(0) scale(1); }
   .tour-feature-images img { max-height: 51vh; max-width: 100%; border-width: 3px; }
   .tour-feature--expanded .tour-feature-images img { transform: scale(1.08); max-height: 43vh; }
   .tour-feature-images--set img { max-height: 19vh; }
@@ -309,7 +314,7 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ae8760; outline-offs
   .tour-feature-dismiss { top: 82px; right: 10px; width: 36px; height: 36px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .tour-feature-art, .tour-feature-images img, .tour-feature-information { transition: none; }
+  .tour-feature, .tour-feature-art, .tour-feature-images img, .tour-feature-information { transition: none; }
   .tour-feature-caret { animation: none; }
 }
 
