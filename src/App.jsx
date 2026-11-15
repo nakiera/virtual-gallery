@@ -461,7 +461,7 @@ function artworkDestination(art) {
 
 // Navigation uses the existing rectangular walkable gallery. A real fair hall will
 // require a measured walkable navigation mesh before entrance routing is enabled.
-function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFinished, onTourInterrupted, onTourArrived, onTourDeparted }) {
+function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFinished, onTourInterrupted, onTourArrived, onTourDeparted, onReady }) {
   const { camera, gl, scene } = useThree();
   const pointer = useRef(null);
   const raycaster = useMemo(() => new THREE.Raycaster(), []);
@@ -479,12 +479,14 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
   const onTourInterruptedRef = useRef(onTourInterrupted);
   const onTourArrivedRef = useRef(onTourArrived);
   const onTourDepartedRef = useRef(onTourDeparted);
+  const onReadyRef = useRef(onReady);
 
   useEffect(() => { onArtworkReachedRef.current = onArtworkReached; }, [onArtworkReached]);
   useEffect(() => { onTourFinishedRef.current = onTourFinished; }, [onTourFinished]);
   useEffect(() => { onTourInterruptedRef.current = onTourInterrupted; }, [onTourInterrupted]);
   useEffect(() => { onTourArrivedRef.current = onTourArrived; }, [onTourArrived]);
   useEffect(() => { onTourDepartedRef.current = onTourDeparted; }, [onTourDeparted]);
+  useEffect(() => { onReadyRef.current = onReady; }, [onReady]);
 
   useEffect(() => {
     navigationRef.current = {
@@ -525,6 +527,8 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
         pendingArt.current = null;
       }
     };
+
+    onReadyRef.current?.();
 
     const canvas = gl.domElement;
     canvas.style.touchAction = 'none';
@@ -770,16 +774,79 @@ function GuidedArtworkPresentation({ art, onClose, onNext }) {
   );
 }
 
+const LANDING_FEATURES = [
+  { label: 'THE COLLECTION', title: 'A study in light and colour', image: '/artworks/1-baloon.png', description: 'Balloon Float' },
+  { label: 'THE DETAILS', title: 'Moments worth exploring', image: '/artworks/2-straw.png', description: 'Strawberry Bloom' },
+  { label: 'THE EXPERIENCE', title: 'A gallery without closing hours', image: '/artworks/9-lillies4.jpg', description: 'Lillies' }
+];
+
+function GalleryLanding({ onEnter, onTour }) {
+  return (
+    <main className="gallery-landing">
+      <div className="landing-grain" aria-hidden="true" />
+      <header className="landing-nav">
+        <a className="landing-brand" href="#home" aria-label="GradPixel art exhibition, home">
+          <span className="landing-brand-mark">G<span>·</span>P</span>
+          <span className="landing-brand-name">GRADPIXEL <small>ART EXPERIENCES</small></span>
+        </a>
+        <div className="landing-nav-right">
+          <span className="landing-edition">PRIVATE EXHIBITION <span> / </span> 2026</span>
+          <button type="button" className="landing-nav-enter" onClick={onEnter}>Explore exhibition <span aria-hidden="true">↗</span></button>
+        </div>
+      </header>
+      <section className="landing-hero" id="home">
+        <div className="landing-hero-copy">
+          <div className="landing-kicker"><span className="landing-line" /> A CURATED VIRTUAL EXHIBITION</div>
+          <h1>Art, without<br/><em>boundaries.</em></h1>
+          <p className="landing-artist">THE WORKS OF <strong>ZEYNEP ÖZÇELİK</strong></p>
+          <p className="landing-intro">Step inside an intimate digital gallery. Discover each painting at its individual scale, move freely through the space, and linger over the stories behind the work.</p>
+          <div className="landing-hero-actions">
+            <button className="landing-cta" type="button" onClick={onEnter}>Enter the gallery <span aria-hidden="true">↗</span></button>
+            <button className="landing-cta-secondary" type="button" onClick={onTour}>Start guided tour <span aria-hidden="true">→</span></button>
+          </div>
+          <div className="landing-hero-caption"><span className="landing-diamond">◇</span> AN IMMERSIVE, SELF-GUIDED ART EXPERIENCE</div>
+        </div>
+        <div className="landing-hero-visual">
+          <div className="landing-visual-accent" aria-hidden="true" />
+          <div className="landing-feature-frame">
+            <img src="/artworks/2-straw.png" alt="Strawberry Bloom by Zeynep Özçelik" fetchPriority="high" />
+          </div>
+          <div className="landing-image-label"><span>01 / SELECTED WORK</span><span>STRAWBERRY BLOOM</span></div>
+          <div className="landing-side-text" aria-hidden="true">THE ART OF SEEING DIFFERENTLY</div>
+        </div>
+      </section>
+      <section className="landing-curation" aria-label="Exhibition highlights">
+        <div className="landing-section-heading"><div><span className="landing-mini-eyebrow">SELECTED HIGHLIGHTS</span><h2>An invitation to look closer.</h2></div><p>Every work has a story. Explore the collection at your own pace.</p></div>
+        <div className="landing-work-grid">
+          {LANDING_FEATURES.map((work, index) => (
+            <button key={work.description} type="button" className="landing-work" onClick={onEnter} aria-label={`Visit the gallery to see ${work.description}`}>
+              <div className="landing-work-image"><img src={work.image} alt={work.description} loading="lazy" /></div>
+              <span className="landing-work-number">0{index + 1} <span>/</span> {work.label}</span>
+              <h3>{work.title}</h3>
+              <span className="landing-work-link">Discover in gallery ↗</span>
+            </button>
+          ))}
+        </div>
+      </section>
+      <footer className="landing-footer"><span>© 2026 GRADPIXEL · DIGITAL ART EXPERIENCES</span><span>CREATED FOR ART, DESIGNED FOR EVERY SCREEN</span><button type="button" onClick={onTour}>BEGIN THE TOUR ↗</button></footer>
+    </main>
+  );
+}
+
 export default function App() {
   const [selectedArt, setSelectedArt] = useState(null);
   const [entered, setEntered] = useState(false);
+  const pendingGuidedTour = useRef(false);
   const [tourActive, setTourActive] = useState(false);
   const [tourArtwork, setTourArtwork] = useState(null);
   const navigationRef = useRef(null);
   const tourRef = useRef(false);
-  const startTour = () => { setEntered(true); setSelectedArt(null); setTourArtwork(null); navigationRef.current?.startTour(); setTourActive(true); };
+  const enterGallery = () => { pendingGuidedTour.current = false; setEntered(true); };
+  const startTour = () => { setEntered(true); setSelectedArt(null); setTourArtwork(null); if (navigationRef.current) { navigationRef.current.startTour(); setTourActive(true); } else { pendingGuidedTour.current = true; } };
   const stopTour = () => { navigationRef.current?.stop(); setTourArtwork(null); setTourActive(false); };
   const nextStop = () => { setEntered(true); setSelectedArt(null); setTourArtwork(null); navigationRef.current?.next(); setTourActive(true); };
+
+  if (!entered) return <GalleryLanding onEnter={enterGallery} onTour={startTour} />;
 
   return (
     <main className="canvas-container">
@@ -799,6 +866,7 @@ export default function App() {
         <ambientLight intensity={0.7} color="#fffaf1" />
         <directionalLight position={[-2, 12, 8]} intensity={1.1} color="#fff1de" />
         <GalleryNavigation navigationRef={navigationRef} tourRef={tourRef}
+          onReady={() => { if (pendingGuidedTour.current) { pendingGuidedTour.current = false; navigationRef.current?.startTour(); setTourActive(true); } }}
           onArtworkReached={(art) => { setSelectedArt(art); setTourActive(false); }}
           onTourInterrupted={() => { setTourActive(false); setTourArtwork(null); }}
           onTourArrived={(art) => setTourArtwork(art)}
@@ -813,6 +881,7 @@ export default function App() {
 
       <header className="museum-header">
         <div className="museum-identity">
+          <button type="button" className="museum-home-link" onClick={() => { stopTour(); setEntered(false); }} aria-label="Return to exhibition home">← Home</button>
           <span className="museum-kicker">AN INDEPENDENT VIRTUAL EXHIBITION</span>
           <span className="museum-name">Zeynep Özçelik <i>—</i> Works</span>
         </div>
@@ -823,19 +892,6 @@ export default function App() {
           <button type="button" onClick={nextStop}>Next work <span aria-hidden="true">↗</span></button>
         </div>
       </header>
-
-      {!entered && (
-        <section className="welcome-card" aria-label="Enter exhibition">
-          <span className="welcome-eyebrow">THE ONLINE EXHIBITION · VOLUME 01</span>
-          <h1>Art deserves<br/><em>room to breathe.</em></h1>
-          <p>An intimate collection of paintings and studies, presented at their individual scale. Wander freely, take a closer look, or enjoy a curated walk.</p>
-          <div className="welcome-actions">
-            <button type="button" className="primary-action" onClick={() => setEntered(true)}>Enter gallery <span aria-hidden="true">↗</span></button>
-            <button type="button" className="quiet-action" onClick={startTour}>Take a guided tour</button>
-          </div>
-          <div className="welcome-rule"><span>CURATED BY GRADPIXEL</span><span>OPEN 24 HOURS</span></div>
-        </section>
-      )}
 
       {entered && (
         <footer className="museum-footer">
