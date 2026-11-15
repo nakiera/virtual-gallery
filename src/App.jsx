@@ -259,16 +259,14 @@ function GridArtSet({ setInfo }) {
     });
   }, [setInfo.files]);
 
-  const pW = 0.75;
-  const pH = 1.0;
-  const gap = 0.02;
+  // Each painting in the two four-part works measures 30 x 40 cm.
+  const pW = 0.30 * DISPLAY_SCALE;
+  const pH = 0.40 * DISPLAY_SCALE;
+  const gap = 0.065;
 
   return (
-    <group userData={{ navigationArtwork: { ...setInfo, file: setInfo.files[0] } }} position={setInfo.position} rotation={setInfo.rotation}
-      onClick={(e) => {
-        e.stopPropagation();
-        // Navigation is handled by the shared pointer controller.
-      }}
+    <group userData={{ navigationArtwork: { ...setInfo, file: setInfo.files[0], physicalWidthCm: 30, physicalHeightCm: 40 } }} position={setInfo.position} rotation={setInfo.rotation}
+      onClick={(e) => e.stopPropagation()}
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
       onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
     >
@@ -290,7 +288,7 @@ function GridArtSet({ setInfo }) {
       </mesh>
       <mesh position={[0, 0, -0.01]}>
         <boxGeometry args={[pW*2 + gap + 0.06, pH*2 + gap + 0.06, 0.02]} />
-        <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} />
+        <meshStandardMaterial color={hovered ? '#a48e70' : '#6a5948'} roughness={0.72} />
       </mesh>
     </group>
   );
@@ -676,7 +674,11 @@ export default function App() {
         <div className="modal-overlay" onClick={() => setSelectedArt(null)}>
           <section className="modal-content" role="dialog" aria-modal="true" aria-label={selectedArt.title} onClick={event => event.stopPropagation()}>
             <button className="modal-close-btn" aria-label="Close artwork details" onClick={() => setSelectedArt(null)}>×</button>
-            <div className="modal-img-wrapper"><img src={selectedArt.file} alt={selectedArt.title} /></div>
+            <div className={selectedArt.files ? 'modal-img-wrapper set-preview' : 'modal-img-wrapper'}>
+              {selectedArt.files
+                ? selectedArt.files.map((file,index) => <img key={file} src={file} alt={`${selectedArt.title} — panel ${index+1}`} />)
+                : <img src={selectedArt.file} alt={selectedArt.title} />}
+            </div>
             <div className="modal-body">
               <span className="modal-tag">SELECTED WORK</span>
               <h2>{selectedArt.title}</h2>
