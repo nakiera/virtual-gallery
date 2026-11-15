@@ -654,7 +654,10 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
       to.y = 0;
       const remaining = to.length();
       if (remaining > 0.055) {
-        const step = Math.min(remaining, WALK_SPEED * dt);
+        // Ease out during the final approach instead of snapping to the painting.
+        const approachFactor = THREE.MathUtils.smoothstep(remaining, 0, 1.85);
+        const speed = WALK_SPEED * THREE.MathUtils.lerp(0.24, 1, approachFactor);
+        const step = Math.min(remaining, speed * dt);
         camera.position.addScaledVector(to.normalize(), step);
       } else {
         camera.position.copy(destination.current);
@@ -699,15 +702,23 @@ function artworkInfoText(art) {
 }
 
 function GuidedArtworkPresentation({ art, onClose, onNext }) {
+  const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [count, setCount] = useState(0);
   const copy = useMemo(() => artworkInfoText(art), [art]);
 
   useEffect(() => {
+    setVisible(false);
     setExpanded(false);
     setCount(0);
+    // The camera has already arrived. Reveal the work gradually over the 3D view,
+    // rather than mounting a fully opaque fullscreen artwork in a single frame.
+    const frame = window.requestAnimationFrame(() => setVisible(true));
     const timeout = window.setTimeout(() => setExpanded(true), 3000);
-    return () => window.clearTimeout(timeout);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timeout);
+    };
   }, [art]);
 
   useEffect(() => {
@@ -725,7 +736,7 @@ function GuidedArtworkPresentation({ art, onClose, onNext }) {
 
   const files = art.files || [art.file];
   return (
-    <aside className={`tour-feature ${expanded ? 'tour-feature--expanded' : ''}`}
+    <aside className={`tour-feature ${visible ? 'tour-feature--visible' : ''} ${expanded ? 'tour-feature--expanded' : ''}`}
       aria-label={`Guided tour information: ${art.title}`}>
       <div className="tour-feature-backdrop" />
       <div className="tour-feature-inner">
