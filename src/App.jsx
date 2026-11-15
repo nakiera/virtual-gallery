@@ -457,7 +457,7 @@ export default function App() {
         <GalleryDoor />
         {ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} />)}
         {GRID_SETS.map((setInfo) => <GridArtSet key={setInfo.id} setInfo={setInfo} />)}
-        {WING_ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} onSelect={setSelectedArt} />)}
+        {WING_ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} />)}
       </Canvas>
 
       {selectedArt && (
