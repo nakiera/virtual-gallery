@@ -596,6 +596,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
         tourHoldRemaining.current = 0;
         tourRef.current = false;
         onTourInterruptedRef.current();
+        onTourDepartedRef.current();
       }
     };
     const onWheel = (event) => {
@@ -606,6 +607,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
       tourHoldRemaining.current = 0;
       tourRef.current = false;
       onTourInterruptedRef.current();
+      onTourDepartedRef.current();
       camera.getWorldDirection(forward.current);
       forward.current.y = 0;
       forward.current.normalize();
@@ -696,7 +698,7 @@ function artworkInfoText(art) {
   return [`Artist: ${ARTIST_INFO.name}.`, dimensions, category, description].filter(Boolean).join('  ');
 }
 
-function GuidedArtworkPresentation({ art, onClose }) {
+function GuidedArtworkPresentation({ art, onClose, onNext }) {
   const [expanded, setExpanded] = useState(false);
   const [count, setCount] = useState(0);
   const copy = useMemo(() => artworkInfoText(art), [art]);
@@ -748,8 +750,11 @@ function GuidedArtworkPresentation({ art, onClose }) {
           </div>
         </div>
       </div>
-      <button type="button" onClick={onClose} className="tour-feature-dismiss"
-        aria-label="Exit the artwork presentation and stop guided tour">×</button>
+      <div className="tour-feature-commands">
+        <button type="button" onClick={onNext} className="tour-feature-next">Next artwork ↗</button>
+        <button type="button" onClick={onClose} className="tour-feature-dismiss"
+          aria-label="Exit the artwork presentation and stop guided tour">×</button>
+      </div>
     </aside>
   );
 }
@@ -829,7 +834,7 @@ export default function App() {
       )}
 
       {tourArtwork && tourActive && (
-        <GuidedArtworkPresentation key={tourArtwork.id} art={tourArtwork} onClose={stopTour} />
+        <GuidedArtworkPresentation key={tourArtwork.id} art={tourArtwork} onClose={stopTour} onNext={nextStop} />
       )}
 
       {selectedArt && (
