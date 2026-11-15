@@ -251,7 +251,7 @@ export default function App(){
   <div className="iaaf-scene"><Canvas shadows dpr={[1,1.5]} camera={{position:approach[0].eye,fov:58,near:.05,far:85}} onCreated={()=>setReady(true)}>
    <Stage phase={phase==='welcome'?'arrival':phase} index={index} mode={mode} onReached={reached} onSelect={selectArtwork} onFloorClick={(point)=>navigateTo(point)} controller={control}/>
   </Canvas></div>
-  <header className="iaaf-topbar"><div className="iaaf-mark">GRADPIXEL <span>/</span> PINTURA</div><div className="iaaf-place">{t.exhibition} <span>·</span> L28</div></header>
+  <header className="iaaf-topbar"><div className="iaaf-mark">PINTURA</div><div className="iaaf-place">{t.exhibition} <span>·</span> L28</div></header>
   {phase==='welcome'&&<section className="iaaf-welcome">
    <p className="iaaf-eyebrow">{t.intro}</p>
    <h1>{t.heading1}<br/><em>{t.heading2}</em></h1>
