@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import * as THREE from 'three';
@@ -108,10 +108,8 @@ function ArtFrame({ art, onSelect }) {
   const frameHeight = art.height || 1.1;
 
   return (
-    <group 
-      position={art.position} 
-      rotation={art.rotation}
-      onClick={(e) => { e.stopPropagation(); onSelect(art); }}
+    <group userData={{ navigationArtwork: art }} position={art.position} rotation={art.rotation}
+      onClick={(e) => { e.stopPropagation(); }}
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
       onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
     >
@@ -150,12 +148,10 @@ function GridArtSet({ setInfo, onSelect }) {
   const gap = 0.02;
 
   return (
-    <group 
-      position={setInfo.position} 
-      rotation={setInfo.rotation}
+    <group userData={{ navigationArtwork: { ...setInfo, file: setInfo.files[0] } }} position={setInfo.position} rotation={setInfo.rotation}
       onClick={(e) => {
         e.stopPropagation();
-        onSelect({ title: setInfo.title, category: setInfo.category, description: setInfo.description, file: setInfo.files[0] });
+        // Navigation is handled by the shared pointer controller.
       }}
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
       onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
@@ -219,148 +215,237 @@ function GalleryArchitecture() {
   );
 }
 
-function TouchAndTrackpadControls({ mobileMove, mobileTurn }) {
-  const { camera, gl } = useThree();
-  const isDragging = useRef(false);
-  const previousTouchPosition = useRef({ x: 0, y: 0 });
-  const previousPinchDistance = useRef(null);
+
+const CAMERA_HEIGHT = 1.7;
+const WALK_BOUNDS = { minX: -11.1, maxX: 11.1, minZ: -16.9, maxZ: 12.9 };
+const WALK_SPEED = 3.9;
+const ALL_STOPS = [...ARTWORKS, ...WING_ARTWORKS, ...GRID_SETS.map(item => ({ ...item, file: item.files[0] }))];
+
+function validDestination(position) {
+  return new THREE.Vector3(
+    THREE.MathUtils.clamp(position.x, WALK_BOUNDS.minX, WALK_BOUNDS.maxX),
+    CAMERA_HEIGHT,
+    THREE.MathUtils.clamp(position.z, WALK_BOUNDS.minZ, WALK_BOUNDS.maxZ)
+  );
+}
+
+function artworkDestination(art) {
+  const normal = new THREE.Vector3(0, 0, 1).applyEuler(new THREE.Euler(...art.rotation));
+  const position = new THREE.Vector3(...art.position).addScaledVector(normal, 2.2);
+  return validDestination(position);
+}
+
+// Navigation uses the existing rectangular walkable gallery. A real fair hall will
+// require a measured walkable navigation mesh before entrance routing is enabled.
+function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFinished }) {
+  const { camera, gl, scene } = useThree();
+  const pointer = useRef(null);
+  const raycaster = useMemo(() => new THREE.Raycaster(), []);
+  const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), []);
   const euler = useRef(new THREE.Euler(0, 0, 0, 'YXZ'));
+  const forward = useRef(new THREE.Vector3());
+  const targetDirection = useRef(new THREE.Vector3());
+  const destination = useRef(null);
+  const lookAt = useRef(null);
+  const pendingArt = useRef(null);
+  const currentTourIndex = useRef(-1);
+  const onArtworkReachedRef = useRef(onArtworkReached);
+  const onTourFinishedRef = useRef(onTourFinished);
+
+  useEffect(() => { onArtworkReachedRef.current = onArtworkReached; }, [onArtworkReached]);
+  useEffect(() => { onTourFinishedRef.current = onTourFinished; }, [onTourFinished]);
 
   useEffect(() => {
-    const domElement = gl.domElement;
-
-    const onPointerDown = (e) => {
-      if (e.button === 0 || e.pointerType === 'touch') {
-        isDragging.current = true;
-        previousTouchPosition.current = { x: e.clientX, y: e.clientY };
+    navigationRef.current = {
+      stop() { destination.current = null; pendingArt.current = null; tourRef.current = false; },
+      goTo(art) {
+        destination.current = artworkDestination(art);
+        lookAt.current = new THREE.Vector3(...art.position);
+        pendingArt.current = art;
+      },
+      startTour() {
+        tourRef.current = true;
+        currentTourIndex.current = 0;
+        const art = ALL_STOPS[0];
+        destination.current = artworkDestination(art);
+        lookAt.current = new THREE.Vector3(...art.position);
+        pendingArt.current = null;
+      },
+      next() {
+        tourRef.current = true;
+        currentTourIndex.current = (currentTourIndex.current + 1) % ALL_STOPS.length;
+        const art = ALL_STOPS[currentTourIndex.current];
+        destination.current = artworkDestination(art);
+        lookAt.current = new THREE.Vector3(...art.position);
+        pendingArt.current = null;
+      },
+      previous() {
+        tourRef.current = true;
+        currentTourIndex.current = (currentTourIndex.current - 1 + ALL_STOPS.length) % ALL_STOPS.length;
+        const art = ALL_STOPS[currentTourIndex.current];
+        destination.current = artworkDestination(art);
+        lookAt.current = new THREE.Vector3(...art.position);
+        pendingArt.current = null;
       }
     };
 
-    const onPointerMove = (e) => {
-      if (!isDragging.current) return;
-
-      const deltaX = e.clientX - previousTouchPosition.current.x;
-      const deltaY = e.clientY - previousTouchPosition.current.y;
-
-      previousTouchPosition.current = { x: e.clientX, y: e.clientY };
-
+    const canvas = gl.domElement;
+    canvas.style.touchAction = 'none';
+    const onPointerDown = (event) => {
+      if (event.button !== 0 && event.pointerType !== 'touch') return;
+      pointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY, prevX: event.clientX, prevY: event.clientY, moved: false };
+      canvas.setPointerCapture?.(event.pointerId);
+    };
+    const onPointerMove = (event) => {
+      const p = pointer.current;
+      if (!p || p.id !== event.pointerId) return;
+      const dx = event.clientX - p.prevX;
+      const dy = event.clientY - p.prevY;
+      p.prevX = event.clientX;
+      p.prevY = event.clientY;
+      if (Math.hypot(event.clientX - p.x, event.clientY - p.y) > 7) p.moved = true;
+      if (!p.moved) return;
+      destination.current = null;
+      tourRef.current = false;
+      pendingArt.current = null;
+      lookAt.current = null;
       euler.current.setFromQuaternion(camera.quaternion);
-      euler.current.y -= deltaX * 0.003;
-      euler.current.x -= deltaY * 0.003;
-      euler.current.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, euler.current.x));
+      euler.current.y -= dx * 0.003;
+      euler.current.x = THREE.MathUtils.clamp(euler.current.x - dy * 0.003, -1.25, 1.25);
       camera.quaternion.setFromEuler(euler.current);
     };
-
-    const onPointerUp = () => {
-      isDragging.current = false;
-    };
-
-    const onTouchMove = (e) => {
-      if (e.touches.length === 2) {
-        const touch1 = e.touches[0];
-        const touch2 = e.touches[1];
-        const dist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
-
-        if (previousPinchDistance.current !== null) {
-          const deltaDist = dist - previousPinchDistance.current;
-          const forward = new THREE.Vector3();
-          camera.getWorldDirection(forward);
-          forward.y = 0;
-          forward.normalize();
-          camera.position.addScaledVector(forward, deltaDist * 0.02);
+    const onPointerUp = (event) => {
+      const p = pointer.current;
+      if (!p || p.id !== event.pointerId) return;
+      pointer.current = null;
+      if (p.moved) return;
+      const rect = canvas.getBoundingClientRect();
+      const coords = new THREE.Vector2(
+        ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        -((event.clientY - rect.top) / rect.height) * 2 + 1
+      );
+      raycaster.setFromCamera(coords, camera);
+      const intersections = raycaster.intersectObjects(scene.children, true);
+      let art = null;
+      for (const hit of intersections) {
+        let object = hit.object;
+        while (object) {
+          if (object.userData?.navigationArtwork) {
+            art = object.userData.navigationArtwork;
+            break;
+          }
+          object = object.parent;
         }
-        previousPinchDistance.current = dist;
+        if (art) break;
+      }
+      if (art) {
+        destination.current = artworkDestination(art);
+        lookAt.current = new THREE.Vector3(...art.position);
+        pendingArt.current = art;
+        tourRef.current = false;
+        return;
+      }
+      const ground = new THREE.Vector3();
+      if (raycaster.ray.intersectPlane(plane, ground)) {
+        destination.current = validDestination(ground);
+        lookAt.current = null;
+        pendingArt.current = null;
+        tourRef.current = false;
       }
     };
-
-    const onTouchEnd = () => {
-      previousPinchDistance.current = null;
+    const onWheel = (event) => {
+      event.preventDefault();
+      destination.current = null;
+      lookAt.current = null;
+      pendingArt.current = null;
+      tourRef.current = false;
+      camera.getWorldDirection(forward.current);
+      forward.current.y = 0;
+      forward.current.normalize();
+      const next = validDestination(camera.position.clone().addScaledVector(forward.current, -event.deltaY * 0.009));
+      camera.position.copy(next);
     };
-
-    const onWheel = (e) => {
-      const forward = new THREE.Vector3();
-      camera.getWorldDirection(forward);
-      forward.y = 0;
-      forward.normalize();
-      camera.position.addScaledVector(forward, -e.deltaY * 0.005);
-    };
-
-    domElement.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
-    domElement.addEventListener('touchmove', onTouchMove);
-    domElement.addEventListener('touchend', onTouchEnd);
-    domElement.addEventListener('wheel', onWheel, { passive: true });
-
+    const onPointerCancel = () => { pointer.current = null; };
+    canvas.addEventListener('pointerdown', onPointerDown);
+    canvas.addEventListener('pointermove', onPointerMove);
+    canvas.addEventListener('pointerup', onPointerUp);
+    canvas.addEventListener('pointercancel', onPointerCancel);
+    canvas.addEventListener('wheel', onWheel, { passive: false });
     return () => {
-      domElement.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      domElement.removeEventListener('touchmove', onTouchMove);
-      domElement.removeEventListener('touchend', onTouchEnd);
-      domElement.removeEventListener('wheel', onWheel);
+      canvas.removeEventListener('pointerdown', onPointerDown);
+      canvas.removeEventListener('pointermove', onPointerMove);
+      canvas.removeEventListener('pointerup', onPointerUp);
+      canvas.removeEventListener('pointercancel', onPointerCancel);
+      canvas.removeEventListener('wheel', onWheel);
+      navigationRef.current = null;
     };
-  }, [camera, gl]);
+  }, [camera, gl, scene, raycaster, plane, navigationRef, tourRef]);
 
   useFrame((_, delta) => {
-    const speed = 5.2 * delta;
-    const forward = new THREE.Vector3();
-    const right = new THREE.Vector3();
-
-    if (mobileTurn) {
-      euler.current.setFromQuaternion(camera.quaternion);
-      euler.current.y += mobileTurn * 2.2 * delta;
-      camera.quaternion.setFromEuler(euler.current);
+    if (!destination.current) return;
+    const to = targetDirection.current.copy(destination.current).sub(camera.position);
+    to.y = 0;
+    const remaining = to.length();
+    if (remaining > 0.055) {
+      const step = Math.min(remaining, WALK_SPEED * Math.min(delta, 0.05));
+      camera.position.addScaledVector(to.normalize(), step);
+    } else {
+      camera.position.copy(destination.current);
+      destination.current = null;
+      if (pendingArt.current) {
+        onArtworkReachedRef.current(pendingArt.current);
+        pendingArt.current = null;
+      }
+      if (tourRef.current) {
+        currentTourIndex.current += 1;
+        if (currentTourIndex.current >= ALL_STOPS.length) {
+          tourRef.current = false;
+          onTourFinishedRef.current();
+        } else {
+          const art = ALL_STOPS[currentTourIndex.current];
+          destination.current = artworkDestination(art);
+          lookAt.current = new THREE.Vector3(...art.position);
+        }
+      }
     }
-
-    camera.getWorldDirection(forward);
-    forward.y = 0;
-    forward.normalize();
-    right.crossVectors(camera.up, forward).normalize();
-
-    if (mobileMove) {
-      if (mobileMove.forward !== 0) camera.position.addScaledVector(forward, mobileMove.forward * speed);
-      if (mobileMove.right !== 0) camera.position.addScaledVector(right, mobileMove.right * speed);
+    camera.position.y = CAMERA_HEIGHT;
+    if (lookAt.current) {
+      const desired = new THREE.Quaternion();
+      const matrix = new THREE.Matrix4().lookAt(camera.position, lookAt.current, camera.up);
+      desired.setFromRotationMatrix(matrix);
+      camera.quaternion.slerp(desired, Math.min(1, delta * 4));
     }
-
-    camera.position.y = 1.7;
-    camera.position.x = THREE.MathUtils.clamp(camera.position.x, -11.2, 11.2);
-    camera.position.z = THREE.MathUtils.clamp(camera.position.z, -17.0, 13.0);
   });
-
   return null;
 }
 
 export default function App() {
   const [selectedArt, setSelectedArt] = useState(null);
-  const [mobileMove, setMobileMove] = useState(null);
-  const [mobileTurn, setMobileTurn] = useState(null);
+  const navigationRef = useRef(null);
+  const tourRef = useRef(false);
+  const [tourActive, setTourActive] = useState(false);
+  const startTour = () => { setSelectedArt(null); navigationRef.current?.startTour(); setTourActive(true); };
+  const stopTour = () => { navigationRef.current?.stop(); setTourActive(false); };
+  const nextStop = () => { setSelectedArt(null); navigationRef.current?.next(); setTourActive(true); };
 
   return (
     <div className="canvas-container">
-      <div className="instructions-overlay-hint" style={{ position: 'absolute', top: 15, left: '50%', transform: 'translateX(-50%)', zIndex: 10, background: 'rgba(0,0,0,0.6)', color: '#fff', padding: '6px 16px', borderRadius: '20px', fontSize: '13px', pointerEvents: 'none' }}>
-        💡 Click &amp; drag or touch &amp; swipe to look around.
-      </div>
-
-      <div className="mobile-controls-overlay" style={{ bottom: '75px' }}>
-        <div className="mobile-turn-group">
-          <button onTouchStart={() => setMobileTurn(1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(1)} onMouseUp={() => setMobileTurn(0)}>↺ Turn</button>
-          <button onTouchStart={() => setMobileTurn(-1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(-1)} onMouseUp={() => setMobileTurn(0)}>Turn ↻</button>
+      <div className="gallery-toolbar" aria-label="Gallery navigation">
+        <div className="gallery-brand"><span>GRADPIXEL</span><strong>Virtual Gallery</strong></div>
+        <div className="gallery-actions">
+          <button type="button" onClick={tourActive ? stopTour : startTour}>{tourActive ? 'Pause tour' : 'Start guided tour'}</button>
+          <button type="button" onClick={nextStop}>Next artwork</button>
+          <button type="button" onClick={stopTour}>Stop</button>
         </div>
-        <div className="mobile-dpad">
-          <button onTouchStart={() => setMobileMove({ forward: 1, right: 0 })} onTouchEnd={() => setMobileMove(null)} onMouseDown={() => setMobileMove({ forward: 1, right: 0 })} onMouseUp={() => setMobileMove(null)}>▲</button>
-          <div className="dpad-row">
-            <button onTouchStart={() => setMobileMove({ forward: 0, right: 1 })} onTouchEnd={() => setMobileMove(null)} onMouseDown={() => setMobileMove({ forward: 0, right: 1 })} onMouseUp={() => setMobileMove(null)}>◄</button>
-            <button onTouchStart={() => setMobileMove({ forward: -1, right: 0 })} onTouchEnd={() => setMobileMove(null)} onMouseDown={() => setMobileMove({ forward: -1, right: 0 })} onMouseUp={() => setMobileMove(null)}>▼</button>
-            <button onTouchStart={() => setMobileMove({ forward: 0, right: -1 })} onTouchEnd={() => setMobileMove(null)} onMouseDown={() => setMobileMove({ forward: 0, right: -1 })} onMouseUp={() => setMobileMove(null)}>►</button>
-          </div>
-        </div>
+        <p className="gallery-hint">Click the floor to walk · Click an artwork to approach · Drag to look around · Scroll to move</p>
       </div>
 
       <Canvas camera={{ position: [0, 1.7, 8.0], fov: 70 }}>
         <ambientLight intensity={1.8} color="#ffffff" />
         <directionalLight position={[0, 10, 5]} intensity={1.8} color="#fffcf5" />
-        <TouchAndTrackpadControls mobileMove={mobileMove} mobileTurn={mobileTurn} />
+        <GalleryNavigation navigationRef={navigationRef} tourRef={tourRef}
+          onArtworkReached={(art) => { setSelectedArt(art); setTourActive(false); }}
+          onTourFinished={() => setTourActive(false)} />
         <GalleryArchitecture />
         <GalleryDoor />
         {ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} onSelect={setSelectedArt} />)}
