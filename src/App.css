@@ -297,3 +297,27 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ae8760; outline-offs
   .tour-feature-inner, .tour-feature-information { transition: none; }
   .tour-feature-caret { animation: none; }
 }
+
+.tour-feature-commands {
+  position: absolute;
+  top: clamp(110px,13vh,150px);
+  right: clamp(14px,4vw,65px);
+  z-index: 3;
+  display: flex; gap: 9px; align-items: center;
+}
+.tour-feature-commands .tour-feature-dismiss {
+  position: static; flex: 0 0 auto;
+}
+.tour-feature-next {
+  min-height: 45px; padding: 0 17px;
+  border: 1px solid rgba(216,196,166,.45);
+  border-radius: 2px;
+  background: rgba(43,41,38,.9);
+  color: #e9d7bb; font: 600 11px 'DM Sans',sans-serif;
+  letter-spacing: .05em; cursor: pointer;
+}
+.tour-feature-next:hover, .tour-feature-dismiss:hover { background: #765e45; }
+@media (max-width: 700px) {
+  .tour-feature-commands { top: 82px; right: 10px; gap: 5px; }
+  .tour-feature-next { min-height: 36px; padding: 0 10px; font-size: 10px; }
+}
