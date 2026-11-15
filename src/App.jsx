@@ -36,9 +36,9 @@ const right=walls.filter(item=>item.wall==='right');
 const back=walls.filter(item=>item.wall==='back');
 const sculptureStations=[[-1.55,-8.75],[1.55,-8.75],[-1.5,-11.2],[1.5,-11.2]];
 const wallStops=[
- ...left.map((a,i)=>({...a,position:[-2.45,1.52,-8.05-i*.96],eye:[-.55,1.58,-8.05-i*.96]})),
- ...back.map((a,i)=>({...a,position:[-1.48+i*1.48,1.55,-12.91],eye:[-1.48+i*1.48,1.6,-11.1]})),
- ...right.map((a,i)=>({...a,position:[2.45,1.52,-12.15+i*.96],eye:[.55,1.58,-12.15+i*.96]}))
+ ...left.map((a,i)=>({...a,position:[-2.45,1.52,-8.05-i*.96],eye:[-.05,1.62,-8.05-i*.96]})),
+ ...back.map((a,i)=>({...a,position:[-1.48+i*1.48,1.55,-12.91],eye:[-1.48+i*1.48,1.65,-10.55]})),
+ ...right.map((a,i)=>({...a,position:[2.45,1.52,-12.15+i*.96],eye:[.05,1.62,-12.15+i*.96]}))
 ];
 const sculptStops=sculpture.map((a,i)=>({...a,position:[sculptureStations[a.group][0],.9,sculptureStations[a.group][1]],eye:[sculptureStations[a.group][0]*.55,1.6,sculptureStations[a.group][1]+1]}));
 const stops=[...wallStops,...sculptStops];
@@ -60,10 +60,10 @@ function CameraDirector({mode,step,onArrive,goTo,refApi}){
  const drag=useRef(null);
  useFrame((_,delta)=>{
   const d=Math.min(delta,.045);
-  const alpha=1-Math.exp(-2.05*d);
+  const alpha=1-Math.exp(-1.55*d);
   camera.position.lerp(target.current,alpha);
   const desired=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().lookAt(camera.position,focal.current,new THREE.Vector3(0,1,0)));
-  camera.quaternion.slerp(desired,1-Math.exp(-3.5*d));
+  camera.quaternion.slerp(desired,1-Math.exp(-2.1*d));
   if(camera.position.distanceTo(target.current)<.095&&!reached.current){ reached.current=true; onArrive(); }
  });
  React.useEffect(()=>{
@@ -210,7 +210,7 @@ export default function App(){
   }
  };
  return <div className="iaaf-page">
-  <div className="iaaf-scene"><Canvas shadows dpr={[1,1.5]} camera={{position:approach[0].eye,fov:64,near:.05,far:85}} onCreated={()=>setReady(true)}>
+  <div className="iaaf-scene"><Canvas shadows dpr={[1,1.5]} camera={{position:approach[0].eye,fov:58,near:.05,far:85}} onCreated={()=>setReady(true)}>
    <Stage phase={phase==='welcome'?'arrival':phase} index={index} mode={mode} onReached={reached} onSelect={(art)=>{stopTimer();setPaused(true);setSelected(art);}} controller={control}/>
   </Canvas></div>
   <header className="iaaf-topbar"><div className="iaaf-mark">GRADPIXEL <span>/</span> PINTURA</div><div className="iaaf-place">ISTANBUL ART FAIR <span>·</span> L28</div></header>
