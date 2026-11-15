@@ -210,6 +210,19 @@ function Stage({phase,index,mode,onReached,onSelect,onFloorClick,controller}){
   <FairArchitecture onSelect={onSelect} onFloorClick={onFloorClick}/>
  </>;
 }
+class GalleryErrorBoundary extends React.Component {
+ constructor(props){super(props);this.state={error:null};}
+ static getDerivedStateFromError(error){return {error};}
+ componentDidCatch(error,info){console.error('Pintura 3D scene:',error,info);}
+ render(){
+  if(this.state.error)return <div className="iaaf-scene-error" role="alert">
+   <strong>3D sergi sahnesi yüklenemedi.</strong>
+   <p>Tarayıcınızın WebGL desteğini kontrol edin veya sayfayı yenileyin.</p>
+   <button onClick={()=>this.setState({error:null})}>Tekrar dene</button>
+  </div>;
+  return this.props.children;
+ }
+}
 export default function App(){
  const [language,setLanguage]=useState('tr');
  const t=translations[language];
@@ -248,9 +261,13 @@ export default function App(){
   }
  };
  return <div className="iaaf-page" lang={language}>
-  <div className="iaaf-scene"><Canvas shadows dpr={[1,1.5]} camera={{position:approach[0].eye,fov:58,near:.05,far:85}} onCreated={()=>setReady(true)}>
-   <Stage phase={phase==='welcome'?'arrival':phase} index={index} mode={mode} onReached={reached} onSelect={selectArtwork} onFloorClick={(point)=>navigateTo(point)} controller={control}/>
-  </Canvas></div>
+  <div className="iaaf-scene">
+   {phase==='welcome'
+    ? <div className="iaaf-welcome-backdrop" aria-hidden="true"><div className="iaaf-backdrop-sign">PINTURA<span>ISTANBUL · L28</span></div></div>
+    : <GalleryErrorBoundary><Canvas shadows dpr={[1,1.25]} camera={{position:approach[0].eye,fov:58,near:.05,far:85}} onCreated={()=>setReady(true)}>
+       <Stage phase={phase} index={index} mode={mode} onReached={reached} onSelect={selectArtwork} onFloorClick={(point)=>navigateTo(point)} controller={control}/>
+      </Canvas></GalleryErrorBoundary>}
+  </div>
   <header className="iaaf-topbar"><div className="iaaf-mark">PINTURA</div><div className="iaaf-place">{t.exhibition} <span>·</span> L28</div></header>
   {phase==='welcome'&&<section className="iaaf-welcome">
    <p className="iaaf-eyebrow">{t.intro}</p>
