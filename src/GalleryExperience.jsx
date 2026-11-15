@@ -255,6 +255,7 @@ function ArtFrame({ art }) {
 
 function GridArtSet({ setInfo }) {
   const [textures, setTextures] = useState([]);
+  const texturesRef = useRef([]);
   const [hovered, setHovered] = useState(false);
   const { camera } = useThree();
   const requested = useRef(false);
@@ -273,6 +274,7 @@ function GridArtSet({ setInfo }) {
       loader.load(file, tex => {
         tex.colorSpace = THREE.SRGBColorSpace;
         tex.anisotropy = 2;
+        texturesRef.current[index] = tex;
         setTextures(previous => {
           const next = [...previous];
           next[index] = tex;
@@ -282,7 +284,7 @@ function GridArtSet({ setInfo }) {
     });
   });
 
-  useEffect(() => () => textures.forEach(texture => texture?.dispose()), [textures]);
+  useEffect(() => () => texturesRef.current.forEach(texture => texture?.dispose()), []);
 
   // Preserve the real 30 × 40 cm size of each of the four separate panels.
   const pW = 0.30 * DISPLAY_SCALE;
