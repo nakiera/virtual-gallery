@@ -438,3 +438,5 @@ body, html {
  .iaaf-footer{padding:12px;font-size:7px;letter-spacing:.08em}
 }
 @media(prefers-reduced-motion:reduce){.iaaf-page button{transition:none!important}}
+
+.iaaf-catalogue-preview{display:block;max-height:25vh;max-width:100%;width:auto;object-fit:contain;margin:10px 0 4px;border:1px solid rgba(230,217,195,.24)}
