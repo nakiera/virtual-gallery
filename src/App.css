@@ -454,3 +454,14 @@ body, html {
 .iaaf-language button:hover{color:#fff}
 .iaaf-language span{opacity:.5}
 @media(max-width:740px){.iaaf-footer{justify-content:center;gap:7px;padding:7px 11px}.iaaf-footer>span{font-size:7px}.iaaf-controls{bottom:65px}.iaaf-navigation-tip{bottom:177px}}
+
+/* Reliable first paint: the landing does not require WebGL or asset downloads. */
+.iaaf-welcome-backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 76% 36%,#e9e4d9 0%,#c7c2b7 37%,#8e8a83 100%);overflow:hidden}
+.iaaf-welcome-backdrop:before{content:"";position:absolute;top:15%;right:8%;width:36%;height:72%;background:linear-gradient(140deg,#efebe3,#cac4b7);border:26px solid #eee8de;box-shadow:0 30px 80px #605a5266}
+.iaaf-welcome-backdrop:after{content:"";position:absolute;left:50%;bottom:0;width:50%;height:22%;background:linear-gradient(0deg,#a5a19944,transparent);transform:skewX(-14deg)}
+.iaaf-backdrop-sign{position:absolute;top:39%;right:15%;font:normal clamp(26px,4vw,60px)/1.1 Georgia,serif;letter-spacing:.16em;color:#625c52;text-align:center;z-index:1}
+.iaaf-backdrop-sign span{display:block;font:600 10px/2 system-ui,sans-serif;letter-spacing:.25em;margin-top:20px}
+.iaaf-scene-error{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px;background:#272623;color:#f3ede4;text-align:center;padding:30px}
+.iaaf-scene-error strong{font:normal clamp(22px,4vw,35px) Georgia,serif}
+.iaaf-scene-error p{font-size:13px;line-height:1.7;max-width:400px}
+.iaaf-scene-error button{border:1px solid #d7b98e;background:#d7b98e;color:#24211d;padding:12px 24px;cursor:pointer}
