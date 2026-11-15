@@ -8,26 +8,26 @@ import './App.css';
 // Paintings are represented by labelled conservation-safe panels until the
 // original artwork scans can be uploaded; never fabricate reproductions.
 const inventory = [
- {artist:'Tülin Oktav Doğruer',title:'Untitled I',size:'55 × 80 cm',w:.55,h:.8,wall:'left'},
- {artist:'Tülin Oktav Doğruer',title:'Untitled II',size:'70 × 90 cm',w:.7,h:.9,wall:'left'},
- {artist:'Ayazma',title:'Just Like Water',size:'90 × 90 cm',w:.9,h:.9,wall:'left'},
- {artist:'Birgül Ergün',title:'Öyle Bir Geçer Zaman ki',size:'110 × 110 cm',w:1.1,h:1.1,wall:'back'},
- {artist:'Birgül Ergün',title:'Bir Varmış Bir Yokmuş',size:'20 × 25 cm',w:.2,h:.25,wall:'left'},
- {artist:'Birsen Karaosman',title:'Untitled',size:'15 × 15 cm',w:.15,h:.15,wall:'left'},
- {artist:'Erdinç Sakin',title:'Untitled (round)',size:'80 cm diameter',w:.8,h:.8,wall:'back'},
- {artist:'Erdinç Sakin',title:'Untitled II',size:'60 × 60 cm',w:.6,h:.6,wall:'right'},
- {artist:'Erdinç Sakin',title:'Untitled III',size:'60 × 50 cm',w:.6,h:.5,wall:'right'},
- {artist:'Haldun Yılmaz',title:'Görmek yetmez',size:'75 × 75 cm',w:.75,h:.75,wall:'right'},
- {artist:'Özlen Yücelmiş',title:'Untitled',size:'Dimensions unconfirmed',w:.55,h:.7,wall:'right'},
- {artist:'Çiğdem Kılıç',title:'Untitled I',size:'80 × 60 cm',w:.8,h:.6,wall:'back'},
- {artist:'Çiğdem Kılıç',title:'Untitled II',size:'80 × 60 cm',w:.8,h:.6,wall:'right'},
- {artist:'Ece Kanışkan & Kayhan Öztürk',title:'Neşe Palamutları — large',size:'Ø 30 × 46 cm',sculpt:true,group:0},
- {artist:'Ece Kanışkan & Kayhan Öztürk',title:'Neşe Palamutları — medium',size:'Ø 20 × 32 cm',sculpt:true,group:0},
- {artist:'Ece Kanışkan & Kayhan Öztürk',title:'Neşe Palamutları — small',size:'Ø 12 × 20 cm',sculpt:true,group:0},
- {artist:'Kayhan Öztürk',title:'Sadakat',size:'10 × 30 × 50 cm',sculpt:true,group:1},
- {artist:'Kayhan Öztürk',title:'Araf I',size:'6 × 30 × 40 cm',sculpt:true,group:2},
- {artist:'Kayhan Öztürk',title:'Araf II',size:'6 × 30 × 45 cm',sculpt:true,group:2},
- {artist:'Şebnem Çetiner',title:'Hayal et',size:'Dimensions unconfirmed',sculpt:true,group:3}
+ {artist:'Tülin Oktav Doğruer',title:'Untitled I',size:'55 × 80 cm',image:'/iaaf-artworks/01-tulin-1.jpg',w:.55,h:.8,wall:'left'},
+ {artist:'Tülin Oktav Doğruer',title:'Untitled II',size:'70 × 90 cm',image:'/iaaf-artworks/02-tulin-2.jpg',w:.7,h:.9,wall:'left'},
+ {artist:'Ayazma',title:'Just Like Water',size:'90 × 90 cm',image:'/iaaf-artworks/03-ayazma.jpg',w:.9,h:.9,wall:'left'},
+ {artist:'Birgül Ergün',title:'Öyle Bir Geçer Zaman ki',size:'110 × 110 cm',image:'/iaaf-artworks/04-birgul-1.jpg',w:1.1,h:1.1,wall:'back'},
+ {artist:'Birgül Ergün',title:'Bir Varmış Bir Yokmuş',size:'20 × 25 cm',image:'/iaaf-artworks/05-birgul-2.jpg',w:.2,h:.25,wall:'left'},
+ {artist:'Birsen Karaosman',title:'Untitled',size:'15 × 15 cm',image:'/iaaf-artworks/06-birsen.jpg',w:.15,h:.15,wall:'left'},
+ {artist:'Erdinç Sakin',title:'Untitled (round)',size:'80 cm diameter',image:'/iaaf-artworks/07-erdinc-1.jpg',w:.8,h:.8,wall:'back'},
+ {artist:'Erdinç Sakin',title:'Untitled II',size:'60 × 60 cm',image:'/iaaf-artworks/08-erdinc-2.jpg',w:.6,h:.6,wall:'right'},
+ {artist:'Erdinç Sakin',title:'Untitled III',size:'60 × 50 cm',image:'/iaaf-artworks/09-erdinc-3.jpg',w:.6,h:.5,wall:'right'},
+ {artist:'Haldun Yılmaz',title:'Görmek yetmez',size:'75 × 75 cm',image:'/iaaf-artworks/10-haldun.jpg',w:.75,h:.75,wall:'right'},
+ {artist:'Özlen Yücelmiş',title:'Untitled',size:'Dimensions unconfirmed',image:'/iaaf-artworks/11-ozlen.jpg',w:.55,h:.7,wall:'right'},
+ {artist:'Çiğdem Kılıç',title:'Untitled I',size:'80 × 60 cm',image:'/iaaf-artworks/12-cigdem-1.jpg',w:.8,h:.6,wall:'back'},
+ {artist:'Çiğdem Kılıç',title:'Untitled II',size:'80 × 60 cm',image:'/iaaf-artworks/13-cigdem-2.jpg',w:.8,h:.6,wall:'right'},
+ {artist:'Ece Kanışkan & Kayhan Öztürk',title:'Neşe Palamutları — large',size:'Ø 30 × 46 cm',image:'/iaaf-artworks/14-nesepalamutlari.jpg',sculpt:true,group:0},
+ {artist:'Ece Kanışkan & Kayhan Öztürk',title:'Neşe Palamutları — medium',size:'Ø 20 × 32 cm',image:'/iaaf-artworks/14-nesepalamutlari.jpg',sculpt:true,group:0},
+ {artist:'Ece Kanışkan & Kayhan Öztürk',title:'Neşe Palamutları — small',size:'Ø 12 × 20 cm',image:'/iaaf-artworks/14-nesepalamutlari.jpg',sculpt:true,group:0},
+ {artist:'Kayhan Öztürk',title:'Sadakat',size:'10 × 30 × 50 cm',image:'/iaaf-artworks/15-sadakat.jpg',sculpt:true,group:1},
+ {artist:'Kayhan Öztürk',title:'Araf I',size:'6 × 30 × 40 cm',image:'/iaaf-artworks/16-araf.jpg',sculpt:true,group:2},
+ {artist:'Kayhan Öztürk',title:'Araf II',size:'6 × 30 × 45 cm',image:'/iaaf-artworks/16-araf.jpg',sculpt:true,group:2},
+ {artist:'Şebnem Çetiner',title:'Hayal et',size:'Dimensions unconfirmed',image:'/iaaf-artworks/17-hayalet.jpg',sculpt:true,group:3}
 ];
 const walls=inventory.filter(item=>!item.sculpt);
 const sculpture=inventory.filter(item=>item.sculpt);
@@ -97,6 +97,18 @@ function CameraDirector({mode,step,onArrive,goTo,refApi}){
 function Label({children,position,color='#665b50',size=.105,rotation=[0,0,0],maxWidth=1.4}){
  return <Text position={position} rotation={rotation} fontSize={size} color={color} maxWidth={maxWidth} textAlign="center" anchorX="center" anchorY="middle">{children}</Text>;
 }
+function ArtworkSurface({art,width,height}){
+ const [texture,setTexture]=useState(null);
+ React.useEffect(()=>{
+  let active=true,loaded=null;
+  new THREE.TextureLoader().load(art.image,(t)=>{if(!active){t.dispose();return;}t.colorSpace=THREE.SRGBColorSpace;loaded=t;setTexture(t);},undefined,()=>{if(active)setTexture(null);});
+  return()=>{active=false;if(loaded)loaded.dispose();};
+ },[art.image]);
+ if(!texture)return <><mesh position={[0,0,.027]}><planeGeometry args={[width,height]}/><meshStandardMaterial color="#c9c2b7" roughness={.9}/></mesh><Label position={[0,.012,.034]} size={Math.max(.045,Math.min(.072,width/8))} maxWidth={width*.86} color="#3f443f">{art.artist}{' / '}{art.title}</Label></>;
+ const ratio=(texture.image?.width||1)/(texture.image?.height||1);
+ const w=Math.min(width,height*ratio),h=Math.min(height,width/ratio);
+ return <mesh position={[0,0,.031]}><planeGeometry args={[w,h]}/><meshBasicMaterial map={texture} toneMapped={false}/></mesh>;
+}
 function WallWork({art,index,side,onClick}){
  const isBack=side==='back';
  const x=isBack?-1.48+index*1.48:side==='left'?-2.475:2.475;
@@ -106,8 +118,7 @@ function WallWork({art,index,side,onClick}){
  const scale=Math.min(1,art.w>.9?1:.92);
  return <group position={[x,center,z]} rotation={rotation} onClick={(e)=>{e.stopPropagation();onClick(art);}}>
   <mesh position={[0,0,-.01]} castShadow><boxGeometry args={[art.w*scale+.065,art.h*scale+.065,.06]}/><meshStandardMaterial color="#c7b99f" metalness={.42} roughness={.42}/></mesh>
-  <mesh position={[0,0,.027]}><planeGeometry args={[art.w*scale,art.h*scale]}/><meshStandardMaterial color={index%3===0?'#c6b9a5':index%3===1?'#d3d2c9':'#b4c1bd'} roughness={.9}/></mesh>
-  <Label position={[0,.012,.034]} size={Math.max(.045,Math.min(.072,art.w/8))} maxWidth={art.w*.86} color="#3f443f">{art.artist}{'\n'}{art.title}</Label>
+  <ArtworkSurface art={art} width={art.w*scale} height={art.h*scale}/>
   <Label position={[0,-art.h*scale/2-.12,.034]} color="#655d53" size={.056} maxWidth={.9}>{art.size}</Label>
  </group>;
 }
@@ -224,7 +235,7 @@ export default function App(){
   {selected&&phase==='works'&&<aside className="iaaf-workdetail" aria-live="polite">
     <button aria-label="Close artwork details" onClick={()=>{setSelected(null);setPaused(true);stopTimer();}} className="iaaf-close">×</button>
     <p className="iaaf-eyebrow">{selected.sculpt?'SCULPTURE / CERAMICS':'WORK ON WALL'}</p>
-    <h2>{selected.title}</h2><p className="iaaf-artist">{selected.artist}</p><p className="iaaf-size">{selected.size}</p>
+    <h2>{selected.title}</h2><p className="iaaf-artist">{selected.artist}</p><p className="iaaf-size">{selected.size}</p><img className="iaaf-catalogue-preview" src={selected.image} alt={selected.title} onError={e=>{e.currentTarget.style.display='none';}}/>
     <p className="iaaf-disclaimer">Artwork reproduction pending. The 3D stand uses labelled scale-study panels, not invented images.</p>
    </aside>}
   <footer className="iaaf-footer"><span>2026 · GRADPIXEL VIRTUAL EXHIBITIONS</span><span>5 × 6 M · OPEN FRONT · L28</span></footer>
