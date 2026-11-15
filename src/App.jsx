@@ -88,7 +88,7 @@ const WING_ARTWORKS = [
   { id: 984, title: 'Tulips', file: '/artworks/35-tulip1.jpg', position: [8.2, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 }
 ];
 
-function ArtFrame({ art, onSelect }) {
+function ArtFrame({ art }) {
   const [texture, setTexture] = useState(null);
   const [aspect, setAspect] = useState(1.0);
   const [hovered, setHovered] = useState(false);
@@ -125,7 +125,7 @@ function ArtFrame({ art, onSelect }) {
   );
 }
 
-function GridArtSet({ setInfo, onSelect }) {
+function GridArtSet({ setInfo }) {
   const [textures, setTextures] = useState([]);
   const [hovered, setHovered] = useState(false);
 
@@ -237,7 +237,7 @@ function artworkDestination(art) {
 
 // Navigation uses the existing rectangular walkable gallery. A real fair hall will
 // require a measured walkable navigation mesh before entrance routing is enabled.
-function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFinished }) {
+function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFinished, onTourInterrupted }) {
   const { camera, gl, scene } = useThree();
   const pointer = useRef(null);
   const raycaster = useMemo(() => new THREE.Raycaster(), []);
@@ -251,9 +251,11 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
   const currentTourIndex = useRef(-1);
   const onArtworkReachedRef = useRef(onArtworkReached);
   const onTourFinishedRef = useRef(onTourFinished);
+  const onTourInterruptedRef = useRef(onTourInterrupted);
 
   useEffect(() => { onArtworkReachedRef.current = onArtworkReached; }, [onArtworkReached]);
   useEffect(() => { onTourFinishedRef.current = onTourFinished; }, [onTourFinished]);
+  useEffect(() => { onTourInterruptedRef.current = onTourInterrupted; }, [onTourInterrupted]);
 
   useEffect(() => {
     navigationRef.current = {
@@ -307,6 +309,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
       if (!p.moved) return;
       destination.current = null;
       tourRef.current = false;
+      onTourInterruptedRef.current();
       pendingArt.current = null;
       lookAt.current = null;
       euler.current.setFromQuaternion(camera.quaternion);
@@ -343,6 +346,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
         lookAt.current = new THREE.Vector3(...art.position);
         pendingArt.current = art;
         tourRef.current = false;
+        onTourInterruptedRef.current();
         return;
       }
       const ground = new THREE.Vector3();
@@ -351,6 +355,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
         lookAt.current = null;
         pendingArt.current = null;
         tourRef.current = false;
+        onTourInterruptedRef.current();
       }
     };
     const onWheel = (event) => {
@@ -359,6 +364,7 @@ function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFin
       lookAt.current = null;
       pendingArt.current = null;
       tourRef.current = false;
+      onTourInterruptedRef.current();
       camera.getWorldDirection(forward.current);
       forward.current.y = 0;
       forward.current.normalize();
@@ -445,11 +451,12 @@ export default function App() {
         <directionalLight position={[0, 10, 5]} intensity={1.8} color="#fffcf5" />
         <GalleryNavigation navigationRef={navigationRef} tourRef={tourRef}
           onArtworkReached={(art) => { setSelectedArt(art); setTourActive(false); }}
+          onTourInterrupted={() => setTourActive(false)}
           onTourFinished={() => setTourActive(false)} />
         <GalleryArchitecture />
         <GalleryDoor />
-        {ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} onSelect={setSelectedArt} />)}
-        {GRID_SETS.map((setInfo) => <GridArtSet key={setInfo.id} setInfo={setInfo} onSelect={setSelectedArt} />)}
+        {ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} />)}
+        {GRID_SETS.map((setInfo) => <GridArtSet key={setInfo.id} setInfo={setInfo} />)}
         {WING_ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} onSelect={setSelectedArt} />)}
       </Canvas>
 
