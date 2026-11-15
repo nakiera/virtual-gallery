@@ -134,3 +134,23 @@ button:focus-visible, a:focus-visible { outline: 3px solid #ae8760; outline-offs
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
+
+/* Individual 30 x 40 cm panels must remain visible as a four-part composition. */
+.modal-img-wrapper.set-preview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  justify-items: center;
+  align-items: center;
+  overflow: hidden;
+}
+.modal-img-wrapper.set-preview img {
+  width: 100%;
+  max-height: 31vh;
+  object-fit: contain;
+  box-shadow: 0 8px 20px rgba(60,50,40,.13);
+}
+@media (max-width: 700px) {
+  .modal-img-wrapper.set-preview img { max-height: 20vh; }
+}
