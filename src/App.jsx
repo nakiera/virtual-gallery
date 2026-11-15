@@ -7,6 +7,15 @@ import './App.css';
 // IAAF 2026 | Stand L28. Source: artist PDFs supplied by the exhibitor.
 // Paintings are represented by labelled conservation-safe panels until the
 // original artwork scans can be uploaded; never fabricate reproductions.
+const translations = {
+ tr: {exhibition:'İSTANBUL SANAT FUARI',intro:'SANAL SERGİ DENEYİMİ',heading1:'Sanat yolculuğu',heading2:'burada başlıyor.',description:'Fuar girişinden Pintura’nın L28 standına ilerleyin. Eserleri keşfedin, sergiyi kendi ritminizde gezin.',begin:'Sergiye doğru ilerle',direct:'Doğrudan L28 standına git',notice:'Fuar giriş sahnesi, yerleşim planından esinlenen temsili bir tasarımdır. Gerçek eser görselleri ve heykel sunumları hazırlanıyor.',arriving:'SERGİYE YAKLAŞIYORSUNUZ',inside:'L28 STANDINDASINIZ',route:'FUAR ROTASI',restart:'Baştan başla',skip:'Standa geç',explore:'Serbest gez',guided:'Rehberli tur',next:'Sonraki eser',hint:'Zemine tıklayarak ilerleyin · Esere tıklayarak yaklaşın · Sürükleyerek çevreye bakın',three:'HEYKEL / SERAMİK',wall:'DUVAR ESERİ',close:'Eser bilgilerini kapat',pending:'Gerçek eser görselleri hazırlanıyor. Geçici paneller eserlerin asılları değildir.',footer:'2026 · GRADPIXEL SANAL SERGİLERİ',layout:'5 × 6 M · AÇIK ÖN CEPHE · L28'},
+ en: {exhibition:'ISTANBUL ART FAIR',intro:'AN IMMERSIVE EXHIBITION',heading1:'Art begins',heading2:'with arrival.',description:'Enter the fair, arrive at Pintura’s L28 stand and discover the artworks at your own pace.',begin:'Begin the journey',direct:'Go directly to L28',notice:'The fair approach is an interpretation of the floor plan. Artwork images and sculptural presentations are being prepared.',arriving:'ARRIVING AT THE EXHIBITION',inside:'INSIDE STAND L28',route:t.route,restart:'Restart',skip:'Skip to stand',explore:'Explore',guided:'Guided tour',next:'Next artwork',hint:'Click the floor to glide there · Click an artwork to approach · Drag to look around',three:'SCULPTURE / CERAMICS',wall:'WORK ON WALL',close:'Close artwork details',pending:'Artwork reproductions are being prepared. Temporary panels are not the original artworks.',footer:'2026 · GRADPIXEL VIRTUAL EXHIBITIONS',layout:'5 × 6 M · OPEN FRONT · L28'}
+};
+function localizedArtworkTitle(title,language){
+ if(language==='en')return title;
+ return title.replace(/^Untitled/,'İsimsiz').replace(/ — large$/,' — büyük').replace(/ — medium$/,' — orta').replace(/ — small$/,' — küçük');
+}
+function localizedArtworkSize(size,language){return language==='tr'?size.replace('Dimensions unconfirmed','Ölçü henüz doğrulanmadı').replace('diameter','çap'):size;}
 const inventory = [
  {artist:'Tülin Oktav Doğruer',title:'Untitled I',size:'55 × 80 cm',image:'/iaaf-artworks/01-tulin-1.jpg',w:.55,h:.8,wall:'left'},
  {artist:'Tülin Oktav Doğruer',title:'Untitled II',size:'70 × 90 cm',image:'/iaaf-artworks/02-tulin-2.jpg',w:.7,h:.9,wall:'left'},
@@ -202,6 +211,8 @@ function Stage({phase,index,mode,onReached,onSelect,onFloorClick,controller}){
  </>;
 }
 export default function App(){
+ const [language,setLanguage]=useState('tr');
+ const t=translations[language];
  const [phase,setPhase]=useState('welcome');
  const [index,setIndex]=useState(0);
  const [mode,setMode]=useState('guided');
@@ -236,36 +247,36 @@ export default function App(){
    timer.current=setTimeout(()=>{setSelected(null);setIndex(i=>(i+1)%stops.length);},11500);
   }
  };
- return <div className="iaaf-page">
+ return <div className="iaaf-page" lang={language}>
   <div className="iaaf-scene"><Canvas shadows dpr={[1,1.5]} camera={{position:approach[0].eye,fov:58,near:.05,far:85}} onCreated={()=>setReady(true)}>
    <Stage phase={phase==='welcome'?'arrival':phase} index={index} mode={mode} onReached={reached} onSelect={selectArtwork} onFloorClick={(point)=>navigateTo(point)} controller={control}/>
   </Canvas></div>
-  <header className="iaaf-topbar"><div className="iaaf-mark">GRADPIXEL <span>/</span> PINTURA</div><div className="iaaf-place">ISTANBUL ART FAIR <span>·</span> L28</div></header>
+  <header className="iaaf-topbar"><div className="iaaf-mark">GRADPIXEL <span>/</span> PINTURA</div><div className="iaaf-place">{t.exhibition} <span>·</span> L28</div></header>
   {phase==='welcome'&&<section className="iaaf-welcome">
-   <p className="iaaf-eyebrow">AN IMMERSIVE EXHIBITION</p>
-   <h1>Art begins<br/><em>with arrival.</em></h1>
-   <p>Step inside the fair, arrive at Pintura's L28 stand and discover twenty works by eleven participating artist catalogues.</p>
-   <div className="iaaf-welcome-actions"><button onClick={begin}>Begin the journey <span>→</span></button><button className="iaaf-secondary" onClick={enter}>Go directly to L28</button></div>
-   <small>Architectural approach is an interpretation of the fair plan. Artwork images and sculptural scans are being prepared.</small>
+   <p className="iaaf-eyebrow">{t.intro}</p>
+   <h1>{t.heading1}<br/><em>{t.heading2}</em></h1>
+   <p>{t.description}</p>
+   <div className="iaaf-welcome-actions"><button onClick={begin}>{t.begin} <span>→</span></button><button className="iaaf-secondary" onClick={enter}>{t.direct}</button></div>
+   <small>{t.notice}</small>
   </section>}
   {phase!=='welcome'&&<div className="iaaf-controls">
-    <div className="iaaf-stage"><span className="iaaf-dot"/> {phase==='arrival'?'ARRIVING AT THE EXHIBITION':'INSIDE STAND L28'} <span className="iaaf-counter">{phase==='works'?String(index+1).padStart(2,'0')+' / '+stops.length:'FAIR ROUTE'}</span></div>
+    <div className="iaaf-stage"><span className="iaaf-dot"/> {phase==='arrival'?t.arriving:t.inside} <span className="iaaf-counter">{phase==='works'?String(index+1).padStart(2,'0')+' / '+stops.length:'FAIR ROUTE'}</span></div>
     <div className="iaaf-buttons">
-     <button onClick={begin}>Restart</button>
-     {phase==='arrival'?<button className="iaaf-main" onClick={enter}>Skip to stand →</button>:<>
-      <button onClick={()=>{stopTimer();setPaused(true);setSelected(null);setMode('explore');control.current?.recenter();}}>Explore</button>
-      <button onClick={()=>{stopTimer();setMode('guided');setPaused(false);setSelected(null);setIndex(i=>(i+1)%stops.length);}}>Guided tour</button>
-      <button className="iaaf-main" onClick={next}>Next artwork →</button>
+     <button onClick={begin}>{t.restart}</button>
+     {phase==='arrival'?<button className="iaaf-main" onClick={enter}>{t.skip} →</button>:<>
+      <button onClick={()=>{stopTimer();setPaused(true);setSelected(null);setMode('explore');control.current?.recenter();}}>{t.explore}</button>
+      <button onClick={()=>{stopTimer();setMode('guided');setPaused(false);setSelected(null);setIndex(i=>(i+1)%stops.length);}}>{t.guided}</button>
+      <button className="iaaf-main" onClick={next}>{t.next} →</button>
      </>}
     </div>
    </div>}
-  {phase!=='welcome'&&<div className="iaaf-navigation-tip">Click the floor to glide there · Select an artwork to approach · Drag to look around</div>}
+  {phase!=='welcome'&&<div className="iaaf-navigation-tip">{t.hint}</div>}
   {selected&&phase==='works'&&<aside className="iaaf-workdetail" aria-live="polite">
-    <button aria-label="Close artwork details" onClick={()=>{setSelected(null);setPaused(true);stopTimer();}} className="iaaf-close">×</button>
-    <p className="iaaf-eyebrow">{selected.sculpt?'SCULPTURE / CERAMICS':'WORK ON WALL'}</p>
-    <h2>{selected.title}</h2><p className="iaaf-artist">{selected.artist}</p><p className="iaaf-size">{selected.size}</p><img className="iaaf-catalogue-preview" src={selected.image} alt={selected.title} onError={e=>{e.currentTarget.style.display='none';}}/>
-    <p className="iaaf-disclaimer">Artwork reproduction pending. The 3D stand uses labelled scale-study panels, not invented images.</p>
+    <button aria-label={t.close} onClick={()=>{setSelected(null);setPaused(true);stopTimer();}} className="iaaf-close">×</button>
+    <p className="iaaf-eyebrow">{selected.sculpt?t.three:t.wall}</p>
+    <h2>{localizedArtworkTitle(selected.title,language)}</h2><p className="iaaf-artist">{selected.artist}</p><p className="iaaf-size">{localizedArtworkSize(selected.size,language)}</p><img className="iaaf-catalogue-preview" src={selected.image} alt={selected.title} onError={e=>{e.currentTarget.style.display='none';}}/>
+    <p className="iaaf-disclaimer">{t.pending}</p>
    </aside>}
-  <footer className="iaaf-footer"><span>2026 · GRADPIXEL VIRTUAL EXHIBITIONS</span><span>5 × 6 M · OPEN FRONT · L28</span></footer>
+  <footer className="iaaf-footer"><div className="iaaf-language" role="group" aria-label="Language / Dil"><button type="button" lang="tr" aria-pressed={language==="tr"} onClick={()=>setLanguage("tr")}>TR</button><span>/</span><button type="button" lang="en" aria-pressed={language==="en"} onClick={()=>setLanguage("en")}>EN</button></div><span>{t.footer}</span><span>{t.layout}</span></footer>
  </div>;
 }
