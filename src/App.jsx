@@ -11,7 +11,7 @@ const ARTIST_INFO = {
   email: 'nakiera@gmail.com'
 };
 
-const ARTWORKS = [
+const SOURCE_ARTWORKS = [
   // --- SOL DUVAR (X = -11.88) - Tek Sıra ---
   { id: 1, title: 'Balloon Float', file: '/artworks/1-baloon.png', position: [-11.88, 1.8, -15.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
   { id: 2, title: 'Strawberry Bloom', file: '/artworks/2-straw.png', position: [-11.88, 1.8, -12.2], rotation: [0, Math.PI / 2, 0], height: 1.1 },
@@ -48,6 +48,80 @@ const ARTWORKS = [
   { id: 31, title: 'Ancestral Mirage', file: '/artworks/31-DSC00657.JPG', position: [5.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
   { id: 32, title: 'Genesis of Color', file: '/artworks/32-DSC00659.JPG', position: [7.5, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
   { id: 33, title: 'Sunflower Vase I', file: '/artworks/33-DSC00923.JPG', position: [10.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 }
+];
+
+/**
+ * Source: BuynsellArt_Eser_Katalogu_Guncel.xlsx.
+ * Dimensions below are the catalogued physical sizes, in cm (width x height).
+ * We do NOT infer dimensions from source-image pixel resolution.
+ * Entries without a verified catalog dimension remain explicitly unverified.
+ */
+const VERIFIED_ARTWORK_DIMENSIONS_CM = {
+  1: [50, 70],
+  7: [25, 35],
+  8: [24, 32.8],
+  9: [40, 30],
+  10: [30, 40],
+  11: [30, 40],
+  18: [24, 32.8],
+  19: [50, 70],
+  23: [20, 40],
+  24: [20, 40]
+};
+
+const DISPLAY_SCALE = 1.7;
+const MISSING_DIMENSION_PREVIEW = { height: 0.85, tier: 'unverified' };
+
+function measureArtwork(art) {
+  const physical = VERIFIED_ARTWORK_DIMENSIONS_CM[art.id];
+  if (!physical) return { ...MISSING_DIMENSION_PREVIEW };
+  const [widthCm, heightCm] = physical;
+  const longSide = Math.max(widthCm, heightCm);
+  const tier = longSide <= 36 ? 'small' : longSide <= 50 ? 'medium' : 'large';
+  return {
+    height: heightCm / 100 * DISPLAY_SCALE,
+    width: widthCm / 100 * DISPLAY_SCALE,
+    tier,
+    physicalWidthCm: widthCm,
+    physicalHeightCm: heightCm
+  };
+}
+
+const STACK_ROWS = { small: 3, medium: 2, large: 1, unverified: 2 };
+const STACK_GAP = 0.18;
+const WALL_CENTER_Y = 2.05;
+
+function stackWall(artworks, axis, min, max) {
+  const columns = [];
+  for (const art of artworks) {
+    const measured = measureArtwork(art);
+    const last = columns[columns.length - 1];
+    if (last && last.tier === measured.tier && last.items.length < STACK_ROWS[measured.tier]) {
+      last.items.push({ art, measured });
+    } else {
+      columns.push({ tier: measured.tier, items: [{ art, measured }] });
+    }
+  }
+  return columns.flatMap((column, index) => {
+    const along = columns.length === 1 ? (min + max) / 2 : min + (max - min) * index / (columns.length - 1);
+    const fullHeight = column.items.reduce((n, item) => n + item.measured.height, 0) +
+      STACK_GAP * (column.items.length - 1);
+    let cursor = WALL_CENTER_Y + fullHeight / 2;
+    return column.items.map(({ art, measured }) => {
+      const centerY = cursor - measured.height / 2;
+      cursor -= measured.height + STACK_GAP;
+      const position = [...art.position];
+      position[axis] = along;
+      position[1] = centerY;
+      return { ...art, ...measured, position };
+    });
+  });
+}
+
+const ARTWORKS = [
+  ...stackWall(SOURCE_ARTWORKS.filter(art => art.position[0] < -11), 2, -15.0, 12.0),
+  ...stackWall(SOURCE_ARTWORKS.filter(art => art.position[0] > 11), 2, -15.0, 12.0),
+  ...stackWall(SOURCE_ARTWORKS.filter(art => art.position[2] < -17), 0, -10.0, 10.0)
 ];
 
 const GRID_SETS = [
@@ -104,7 +178,7 @@ function ArtFrame({ art }) {
     });
   }, [art.file]);
 
-  const frameWidth = (art.height || 1.1) * aspect;
+  const frameWidth = art.width || (art.height || 1.1) * aspect;
   const frameHeight = art.height || 1.1;
 
   return (
