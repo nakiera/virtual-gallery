@@ -159,7 +159,7 @@ function FairArchitecture({onSelect,onFloorClick}){
   <ambientLight intensity={1.45}/>
   <hemisphereLight args={['#fff8eb','#a2a39e',1.3]}/>
   <directionalLight position={[6,11,7]} intensity={2.0} castShadow shadow-mapSize={[1024,1024]} />
-  <mesh receiveShadow position={[0,-.07,4]} onClick={(e)=>{e.stopPropagation();onFloorClick(e.point);}}><boxGeometry args={[29,.12,54]}/><meshStandardMaterial color="#c9c5be" roughness={.88}/></mesh>
+  <mesh receiveShadow position={[0,-.07,4]} onClick={(e)=>{e.stopPropagation();if(e.delta<6)onFloorClick(e.point);}}><boxGeometry args={[29,.12,54]}/><meshStandardMaterial color="#c9c5be" roughness={.88}/></mesh>
   {[-11,11].map(x=><group key={x} position={[x,0,8]}>
     <mesh position={[0,2,0]}><boxGeometry args={[.12,4,32]}/><meshStandardMaterial color="#f1eee8" roughness={.9}/></mesh>
     {[-4,4,12].map(z=><group key={z} position={[0,1.75,z]}>
@@ -173,7 +173,7 @@ function FairArchitecture({onSelect,onFloorClick}){
    <mesh><boxGeometry args={[4.5,2.6,4]}/><meshStandardMaterial color="#ece8e0" roughness={.8}/></mesh>
    <mesh position={[0,2,0]}><boxGeometry args={[4.55,1,.05]}/><meshStandardMaterial color="#c7bdae"/></mesh>
   </group>)}
-  <mesh receiveShadow position={[0,-.012,-10]} onClick={(e)=>{e.stopPropagation();onFloorClick(e.point);}}><boxGeometry args={[5,.045,6]}/><meshStandardMaterial color="#e8e5de" roughness={.76}/></mesh>
+  <mesh receiveShadow position={[0,-.012,-10]} onClick={(e)=>{e.stopPropagation();if(e.delta<6)onFloorClick(e.point);}}><boxGeometry args={[5,.045,6]}/><meshStandardMaterial color="#e8e5de" roughness={.76}/></mesh>
   <mesh position={[-2.5,1.65,-10]} receiveShadow><boxGeometry args={[.09,3.3,6]}/><meshStandardMaterial color="#f7f5f0" roughness={.96}/></mesh>
   <mesh position={[2.5,1.65,-10]} receiveShadow><boxGeometry args={[.09,3.3,6]}/><meshStandardMaterial color="#f7f5f0" roughness={.96}/></mesh>
   <mesh position={[0,1.65,-13]} receiveShadow><boxGeometry args={[5.03,3.3,.09]}/><meshStandardMaterial color="#f7f5f0" roughness={.96}/></mesh>
