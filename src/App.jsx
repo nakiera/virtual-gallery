@@ -50,7 +50,7 @@ const approach=[
  {eye:[0,1.65,-8.05],look:[0,1.6,-12.6],label:'Pintura exhibition'}
 ];
 
-function CameraDirector({mode,step,onArrive,goTo,refApi}){
+function CameraDirector({mode,onArrive,goTo,refApi}){
  const {camera,gl}=useThree();
  const target=useRef(new THREE.Vector3(...approach[0].eye));
  const focal=useRef(new THREE.Vector3(...approach[0].look));
@@ -58,6 +58,7 @@ function CameraDirector({mode,step,onArrive,goTo,refApi}){
  const yaw=useRef(0);
  const pitch=useRef(0);
  const drag=useRef(null);
+ const lookDistance=useRef(6);
  useFrame((_,delta)=>{
   const d=Math.min(delta,.045);
   const alpha=1-Math.exp(-1.55*d);
@@ -75,7 +76,21 @@ function CameraDirector({mode,step,onArrive,goTo,refApi}){
  },[goTo]);
  React.useEffect(()=>{
   if(!refApi)return;
-  refApi.current={recenter:()=>{reached.current=false;target.current.set(0,1.6,-8);focal.current.set(0,1.55,-12);}};
+  refApi.current={
+   recenter:()=>{reached.current=false;target.current.set(0,1.6,-8.15);focal.current.set(0,1.55,-12);},
+   walkTo:(x,z,focus)=>{
+    // Keep visitors inside the public aisle or inside L28; do not pass through stand walls.
+    const inStand=z<=-7.1;
+    const safeX=THREE.MathUtils.clamp(x,inStand?-1.94:-4.5,inStand?1.94:4.5);
+    const safeZ=THREE.MathUtils.clamp(z,inStand?-12.1:-6.7,23);
+    const start=target.current.clone();
+    target.current.set(safeX,1.62,safeZ);
+    const dir=focus?new THREE.Vector3(focus[0]-safeX,focus[1]-1.62,focus[2]-safeZ):focal.current.clone().sub(start);
+    if(dir.length()<.5)dir.set(0,0,-1);
+    focal.current.set(safeX+dir.x,1.62+THREE.MathUtils.clamp(dir.y,-.45,.45),safeZ+dir.z);
+    reached.current=true; // User navigation never advances a paused guided tour.
+   }
+  };
  },[refApi]);
  React.useEffect(()=>{
   const el=gl.domElement;
@@ -85,8 +100,8 @@ function CameraDirector({mode,step,onArrive,goTo,refApi}){
    yaw.current-=(e.clientX-drag.current[0])*.003;
    pitch.current=THREE.MathUtils.clamp(pitch.current+(e.clientY-drag.current[1])*.002,-.45,.45);
    drag.current=[e.clientX,e.clientY];
-   const vec=new THREE.Vector3(Math.sin(yaw.current),Math.sin(pitch.current),-Math.cos(yaw.current));
-   focal.current.copy(camera.position).add(vec.multiplyScalar(7));
+   const vec=new THREE.Vector3(Math.sin(yaw.current)*Math.cos(pitch.current),Math.sin(pitch.current),-Math.cos(yaw.current)*Math.cos(pitch.current));
+   focal.current.copy(target.current).add(vec.multiplyScalar(lookDistance.current));
   };
   const up=()=>{drag.current=null;};
   el.addEventListener('pointerdown',down);window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);
@@ -137,14 +152,14 @@ function Pedestal({group,items,onClick}){
   <Label position={[0,.16,.35]} size={.065} color="#6f6254" maxWidth={.7}>{['Neşe Palamutları','Sadakat','Araf','Hayal et'][group]}</Label>
  </group>;
 }
-function FairArchitecture({onSelect}){
+function FairArchitecture({onSelect,onFloorClick}){
  return <group>
   <color attach="background" args={['#e6e1da']}/>
   <fog attach="fog" args={['#e6e1da',29,57]}/>
   <ambientLight intensity={1.45}/>
   <hemisphereLight args={['#fff8eb','#a2a39e',1.3]}/>
   <directionalLight position={[6,11,7]} intensity={2.0} castShadow shadow-mapSize={[1024,1024]} />
-  <mesh receiveShadow position={[0,-.07,4]}><boxGeometry args={[29,.12,54]}/><meshStandardMaterial color="#cbc9c2" roughness={.88}/></mesh>
+  <mesh receiveShadow position={[0,-.07,4]} onClick={(e)=>{e.stopPropagation();onFloorClick(e.point);}}><boxGeometry args={[29,.12,54]}/><meshStandardMaterial color="#c9c5be" roughness={.88}/></mesh>
   {[-11,11].map(x=><group key={x} position={[x,0,8]}>
     <mesh position={[0,2,0]}><boxGeometry args={[.12,4,32]}/><meshStandardMaterial color="#f1eee8" roughness={.9}/></mesh>
     {[-4,4,12].map(z=><group key={z} position={[0,1.75,z]}>
@@ -158,7 +173,7 @@ function FairArchitecture({onSelect}){
    <mesh><boxGeometry args={[4.5,2.6,4]}/><meshStandardMaterial color="#ece8e0" roughness={.8}/></mesh>
    <mesh position={[0,2,0]}><boxGeometry args={[4.55,1,.05]}/><meshStandardMaterial color="#c7bdae"/></mesh>
   </group>)}
-  <mesh receiveShadow position={[0,-.012,-10]}><boxGeometry args={[5,.045,6]}/><meshStandardMaterial color="#e8e5de" roughness={.76}/></mesh>
+  <mesh receiveShadow position={[0,-.012,-10]} onClick={(e)=>{e.stopPropagation();onFloorClick(e.point);}}><boxGeometry args={[5,.045,6]}/><meshStandardMaterial color="#e8e5de" roughness={.76}/></mesh>
   <mesh position={[-2.5,1.65,-10]} receiveShadow><boxGeometry args={[.09,3.3,6]}/><meshStandardMaterial color="#f7f5f0" roughness={.96}/></mesh>
   <mesh position={[2.5,1.65,-10]} receiveShadow><boxGeometry args={[.09,3.3,6]}/><meshStandardMaterial color="#f7f5f0" roughness={.96}/></mesh>
   <mesh position={[0,1.65,-13]} receiveShadow><boxGeometry args={[5.03,3.3,.09]}/><meshStandardMaterial color="#f7f5f0" roughness={.96}/></mesh>
@@ -175,7 +190,7 @@ function FairArchitecture({onSelect}){
   <Label position={[0,.04,-4.3]} rotation={[-Math.PI/2,0,0]} size={.32} color="#81766b" maxWidth={4}>L28</Label>
  </group>;
 }
-function Stage({phase,index,mode,onReached,onSelect,controller}){
+function Stage({phase,index,mode,onReached,onSelect,onFloorClick,controller}){
  const destination=useMemo(()=>{
   if(phase==='arrival')return approach[Math.min(index,approach.length-1)];
   const a=stops[index]||stops[0];
@@ -183,7 +198,7 @@ function Stage({phase,index,mode,onReached,onSelect,controller}){
  },[phase,index]);
  return <>
   <CameraDirector mode={mode} onArrive={onReached} goTo={destination} refApi={controller}/>
-  <FairArchitecture onSelect={onSelect}/>
+  <FairArchitecture onSelect={onSelect} onFloorClick={onFloorClick}/>
  </>;
 }
 export default function App(){
@@ -193,6 +208,7 @@ export default function App(){
  const [selected,setSelected]=useState(null);
  const [paused,setPaused]=useState(false);
  const [ready,setReady]=useState(false);
+ const [walkHint,setWalkHint]=useState(false);
  const control=useRef(null);
  const timer=useRef(null);
  const stopTimer=useCallback(()=>{clearTimeout(timer.current);timer.current=null;},[]);
@@ -200,6 +216,17 @@ export default function App(){
  const begin=()=>{stopTimer();setSelected(null);setPaused(false);setMode('guided');setIndex(0);setPhase('arrival');};
  const enter=()=>{stopTimer();setIndex(0);setPhase('works');setPaused(false);};
  const next=()=>{stopTimer();setSelected(null);setPaused(false);setIndex(i=>i+1>=stops.length?0:i+1);};
+ const navigateTo=(point,focus)=>{
+  if(phase==='welcome')return;
+  stopTimer();setPaused(true);setMode('explore');setSelected(null);setWalkHint(true);
+  control.current?.walkTo(point.x,point.z,focus);
+ };
+ const selectArtwork=(art)=>{
+  if(phase==='welcome')return;
+  stopTimer();setPaused(true);setMode('explore');setSelected(art);
+  const stop=stops.find(s=>s===art || (s.artist===art.artist&&s.title===art.title));
+  if(stop)control.current?.walkTo(stop.eye[0],stop.eye[2],stop.position);
+ };
  const reached=()=>{
   if(paused||mode==='explore')return;
   stopTimer();
@@ -211,7 +238,7 @@ export default function App(){
  };
  return <div className="iaaf-page">
   <div className="iaaf-scene"><Canvas shadows dpr={[1,1.5]} camera={{position:approach[0].eye,fov:58,near:.05,far:85}} onCreated={()=>setReady(true)}>
-   <Stage phase={phase==='welcome'?'arrival':phase} index={index} mode={mode} onReached={reached} onSelect={(art)=>{stopTimer();setPaused(true);setSelected(art);}} controller={control}/>
+   <Stage phase={phase==='welcome'?'arrival':phase} index={index} mode={mode} onReached={reached} onSelect={selectArtwork} onFloorClick={(point)=>navigateTo(point)} controller={control}/>
   </Canvas></div>
   <header className="iaaf-topbar"><div className="iaaf-mark">GRADPIXEL <span>/</span> PINTURA</div><div className="iaaf-place">ISTANBUL ART FAIR <span>·</span> L28</div></header>
   {phase==='welcome'&&<section className="iaaf-welcome">
@@ -232,6 +259,7 @@ export default function App(){
      </>}
     </div>
    </div>}
+  {phase!=='welcome'&&<div className="iaaf-navigation-tip">Click the floor to glide there · Select an artwork to approach · Drag to look around</div>}
   {selected&&phase==='works'&&<aside className="iaaf-workdetail" aria-live="polite">
     <button aria-label="Close artwork details" onClick={()=>{setSelected(null);setPaused(true);stopTimer();}} className="iaaf-close">×</button>
     <p className="iaaf-eyebrow">{selected.sculpt?'SCULPTURE / CERAMICS':'WORK ON WALL'}</p>
