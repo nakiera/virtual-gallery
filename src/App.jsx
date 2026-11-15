@@ -58,15 +58,31 @@ const SOURCE_ARTWORKS = [
  */
 const VERIFIED_ARTWORK_DIMENSIONS_CM = {
   1: [50, 70],
+  2: [50, 70],
+  4: [30, 50],
+  5: [30, 50],
+  6: [30, 50],
   7: [25, 35],
   8: [24, 32.8],
   9: [40, 30],
   10: [30, 40],
   11: [30, 40],
+  12: [30, 50],
+  17: [30, 50],
   18: [24, 32.8],
   19: [50, 70],
   23: [20, 40],
-  24: [20, 40]
+  24: [20, 40],
+  25: [15, 30],
+  26: [30, 50],
+  27: [30, 50],
+  30: [30, 40],
+  31: [30, 40],
+  32: [30, 40],
+  33: [15, 25],
+  981: [15, 25],
+  982: [15, 25],
+  984: [30, 50],
 };
 
 const DISPLAY_SCALE = 1.7;
@@ -121,7 +137,7 @@ function stackWall(artworks, axis, min, max) {
 const ARTWORKS = [
   ...stackWall(SOURCE_ARTWORKS.filter(art => art.position[0] < -11), 2, -15.0, 12.0),
   ...stackWall(SOURCE_ARTWORKS.filter(art => art.position[0] > 11), 2, -15.0, 12.0),
-  ...stackWall(SOURCE_ARTWORKS.filter(art => art.position[2] < -17), 0, -10.0, 10.0)
+  ...stackWall(SOURCE_ARTWORKS.filter(art => art.position[2] < -17 && art.id !== 33), 0, -10.0, 10.0)
 ];
 
 const GRID_SETS = [
@@ -155,11 +171,26 @@ const GRID_SETS = [
   }
 ];
 
-const WING_ARTWORKS = [
+const SOURCE_WING_ARTWORKS = [
   { id: 981, title: 'Sunflower Vase II', file: '/artworks/33-DSC00924.JPG', position: [-8.2, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 },
   { id: 982, title: 'Sunflower Vase III', file: '/artworks/33-DSC00925.JPG', position: [-6.0, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 },
   { id: 983, title: 'Emerald Rose', file: '/artworks/34-DSC00670.JPG', position: [6.0, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 },
   { id: 984, title: 'Tulips', file: '/artworks/35-tulip1.jpg', position: [8.2, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 }
+];
+
+/** The three small sunflower paintings are a single curated 15 x 25 cm vertical column. */
+const SMALL_SUNFLOWER_TRIO = [
+  SOURCE_ARTWORKS.find(art => art.id === 33),
+  ...SOURCE_WING_ARTWORKS.filter(art => art.id === 981 || art.id === 982)
+].map(art => ({
+  ...art,
+  position: [-8.15, art.position[1], 13.95],
+  rotation: [0, Math.PI, 0]
+}));
+const WING_ARTWORKS = [
+  ...stackWall(SMALL_SUNFLOWER_TRIO, 0, -8.15, -8.15),
+  ...SOURCE_WING_ARTWORKS.filter(art => art.id !== 981 && art.id !== 982)
+    .map(art => ({ ...art, ...measureArtwork(art) }))
 ];
 
 function ArtFrame({ art }) {
