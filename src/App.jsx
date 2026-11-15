@@ -312,11 +312,11 @@ function GalleryDoor() {
 
 
 const GALLERY_PALETTE = {
-  wall: '#f3f0e9',
-  floor: '#c8c4b9',
-  trim: '#c0b9ab',
-  ceiling: '#f7f5ef',
-  brass: '#9b8667'
+  wall: '#ede7db',
+  floor: '#c9bfaf',
+  trim: '#d1c7b8',
+  ceiling: '#292a29',
+  brass: '#b59a6e'
 };
 
 function GalleryArchitecture() {
@@ -326,13 +326,13 @@ function GalleryArchitecture() {
     <group>
       <mesh position={[0, -0.08, -2]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[26, 36]} />
-        <meshStandardMaterial color={GALLERY_PALETTE.floor} roughness={0.94} metalness={0} />
+        <meshStandardMaterial color={GALLERY_PALETTE.floor} roughness={0.76} metalness={0.045} />
       </mesh>
       {/* Micro-joints convey a limestone floor without adding any bitmap textures. */}
       {Array.from({ length: 12 }, (_, index) => (
         <mesh key={'floor-joint-'+index} position={[0, -0.067, -18 + index * 2.9]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[25.8, 0.018]} />
-          <meshBasicMaterial color="#ada99f" transparent opacity={0.19} />
+          <meshBasicMaterial color="#a6a093" transparent opacity={0.18} />
         </mesh>
       ))}
       <mesh position={[0, 4.2, -2]} rotation={[Math.PI / 2, 0, 0]}>
@@ -367,22 +367,72 @@ function GalleryArchitecture() {
         <group key={'track-'+x}>
           <mesh position={[x, 4.125, -2]}>
             <boxGeometry args={[0.055,0.09,30]} />
-            <meshStandardMaterial color="#c6bcae" roughness={0.65} metalness={0.25} />
+            <meshStandardMaterial color="#b39c79" roughness={0.38} metalness={0.65} />
           </mesh>
           {strips.map((z) => (
             <group key={'spot-'+z} position={[x,4.01,z]}>
-              <mesh><cylinderGeometry args={[0.10,0.10,0.20,10]} /><meshStandardMaterial color="#e7dfd4" /></mesh>
+              <mesh><cylinderGeometry args={[0.10,0.10,0.20,10]} /><meshStandardMaterial color="#b7a58e" /></mesh>
               <mesh position={[0,-0.13,0]} rotation={[-Math.PI/2,0,0]}>
                 <circleGeometry args={[0.085,12]} />
-                <meshBasicMaterial color="#fff4df" />
+                <meshBasicMaterial color="#fff5e4" />
               </mesh>
             </group>
           ))}
         </group>
       ))}
-      <spotLight position={[-7, 4.02, -11]} intensity={35} angle={0.75} penumbra={0.9} distance={19} color="#fff0d8" />
+
+      {/* Upper and lower architectural shadow reveals: restrained museum detailing. */}
+      {[[-11.93, 3.93, -2, 0.065, 0.065, 35.8],
+        [11.93, 3.93, -2, 0.065, 0.065, 35.8],
+        [0, 3.93, -18.93, 23.9, 0.065, 0.065],
+        [0, 3.93, 14.93, 23.9, 0.065, 0.065]].map(([x, y, z, w, h, d], index) => (
+        <mesh key={'reveal-' + index} position={[x, y, z]}>
+          <boxGeometry args={[w, h, d]} />
+          <meshBasicMaterial color="#5a534b" />
+        </mesh>
+      ))}
+      {/* Brushed metal gallery line — warm brass, not decorative gold. */}
+      {[[-11.9, 3.78, -2, 0.035, 0.025, 35.7],
+        [11.9, 3.78, -2, 0.035, 0.025, 35.7],
+        [0, 3.78, -18.9, 23.7, 0.025, 0.035],
+        [0, 3.78, 14.9, 23.7, 0.025, 0.035]].map(([x, y, z, w, h, d], index) => (
+        <mesh key={'brass-'+index} position={[x, y, z]}>
+          <boxGeometry args={[w, h, d]} />
+          <meshStandardMaterial color={GALLERY_PALETTE.brass} metalness={0.72} roughness={0.32} />
+        </mesh>
+      ))}
+      {/* Monumental vertical wall bays create depth without interfering with artworks. */}
+      {[-11.94, 11.94].flatMap((x) => [-18.2, 14.0].map((z) => (
+        <group key={'column-'+x+'-'+z} position={[x, 2.0, z]}>
+          <mesh>
+            <boxGeometry args={[0.12, 4.0, 0.21]} />
+            <meshStandardMaterial color="#ddd5c8" roughness={0.92} />
+          </mesh>
+          <mesh position={[0,1.98,0]}>
+            <boxGeometry args={[0.15,0.04,0.25]} />
+            <meshStandardMaterial color="#b7a287" roughness={0.5} metalness={0.12} />
+          </mesh>
+        </group>
+      )))}
+      {/* Quiet illuminated opening: the space reads as a designed gallery, not a box. */}
+      {[-1,1].map((side) => (
+        <group key={'entrance-reveal-'+side}>
+          <mesh position={[side*1.28,2.0,14.86]}>
+            <boxGeometry args={[0.075,3.85,0.11]} />
+            <meshStandardMaterial color="#a58c6e" metalness={0.45} roughness={0.46}/>
+          </mesh>
+          <mesh position={[side*1.42,2.0,14.83]}>
+            <boxGeometry args={[0.04,3.6,0.09]} />
+            <meshBasicMaterial color="#ffe6b9" toneMapped={false} />
+          </mesh>
+        </group>
+      ))}
+      {/* Soft architectural pools of light, no high-resolution shadows required. */}
+      <pointLight position={[0,3.45,-17.8]} intensity={18} distance={10} decay={2} color="#f8dbac"/>
+      <pointLight position={[0,3.45,13.5]} intensity={13} distance={10} decay={2} color="#f8dbac"/>
+      <spotLight position={[-7, 4.02, -11]} intensity={30} angle={0.75} penumbra={0.9} distance={19} color="#fff0d8" />
       <spotLight position={[7, 4.02, -11]} intensity={35} angle={0.75} penumbra={0.9} distance={19} color="#fff0d8" />
-      <spotLight position={[-7, 4.02, 6]} intensity={28} angle={0.7} penumbra={0.95} distance={17} color="#fff0df" />
+      <spotLight position={[-7, 4.02, 6]} intensity={26} angle={0.7} penumbra={0.95} distance={17} color="#fff0df" />
       <spotLight position={[7, 4.02, 6]} intensity={28} angle={0.7} penumbra={0.95} distance={17} color="#fff0df" />
     </group>
   );
@@ -637,15 +687,15 @@ export default function App() {
         gl={{ antialias: true, powerPreference: 'high-performance' }}
         onCreated={({ gl }) => {
           gl.toneMapping = THREE.ACESFilmicToneMapping;
-          gl.toneMappingExposure = 1.15;
+          gl.toneMappingExposure = 1.08;
           gl.outputColorSpace = THREE.SRGBColorSpace;
         }}
       >
-        <color attach="background" args={['#edeae2']} />
-        <fog attach="fog" args={['#edeae2', 20, 47]} />
-        <hemisphereLight args={['#fff7ee', '#b4afa4', 1.8]} />
-        <ambientLight intensity={0.65} color="#fffcf5" />
-        <directionalLight position={[-2, 12, 8]} intensity={1.4} color="#fff4e7" />
+        <color attach="background" args={['#dcd2c5']} />
+        <fog attach="fog" args={['#dcd2c5', 26, 58]} />
+        <hemisphereLight args={['#fff7eb', '#9a8e7c', 1.5]} />
+        <ambientLight intensity={0.7} color="#fffaf1" />
+        <directionalLight position={[-2, 12, 8]} intensity={1.1} color="#fff1de" />
         <GalleryNavigation navigationRef={navigationRef} tourRef={tourRef}
           onArtworkReached={(art) => { setSelectedArt(art); setTourActive(false); }}
           onTourInterrupted={() => setTourActive(false)}
