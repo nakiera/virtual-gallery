@@ -440,3 +440,8 @@ body, html {
 @media(prefers-reduced-motion:reduce){.iaaf-page button{transition:none!important}}
 
 .iaaf-catalogue-preview{display:block;max-height:25vh;max-width:100%;width:auto;object-fit:contain;margin:10px 0 4px;border:1px solid rgba(230,217,195,.24)}
+
+/* Lightweight spatial navigation hint — fades into the exhibition chrome */
+.iaaf-navigation-tip{position:absolute;left:clamp(18px,4vw,70px);bottom:149px;z-index:5;max-width:min(550px,calc(100vw - 36px));padding:10px 14px;color:#f4eee5;background:rgba(24,26,27,.75);border-left:2px solid #d7b98e;backdrop-filter:blur(7px);font-size:10px;letter-spacing:.06em;line-height:1.5;pointer-events:none}
+.iaaf-scene canvas{cursor:crosshair}
+@media(max-width:740px){.iaaf-navigation-tip{left:12px;right:12px;bottom:150px;font-size:9px;max-width:none}}
