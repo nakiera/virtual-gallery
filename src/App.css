@@ -1,344 +1,136 @@
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
 
-body, html {
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background-color: #faf8f5;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  user-select: none;
-}
+:root { font-family: 'DM Sans', system-ui, sans-serif; color: #29251f; background: #ebe7de; }
+* { box-sizing: border-box; }
+html, body, #root { width: 100%; height: 100%; margin: 0; overflow: hidden; }
+body { -webkit-font-smoothing: antialiased; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { font-family: inherit; }
+button:focus-visible, a:focus-visible { outline: 3px solid #ae8760; outline-offset: 3px; }
+.canvas-container { width: 100%; height: 100%; min-height: 100svh; position: relative; isolation: isolate; overflow: hidden; background: #e8e3da; }
+.canvas-container canvas { display: block; width: 100%; height: 100%; touch-action: none; }
 
-.canvas-container {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
+.museum-header {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 18px; padding: 21px clamp(20px, 4.8vw, 76px);
+  background: linear-gradient(180deg, rgba(252,250,246,.98), rgba(252,250,246,.87));
+  border-bottom: 1px solid rgba(97,86,72,.13); backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
+.museum-identity { display: flex; flex-direction: column; gap: 7px; }
+.museum-kicker, .welcome-eyebrow {
+  color: #97836c; font-size: 9px; font-weight: 700; letter-spacing: .27em;
+}
+.museum-name {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: clamp(19px, 2.2vw, 27px); line-height: 1.03; letter-spacing: -.015em;
+  white-space: nowrap;
+}
+.museum-name i { font-style: normal; color: #a68f76; padding: 0 5px; }
+.museum-header-actions { display: flex; align-items: center; gap: 8px; }
+.museum-header-actions button {
+  color: #3e352b; border: 1px solid rgba(75,59,44,.24);
+  background: rgba(255,255,255,.64); padding: 11px 17px; min-height: 43px;
+  font-size: 11px; font-weight: 600; letter-spacing: .035em; border-radius: 2px;
+  cursor: pointer; transition: background .22s, border-color .22s;
+}
+.museum-header-actions button:first-child { background: #302922; color: #fbf8f3; }
+.museum-header-actions button:hover, .museum-header-actions button.is-active {
+  background: #aa8868; color: #fff; border-color: #aa8868;
+}
+.museum-header-actions button span { padding-left: 6px; }
 
-.crosshair {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  background-color: rgba(197, 160, 89, 0.8);
-  border: 1px solid #ffffff;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 10;
+.welcome-card {
+  position: absolute; z-index: 21; left: clamp(18px, 5vw, 88px); top: 50%;
+  transform: translateY(-43%);
+  width: min(510px, calc(100% - 36px)); padding: clamp(24px,3.2vw,48px);
+  background: rgba(250,248,244,.96); border: 1px solid rgba(108,88,65,.15);
+  box-shadow: 0 30px 80px rgba(52,44,32,.14), 0 5px 18px rgba(52,44,32,.06);
+  backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
 }
+.welcome-card h1 {
+  color: #29241f; font: 400 clamp(38px,4.1vw,61px)/1.07 'DM Serif Display',Georgia,serif;
+  letter-spacing: -.035em; margin: 23px 0 22px;
+}
+.welcome-card h1 em { color: #a07c5a; font-weight: 400; }
+.welcome-card > p { max-width: 390px; margin: 0; font-size: 13px; line-height: 1.9; color: #6e6459; }
+.welcome-actions { display: flex; align-items: center; gap: 13px; flex-wrap: wrap; margin: 33px 0; }
+.welcome-actions button { cursor: pointer; min-height: 48px; border-radius: 2px; padding: 0 19px; font-size: 11px; font-weight: 700; letter-spacing: .045em; }
+.primary-action { color: #fff; background: #302923; border: 1px solid #302923; }
+.primary-action:hover { background: #8b6d52; border-color: #8b6d52; }
+.primary-action span { margin-left: 20px; font-size: 16px; }
+.quiet-action { color: #5b4b3d; background: transparent; border: 1px solid #c8bfb2; }
+.quiet-action:hover { background: #e8e0d6; }
+.welcome-rule { border-top: 1px solid #ddd5c9; padding-top: 19px; display: flex; justify-content: space-between; gap: 12px; color: #9d9080; font-size: 9px; font-weight: 700; letter-spacing: .16em; }
 
-.instructions-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(26, 15, 5, 0.75);
-  backdrop-filter: blur(8px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 100;
-  cursor: pointer;
+.museum-footer {
+  position: absolute; z-index: 20; bottom: 0; left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 16px; padding: 17px clamp(20px,4.8vw,76px);
+  color: #544b41; background: linear-gradient(0deg, rgba(248,246,240,.96),rgba(248,246,240,.83));
+  border-top: 1px solid rgba(97,86,72,.13); backdrop-filter: blur(16px);
 }
-
-.instructions-card {
-  background: #faf8f5;
-  padding: 40px 50px;
-  border-radius: 12px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-  max-width: 540px;
-  width: 90%;
-  border: 1px solid rgba(197, 160, 89, 0.3);
-}
-
-.instructions-card h1 {
-  margin: 0 0 8px 0;
-  font-size: 28px;
-  letter-spacing: 2px;
-  color: #1a0f05;
-}
-
-.subtitle {
-  margin: 0 0 24px 0;
-  font-size: 14px;
-  color: #7a5c38;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-.artist-links {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 24px;
-}
-
-.artist-link-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.artist-link-badge.ig {
-  background: #fdf2f4;
-  color: #c2185b;
-  border: 1px solid #f8bbd0;
-}
-
-.artist-link-badge.ig:hover {
-  background: #c2185b;
-  color: #fff;
-}
-
-.artist-link-badge.mail {
-  background: #f0fdf4;
-  color: #15803d;
-  border: 1px solid #bbf7d0;
-}
-
-.artist-link-badge.mail:hover {
-  background: #15803d;
-  color: #fff;
-}
-
-.controls-hint {
-  font-size: 13px;
-  color: #4a3525;
-  background: #f2ece1;
-  padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 24px;
-}
-
-.start-prompt {
-  font-size: 15px;
-  font-weight: 700;
-  color: #c5a059;
-  letter-spacing: 0.5px;
-}
-
-.mobile-controls-overlay {
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  padding: 0 30px;
-  pointer-events: none;
-  z-index: 20;
-}
-
-.mobile-turn-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  pointer-events: auto;
-}
-
-.mobile-turn-group button, 
-.mobile-dpad > button, 
-.dpad-row button {
-  background: rgba(45, 26, 14, 0.85);
-  color: #c5a059;
-  border: 1px solid #c5a059;
-  padding: 12px 18px;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.mobile-dpad {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  pointer-events: auto;
-}
-
-.mobile-dpad > button {
-  width: 50px;
-  height: 50px;
-  border-radius: 8px 8px 0 0;
-}
-
-.dpad-row {
-  display: flex;
-}
-
-.dpad-row button {
-  width: 50px;
-  height: 50px;
-  border-radius: 0;
-}
-
-.dpad-row button:first-child {
-  border-radius: 0 0 0 8px;
-}
-
-.dpad-row button:last-child {
-  border-radius: 0 0 8px 0;
-}
+.museum-help { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 11px; font-weight: 500; letter-spacing: .02em; }
+.help-dot { width: 8px; height: 8px; background: #b28c66; border-radius: 50%; }
+.help-separator { color: #b9ae9e; }
+.museum-footer button { border: 0; background: transparent; color: #53473b; padding: 6px 10px; font-size: 11px; font-weight: 700; cursor: pointer; }
+.museum-footer button:disabled { visibility: hidden; }
 
 .modal-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(15, 10, 5, 0.85);
-  backdrop-filter: blur(10px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 200;
-  padding: 30px;
+  position: absolute; z-index: 100; inset: 0; display: grid; place-items: center;
+  padding: clamp(12px,3vw,36px); background: rgba(29,25,22,.72);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
 }
-
 .modal-content {
-  background: #faf8f5;
-  width: 100%;
-  max-width: 900px;
-  max-height: 90vh;
-  border-radius: 12px;
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-  position: relative;
-  border: 1px solid rgba(197, 160, 89, 0.4);
+  background: #faf8f4; width: min(1060px,100%); max-height: min(88vh,800px);
+  display: grid; grid-template-columns: minmax(0,1.35fr) minmax(0,.9fr);
+  overflow: hidden; position: relative; box-shadow: 0 30px 90px rgba(0,0,0,.25);
 }
-
 .modal-close-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 32px;
-  color: #5c4033;
-  cursor: pointer;
-  z-index: 10;
+  position: absolute; top: 12px; right: 12px; width: 42px; height: 42px;
+  border: 1px solid #d9d1c5; background: rgba(250,248,244,.9);
+  font-size: 26px; line-height: 1; color: #473c32; cursor: pointer; z-index: 2;
 }
-
 .modal-img-wrapper {
-  flex: 1.2;
-  background: #110904;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 30px;
+  min-height: 350px; background: #e9e5de; padding: clamp(22px,4vw,50px);
+  display: flex; justify-content: center; align-items: center;
 }
-
-.modal-img-wrapper img {
-  max-width: 100%;
-  max-height: 75vh;
-  object-fit: contain;
+.modal-img-wrapper img { display: block; max-width: 100%; max-height: 72vh; object-fit: contain; box-shadow: 0 15px 30px rgba(60,50,40,.15); }
+.modal-body { display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: clamp(28px,4vw,58px); overflow-y: auto; }
+.modal-tag { color: #a18567; font-size: 10px; font-weight: 700; letter-spacing: .23em; }
+.modal-body h2 { margin: 4px 0 0; color: #302821; font: 400 clamp(27px,3vw,43px)/1.15 'DM Serif Display',Georgia,serif; }
+.artist-byline { margin: 0; font-size: 13px; font-weight: 600; color: #5c5249; }
+.art-dimensions { margin: 0; color: #a08771; font-size: 12px; }
+.art-desc { margin: 12px 0 6px; line-height: 1.7; color: #695e54; font-size: 13px; }
+.modal-actions-row { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+.modal-action-btn { border-top: 1px solid #d9d1c6; color: #40352a; padding: 14px 0; font-size: 12px; font-weight: 600; text-decoration: none; }
+.modal-action-btn:hover { color: #ad845d; }
+@media (max-width: 700px) {
+  .museum-header { padding: 12px 16px; gap: 10px; }
+  .museum-kicker { font-size: 8px; letter-spacing: .11em; }
+  .museum-name { font-size: 18px; }
+  .museum-header-actions { gap: 5px; }
+  .museum-header-actions button { min-height: 38px; padding: 8px 9px; font-size: 10px; }
+  .welcome-card { top: auto; bottom: 70px; left: 12px; width: calc(100% - 24px); transform: none; padding: 23px; }
+  .welcome-card h1 { font-size: clamp(33px,8vw,46px); margin: 14px 0 12px; }
+  .welcome-card > p { font-size: 12px; line-height: 1.65; }
+  .welcome-actions { margin: 20px 0; }
+  .welcome-rule { padding-top: 12px; }
+  .museum-footer { padding: 12px 14px; align-items: center; }
+  .museum-help { font-size: 10px; gap: 5px; }
+  .modal-content { grid-template-columns: 1fr; max-height: 92vh; overflow-y: auto; }
+  .modal-img-wrapper { min-height: 0; padding: 30px; }
+  .modal-img-wrapper img { max-height: 43vh; }
+  .modal-body { padding: 24px; }
 }
-
-.modal-body {
-  flex: 1;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow-y: auto;
+@media (max-width: 400px) {
+  .museum-kicker { display: none; }
+  .museum-name { font-size: 16px; }
+  .museum-header-actions button { font-size: 9px; padding: 8px; }
+  .welcome-card { bottom: 16px; }
+  .welcome-rule { font-size: 8px; }
 }
-
-.modal-meta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 15px;
-}
-
-.modal-tag {
-  background: #f4ebd0;
-  color: #7a5c38;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 4px;
-  text-transform: uppercase;
-}
-
-.modal-date-tag {
-  background: #eef2f6;
-  color: #334155;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 4px;
-}
-
-.modal-dim-tag {
-  background: #f1f5f9;
-  color: #475569;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 4px;
-}
-
-.modal-body h2 {
-  margin: 0 0 10px 0;
-  font-size: 24px;
-  color: #1a0f05;
-}
-
-.artist-byline {
-  font-size: 14px;
-  color: #5c4033;
-  margin: 0 0 20px 0;
-}
-
-.art-desc {
-  font-size: 14px;
-  color: #4a3525;
-  line-height: 1.6;
-  margin: 0 0 30px 0;
-}
-
-.modal-actions-row {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.modal-action-btn {
-  display: block;
-  text-align: center;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.modal-action-btn.ig {
-  background: #fdf2f4;
-  color: #c2185b;
-  border: 1px solid #f8bbd0;
-}
-
-.modal-action-btn.mail {
-  background: #f0fdf4;
-  color: #15803d;
-  border: 1px solid #bbf7d0;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
 }
