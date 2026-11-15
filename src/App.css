@@ -342,3 +342,51 @@ body, html {
   color: #15803d;
   border: 1px solid #bbf7d0;
 }
+
+/* IAAF 2026 — minimal navigation controls, no directional pad */
+.gallery-toolbar {
+  position: absolute;
+  z-index: 30;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 18px clamp(16px, 3vw, 44px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  color: #201d19;
+  background: linear-gradient(to bottom, rgba(250,248,245,.97), rgba(250,248,245,.87));
+  border-bottom: 1px solid rgba(71,55,39,.14);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.gallery-brand { display: flex; flex-direction: column; gap: 2px; line-height: 1.2; }
+.gallery-brand span { font-size: 10px; font-weight: 700; letter-spacing: .28em; color: #906e43; }
+.gallery-brand strong { font-family: Georgia, serif; font-size: clamp(17px, 2vw, 23px); font-weight: normal; letter-spacing: .025em; }
+.gallery-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.gallery-actions button {
+  border: 1px solid rgba(72,54,38,.28);
+  background: #fffefc;
+  color: #2d241b;
+  font: 500 12px/1.3 inherit;
+  padding: 10px 15px;
+  min-height: 42px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease;
+}
+.gallery-actions button:first-child { background: #28231e; color: #fffaf2; }
+.gallery-actions button:hover { border-color: #906e43; background: #eae3d8; color: #201d19; }
+.gallery-actions button:focus-visible { outline: 3px solid #b78b55; outline-offset: 2px; }
+.gallery-hint { margin: 0; width: 100%; font-size: 11px; letter-spacing: .02em; color: #6b6258; }
+@media (max-width: 620px) {
+  .gallery-toolbar { padding: 12px 14px; gap: 9px; }
+  .gallery-actions { width: 100%; }
+  .gallery-actions button { flex: 1; padding: 9px 8px; font-size: 11px; }
+  .gallery-hint { font-size: 10px; line-height: 1.5; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gallery-actions button { transition: none; }
+}
