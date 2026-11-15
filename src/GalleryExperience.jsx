@@ -200,29 +200,41 @@ const WING_ARTWORKS = [
     .map(art => ({ ...art, ...measureArtwork(art) }))
 ];
 
+// Mobile performance: defer the original full-resolution images until their
+// wall enters visiting range. Visitors still see a neutral mounted frame.
+const IMAGE_LOAD_DISTANCE_SQUARED = 14 * 14;
+
 function ArtFrame({ art }) {
   const [texture, setTexture] = useState(null);
-  const [aspect, setAspect] = useState(1.0);
   const [hovered, setHovered] = useState(false);
+  const { camera } = useThree();
+  const requested = useRef(false);
+  const frameTime = useRef(0);
+  const position = useMemo(() => new THREE.Vector3(...art.position), [art.position]);
 
-  useEffect(() => {
+  useFrame((_, delta) => {
+    if (requested.current) return;
+    frameTime.current += delta;
+    if (frameTime.current < 0.6) return;
+    frameTime.current = 0;
+    if (camera.position.distanceToSquared(position) > IMAGE_LOAD_DISTANCE_SQUARED) return;
+    requested.current = true;
     const loader = new THREE.TextureLoader();
-    loader.load(art.file, (tex) => {
+    loader.load(art.file, tex => {
       tex.colorSpace = THREE.SRGBColorSpace;
-      if (tex.image && tex.image.height > 0) {
-        setAspect(tex.image.width / tex.image.height);
-      }
+      tex.anisotropy = 2;
       setTexture(tex);
-    });
-  }, [art.file]);
+    }, undefined, () => { requested.current = false; });
+  });
 
-  const frameWidth = art.width || (art.height || 1.1) * aspect;
+  useEffect(() => () => { texture?.dispose(); }, [texture]);
+  const frameWidth = art.width || art.height || 1.1;
   const frameHeight = art.height || 1.1;
 
   return (
     <group userData={{ navigationArtwork: art }} position={art.position} rotation={art.rotation}
-      onClick={(e) => { e.stopPropagation(); }}
-      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
+      onClick={event => event.stopPropagation()}
+      onPointerOver={event => { event.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
       onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
     >
       <mesh position={[0, 0, -0.025]}>
@@ -235,7 +247,7 @@ function ArtFrame({ art }) {
       </mesh>
       <mesh position={[0, 0, 0.012]}>
         <planeGeometry args={[frameWidth, frameHeight]} />
-        {texture ? <meshBasicMaterial map={texture} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#c4b5a5" side={THREE.DoubleSide} />}
+        {texture ? <meshBasicMaterial map={texture} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#d6cfc2" side={THREE.DoubleSide} />}
       </mesh>
     </group>
   );
@@ -244,50 +256,55 @@ function ArtFrame({ art }) {
 function GridArtSet({ setInfo }) {
   const [textures, setTextures] = useState([]);
   const [hovered, setHovered] = useState(false);
+  const { camera } = useThree();
+  const requested = useRef(false);
+  const frameTime = useRef(0);
+  const position = useMemo(() => new THREE.Vector3(...setInfo.position), [setInfo.position]);
 
-  useEffect(() => {
+  useFrame((_, delta) => {
+    if (requested.current) return;
+    frameTime.current += delta;
+    if (frameTime.current < 0.6) return;
+    frameTime.current = 0;
+    if (camera.position.distanceToSquared(position) > IMAGE_LOAD_DISTANCE_SQUARED) return;
+    requested.current = true;
     const loader = new THREE.TextureLoader();
-    setInfo.files.forEach((file, idx) => {
-      loader.load(file, (tex) => {
+    setInfo.files.forEach((file, index) => {
+      loader.load(file, tex => {
         tex.colorSpace = THREE.SRGBColorSpace;
-        setTextures(prev => {
-          const next = [...prev];
-          next[idx] = tex;
+        tex.anisotropy = 2;
+        setTextures(previous => {
+          const next = [...previous];
+          next[index] = tex;
           return next;
         });
-      });
+      }, undefined, () => { requested.current = false; });
     });
-  }, [setInfo.files]);
+  });
 
-  // Each painting in the two four-part works measures 30 x 40 cm.
+  useEffect(() => () => textures.forEach(texture => texture?.dispose()), [textures]);
+
+  // Preserve the real 30 × 40 cm size of each of the four separate panels.
   const pW = 0.30 * DISPLAY_SCALE;
   const pH = 0.40 * DISPLAY_SCALE;
   const gap = 0.065;
 
   return (
     <group userData={{ navigationArtwork: { ...setInfo, file: setInfo.files[0], physicalWidthCm: 30, physicalHeightCm: 40 } }} position={setInfo.position} rotation={setInfo.rotation}
-      onClick={(e) => e.stopPropagation()}
-      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
+      onClick={event => event.stopPropagation()}
+      onPointerOver={event => { event.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
       onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
     >
-      <mesh position={[-pW/2 - gap/2, pH/2 + gap/2, 0.01]}>
-        <planeGeometry args={[pW, pH]} />
-        {textures[0] ? <meshBasicMaterial map={textures[0]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
-      </mesh>
-      <mesh position={[pW/2 + gap/2, pH/2 + gap/2, 0.01]}>
-        <planeGeometry args={[pW, pH]} />
-        {textures[1] ? <meshBasicMaterial map={textures[1]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
-      </mesh>
-      <mesh position={[-pW/2 - gap/2, -pH/2 - gap/2, 0.01]}>
-        <planeGeometry args={[pW, pH]} />
-        {textures[2] ? <meshBasicMaterial map={textures[2]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
-      </mesh>
-      <mesh position={[pW/2 + gap/2, -pH/2 - gap/2, 0.01]}>
-        <planeGeometry args={[pW, pH]} />
-        {textures[3] ? <meshBasicMaterial map={textures[3]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
-      </mesh>
+      {[[-1, 1], [1, 1], [-1, -1], [1, -1]].map(([column, row], index) => (
+        <mesh key={index} position={[column * (pW + gap) / 2, row * (pH + gap) / 2, 0.01]}>
+          <planeGeometry args={[pW, pH]} />
+          {textures[index]
+            ? <meshBasicMaterial map={textures[index]} side={THREE.DoubleSide} />
+            : <meshStandardMaterial color="#d6cfc2" side={THREE.DoubleSide} />}
+        </mesh>
+      ))}
       <mesh position={[0, 0, -0.01]}>
-        <boxGeometry args={[pW*2 + gap + 0.06, pH*2 + gap + 0.06, 0.02]} />
+        <boxGeometry args={[pW * 2 + gap + 0.06, pH * 2 + gap + 0.06, 0.02]} />
         <meshStandardMaterial color={hovered ? '#a48e70' : '#6a5948'} roughness={0.72} />
       </mesh>
     </group>
@@ -790,7 +807,7 @@ export default function GalleryExperience({ initialTour = false, onHome }) {
   return (
     <main className="canvas-container">
       <Canvas
-        dpr={[1, 1.6]}
+        dpr={[1, 1.25]}
         camera={{ position: [0, 1.7, 9.7], fov: 65, near: 0.1, far: 80 }}
         gl={{ antialias: true, powerPreference: 'high-performance' }}
         onCreated={({ gl }) => {
