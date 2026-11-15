@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import * as THREE from 'three';
@@ -49,6 +49,7 @@ const SOURCE_ARTWORKS = [
   { id: 32, title: 'Genesis of Color', file: '/artworks/32-DSC00659.JPG', position: [7.5, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
   { id: 33, title: 'Sunflower Vase I', file: '/artworks/33-DSC00923.JPG', position: [10.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 }
 ];
+
 /**
  * Source: BuynsellArt_Eser_Katalogu_Guncel.xlsx.
  * Dimensions below are the catalogued physical sizes, in cm (width x height).
@@ -199,7 +200,7 @@ const WING_ARTWORKS = [
     .map(art => ({ ...art, ...measureArtwork(art) }))
 ];
 
-function ArtFrame({ art, onSelect }) {
+function ArtFrame({ art }) {
   const [texture, setTexture] = useState(null);
   const [aspect, setAspect] = useState(1.0);
   const [hovered, setHovered] = useState(false);
@@ -219,18 +220,20 @@ function ArtFrame({ art, onSelect }) {
   const frameHeight = art.height || 1.1;
 
   return (
-    <group 
-      position={art.position} 
-      rotation={art.rotation}
-      onClick={(e) => { e.stopPropagation(); onSelect(art); }}
+    <group userData={{ navigationArtwork: art }} position={art.position} rotation={art.rotation}
+      onClick={(e) => { e.stopPropagation(); }}
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
       onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
     >
-      <mesh position={[0, 0, -0.01]}>
-        <boxGeometry args={[frameWidth + 0.04, frameHeight + 0.04, 0.02]} />
-        <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} />
+      <mesh position={[0, 0, -0.025]}>
+        <boxGeometry args={[frameWidth + 0.115, frameHeight + 0.115, 0.038]} />
+        <meshStandardMaterial color={hovered ? '#a48e70' : '#6a5948'} roughness={0.72} metalness={0.12} />
       </mesh>
-      <mesh position={[0, 0, 0.01]}>
+      <mesh position={[0, 0, 0.002]}>
+        <planeGeometry args={[frameWidth + 0.07, frameHeight + 0.07]} />
+        <meshBasicMaterial color="#f9f7f1" />
+      </mesh>
+      <mesh position={[0, 0, 0.012]}>
         <planeGeometry args={[frameWidth, frameHeight]} />
         {texture ? <meshBasicMaterial map={texture} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#c4b5a5" side={THREE.DoubleSide} />}
       </mesh>
@@ -238,7 +241,7 @@ function ArtFrame({ art, onSelect }) {
   );
 }
 
-function GridArtSet({ setInfo, onSelect }) {
+function GridArtSet({ setInfo }) {
   const [textures, setTextures] = useState([]);
   const [hovered, setHovered] = useState(false);
 
@@ -261,12 +264,10 @@ function GridArtSet({ setInfo, onSelect }) {
   const gap = 0.02;
 
   return (
-    <group 
-      position={setInfo.position} 
-      rotation={setInfo.rotation}
+    <group userData={{ navigationArtwork: { ...setInfo, file: setInfo.files[0] } }} position={setInfo.position} rotation={setInfo.rotation}
       onClick={(e) => {
         e.stopPropagation();
-        onSelect({ title: setInfo.title, category: setInfo.category, description: setInfo.description, file: setInfo.files[0] });
+        // Navigation is handled by the shared pointer controller.
       }}
       onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
       onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
@@ -298,209 +299,398 @@ function GridArtSet({ setInfo, onSelect }) {
 function GalleryDoor() {
   return (
     <group position={[0, 0, 14.0]}>
-      <mesh position={[-1.1, 1.8, 0]}><boxGeometry args={[0.2, 3.6, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
-      <mesh position={[1.1, 1.8, 0]}><boxGeometry args={[0.2, 3.6, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
-      <mesh position={[0, 3.55, 0]}><boxGeometry args={[2.4, 0.2, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
+      <mesh position={[-1.1, 1.8, 0]}><boxGeometry args={[0.2, 3.6, 0.3]} /><meshStandardMaterial color="#b2a699" /></mesh>
+      <mesh position={[1.1, 1.8, 0]}><boxGeometry args={[0.2, 3.6, 0.3]} /><meshStandardMaterial color="#b2a699" /></mesh>
+      <mesh position={[0, 3.55, 0]}><boxGeometry args={[2.4, 0.2, 0.3]} /><meshStandardMaterial color="#b2a699" /></mesh>
       <group position={[-1.0, 0, 0]} rotation={[0, Math.PI / 3, 0]}>
-        <mesh position={[0.5, 1.7, 0]}><boxGeometry args={[1.0, 3.3, 0.08]} /><meshStandardMaterial color="#4a2e18" /></mesh>
+        <mesh position={[0.5, 1.7, 0]}><boxGeometry args={[1.0, 3.3, 0.08]} /><meshStandardMaterial color="#c4b7a7" /></mesh>
       </group>
       <group position={[1.0, 0, 0]} rotation={[0, -Math.PI / 3, 0]}>
-        <mesh position={[-0.5, 1.7, 0]}><boxGeometry args={[1.0, 3.3, 0.08]} /><meshStandardMaterial color="#4a2e18" /></mesh>
+        <mesh position={[-0.5, 1.7, 0]}><boxGeometry args={[1.0, 3.3, 0.08]} /><meshStandardMaterial color="#c4b7a7" /></mesh>
       </group>
     </group>
   );
 }
 
+
+const GALLERY_PALETTE = {
+  wall: '#f3f0e9',
+  floor: '#c8c4b9',
+  trim: '#c0b9ab',
+  ceiling: '#f7f5ef',
+  brass: '#9b8667'
+};
+
 function GalleryArchitecture() {
-  const ecruColor = '#ede7db';
-  const floorColor = '#1e2124';
+  // Simple baked-feeling architecture rather than expensive dynamic shadows.
+  const strips = [-16, -10, -4, 2, 8, 12];
   return (
     <group>
-      <mesh position={[0, 0, -2]} rotation={[-Math.PI / 2, 0, 0]}>
+      <mesh position={[0, -0.08, -2]} receiveShadow rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[26, 36]} />
-        <meshStandardMaterial color={floorColor} roughness={0.15} metalness={0.1} side={THREE.DoubleSide} />
+        <meshStandardMaterial color={GALLERY_PALETTE.floor} roughness={0.94} metalness={0} />
       </mesh>
-      <mesh position={[0, 4.2, -2]} rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[26, 36]} /><meshStandardMaterial color="#faf8f5" roughness={0.9} side={THREE.DoubleSide} /></mesh>
-
-      <mesh position={[-12.0, 2.1, -2]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[36, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[12.0, 2.1, -2]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[36, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[0, 2.1, -19]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[0, 2.1, 15]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
+      {/* Micro-joints convey a limestone floor without adding any bitmap textures. */}
+      {Array.from({ length: 12 }, (_, index) => (
+        <mesh key={'floor-joint-'+index} position={[0, -0.067, -18 + index * 2.9]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[25.8, 0.018]} />
+          <meshBasicMaterial color="#ada99f" transparent opacity={0.19} />
+        </mesh>
+      ))}
+      <mesh position={[0, 4.2, -2]} rotation={[Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[26, 36]} />
+        <meshStandardMaterial color={GALLERY_PALETTE.ceiling} roughness={0.9} side={THREE.DoubleSide} />
+      </mesh>
+      <mesh position={[-12, 2.1, -2]} rotation={[0, Math.PI / 2, 0]}>
+        <planeGeometry args={[36, 4.2]} />
+        <meshStandardMaterial color={GALLERY_PALETTE.wall} roughness={0.98} side={THREE.DoubleSide} />
+      </mesh>
+      <mesh position={[12, 2.1, -2]} rotation={[0, -Math.PI / 2, 0]}>
+        <planeGeometry args={[36, 4.2]} />
+        <meshStandardMaterial color={GALLERY_PALETTE.wall} roughness={0.98} side={THREE.DoubleSide} />
+      </mesh>
+      <mesh position={[0, 2.1, -19]}>
+        <planeGeometry args={[24, 4.2]} />
+        <meshStandardMaterial color={GALLERY_PALETTE.wall} roughness={0.98} side={THREE.DoubleSide} />
+      </mesh>
+      <mesh position={[0, 2.1, 15]}>
+        <planeGeometry args={[24, 4.2]} />
+        <meshStandardMaterial color={GALLERY_PALETTE.wall} roughness={0.98} side={THREE.DoubleSide} />
+      </mesh>
+      {/* Thin classical shadow-line at the base of each wall. */}
+      {[[-11.96,0.09,-2,0.08,0.18,36],[11.96,0.09,-2,0.08,0.18,36],[0,0.09,-18.96,24,0.18,0.08],[0,0.09,14.96,24,0.18,0.08]].map(([x,y,z,w,h,d],index) => (
+        <mesh key={'base-'+index} position={[x,y,z]}>
+          <boxGeometry args={[w,h,d]} />
+          <meshStandardMaterial color={GALLERY_PALETTE.trim} roughness={0.88} />
+        </mesh>
+      ))}
+      {/* Recessed architectural ceiling rails, slim and deliberately unobtrusive. */}
+      {[-8.1,8.1].map((x) => (
+        <group key={'track-'+x}>
+          <mesh position={[x, 4.125, -2]}>
+            <boxGeometry args={[0.055,0.09,30]} />
+            <meshStandardMaterial color="#c6bcae" roughness={0.65} metalness={0.25} />
+          </mesh>
+          {strips.map((z) => (
+            <group key={'spot-'+z} position={[x,4.01,z]}>
+              <mesh><cylinderGeometry args={[0.10,0.10,0.20,10]} /><meshStandardMaterial color="#e7dfd4" /></mesh>
+              <mesh position={[0,-0.13,0]} rotation={[-Math.PI/2,0,0]}>
+                <circleGeometry args={[0.085,12]} />
+                <meshBasicMaterial color="#fff4df" />
+              </mesh>
+            </group>
+          ))}
+        </group>
+      ))}
+      <spotLight position={[-7, 4.02, -11]} intensity={35} angle={0.75} penumbra={0.9} distance={19} color="#fff0d8" />
+      <spotLight position={[7, 4.02, -11]} intensity={35} angle={0.75} penumbra={0.9} distance={19} color="#fff0d8" />
+      <spotLight position={[-7, 4.02, 6]} intensity={28} angle={0.7} penumbra={0.95} distance={17} color="#fff0df" />
+      <spotLight position={[7, 4.02, 6]} intensity={28} angle={0.7} penumbra={0.95} distance={17} color="#fff0df" />
     </group>
   );
 }
 
-function TouchAndTrackpadControls({ mobileMove, mobileTurn }) {
-  const { camera, gl } = useThree();
-  const isDragging = useRef(false);
-  const previousTouchPosition = useRef({ x: 0, y: 0 });
-  const previousPinchDistance = useRef(null);
+
+const CAMERA_HEIGHT = 1.7;
+const WALK_BOUNDS = { minX: -11.1, maxX: 11.1, minZ: -16.9, maxZ: 12.9 };
+const WALK_SPEED = 3.9;
+const ALL_STOPS = [...ARTWORKS, ...WING_ARTWORKS, ...GRID_SETS.map(item => ({ ...item, file: item.files[0] }))];
+
+function validDestination(position) {
+  return new THREE.Vector3(
+    THREE.MathUtils.clamp(position.x, WALK_BOUNDS.minX, WALK_BOUNDS.maxX),
+    CAMERA_HEIGHT,
+    THREE.MathUtils.clamp(position.z, WALK_BOUNDS.minZ, WALK_BOUNDS.maxZ)
+  );
+}
+
+function artworkDestination(art) {
+  const normal = new THREE.Vector3(0, 0, 1).applyEuler(new THREE.Euler(...art.rotation));
+  const position = new THREE.Vector3(...art.position).addScaledVector(normal, 2.2);
+  return validDestination(position);
+}
+
+// Navigation uses the existing rectangular walkable gallery. A real fair hall will
+// require a measured walkable navigation mesh before entrance routing is enabled.
+function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFinished, onTourInterrupted }) {
+  const { camera, gl, scene } = useThree();
+  const pointer = useRef(null);
+  const raycaster = useMemo(() => new THREE.Raycaster(), []);
+  const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), []);
   const euler = useRef(new THREE.Euler(0, 0, 0, 'YXZ'));
+  const forward = useRef(new THREE.Vector3());
+  const targetDirection = useRef(new THREE.Vector3());
+  const destination = useRef(null);
+  const lookAt = useRef(null);
+  const pendingArt = useRef(null);
+  const currentTourIndex = useRef(-1);
+  const onArtworkReachedRef = useRef(onArtworkReached);
+  const onTourFinishedRef = useRef(onTourFinished);
+  const onTourInterruptedRef = useRef(onTourInterrupted);
+
+  useEffect(() => { onArtworkReachedRef.current = onArtworkReached; }, [onArtworkReached]);
+  useEffect(() => { onTourFinishedRef.current = onTourFinished; }, [onTourFinished]);
+  useEffect(() => { onTourInterruptedRef.current = onTourInterrupted; }, [onTourInterrupted]);
 
   useEffect(() => {
-    const domElement = gl.domElement;
-
-    const onPointerDown = (e) => {
-      if (e.button === 0 || e.pointerType === 'touch') {
-        isDragging.current = true;
-        previousTouchPosition.current = { x: e.clientX, y: e.clientY };
+    navigationRef.current = {
+      stop() { destination.current = null; pendingArt.current = null; tourRef.current = false; },
+      goTo(art) {
+        destination.current = artworkDestination(art);
+        lookAt.current = new THREE.Vector3(...art.position);
+        pendingArt.current = art;
+      },
+      startTour() {
+        tourRef.current = true;
+        currentTourIndex.current = 0;
+        const art = ALL_STOPS[0];
+        destination.current = artworkDestination(art);
+        lookAt.current = new THREE.Vector3(...art.position);
+        pendingArt.current = null;
+      },
+      next() {
+        tourRef.current = true;
+        currentTourIndex.current = (currentTourIndex.current + 1) % ALL_STOPS.length;
+        const art = ALL_STOPS[currentTourIndex.current];
+        destination.current = artworkDestination(art);
+        lookAt.current = new THREE.Vector3(...art.position);
+        pendingArt.current = null;
+      },
+      previous() {
+        tourRef.current = true;
+        currentTourIndex.current = (currentTourIndex.current - 1 + ALL_STOPS.length) % ALL_STOPS.length;
+        const art = ALL_STOPS[currentTourIndex.current];
+        destination.current = artworkDestination(art);
+        lookAt.current = new THREE.Vector3(...art.position);
+        pendingArt.current = null;
       }
     };
 
-    const onPointerMove = (e) => {
-      if (!isDragging.current) return;
-
-      const deltaX = e.clientX - previousTouchPosition.current.x;
-      const deltaY = e.clientY - previousTouchPosition.current.y;
-
-      previousTouchPosition.current = { x: e.clientX, y: e.clientY };
-
+    const canvas = gl.domElement;
+    canvas.style.touchAction = 'none';
+    const onPointerDown = (event) => {
+      if (event.button !== 0 && event.pointerType !== 'touch') return;
+      pointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY, prevX: event.clientX, prevY: event.clientY, moved: false };
+      canvas.setPointerCapture?.(event.pointerId);
+    };
+    const onPointerMove = (event) => {
+      const p = pointer.current;
+      if (!p || p.id !== event.pointerId) return;
+      const dx = event.clientX - p.prevX;
+      const dy = event.clientY - p.prevY;
+      p.prevX = event.clientX;
+      p.prevY = event.clientY;
+      if (Math.hypot(event.clientX - p.x, event.clientY - p.y) > 7) p.moved = true;
+      if (!p.moved) return;
+      destination.current = null;
+      tourRef.current = false;
+      onTourInterruptedRef.current();
+      pendingArt.current = null;
+      lookAt.current = null;
       euler.current.setFromQuaternion(camera.quaternion);
-      euler.current.y -= deltaX * 0.003;
-      euler.current.x -= deltaY * 0.003;
-      euler.current.x = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, euler.current.x));
+      euler.current.y -= dx * 0.003;
+      euler.current.x = THREE.MathUtils.clamp(euler.current.x - dy * 0.003, -1.25, 1.25);
       camera.quaternion.setFromEuler(euler.current);
     };
-
-    const onPointerUp = () => {
-      isDragging.current = false;
-    };
-
-    const onTouchMove = (e) => {
-      if (e.touches.length === 2) {
-        const touch1 = e.touches[0];
-        const touch2 = e.touches[1];
-        const dist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
-
-        if (previousPinchDistance.current !== null) {
-          const deltaDist = dist - previousPinchDistance.current;
-          const forward = new THREE.Vector3();
-          camera.getWorldDirection(forward);
-          forward.y = 0;
-          forward.normalize();
-          camera.position.addScaledVector(forward, deltaDist * 0.02);
+    const onPointerUp = (event) => {
+      const p = pointer.current;
+      if (!p || p.id !== event.pointerId) return;
+      pointer.current = null;
+      if (p.moved) return;
+      const rect = canvas.getBoundingClientRect();
+      const coords = new THREE.Vector2(
+        ((event.clientX - rect.left) / rect.width) * 2 - 1,
+        -((event.clientY - rect.top) / rect.height) * 2 + 1
+      );
+      raycaster.setFromCamera(coords, camera);
+      const intersections = raycaster.intersectObjects(scene.children, true);
+      let art = null;
+      for (const hit of intersections) {
+        let object = hit.object;
+        while (object) {
+          if (object.userData?.navigationArtwork) {
+            art = object.userData.navigationArtwork;
+            break;
+          }
+          object = object.parent;
         }
-        previousPinchDistance.current = dist;
+        if (art) break;
+      }
+      if (art) {
+        destination.current = artworkDestination(art);
+        lookAt.current = new THREE.Vector3(...art.position);
+        pendingArt.current = art;
+        tourRef.current = false;
+        onTourInterruptedRef.current();
+        return;
+      }
+      const ground = new THREE.Vector3();
+      if (raycaster.ray.intersectPlane(plane, ground)) {
+        destination.current = validDestination(ground);
+        lookAt.current = null;
+        pendingArt.current = null;
+        tourRef.current = false;
+        onTourInterruptedRef.current();
       }
     };
-
-    const onTouchEnd = () => {
-      previousPinchDistance.current = null;
+    const onWheel = (event) => {
+      event.preventDefault();
+      destination.current = null;
+      lookAt.current = null;
+      pendingArt.current = null;
+      tourRef.current = false;
+      onTourInterruptedRef.current();
+      camera.getWorldDirection(forward.current);
+      forward.current.y = 0;
+      forward.current.normalize();
+      const next = validDestination(camera.position.clone().addScaledVector(forward.current, -event.deltaY * 0.009));
+      camera.position.copy(next);
     };
-
-    const onWheel = (e) => {
-      const forward = new THREE.Vector3();
-      camera.getWorldDirection(forward);
-      forward.y = 0;
-      forward.normalize();
-      camera.position.addScaledVector(forward, -e.deltaY * 0.005);
-    };
-
-    domElement.addEventListener('pointerdown', onPointerDown);
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
-    domElement.addEventListener('touchmove', onTouchMove);
-    domElement.addEventListener('touchend', onTouchEnd);
-    domElement.addEventListener('wheel', onWheel, { passive: true });
-
+    const onPointerCancel = () => { pointer.current = null; };
+    canvas.addEventListener('pointerdown', onPointerDown);
+    canvas.addEventListener('pointermove', onPointerMove);
+    canvas.addEventListener('pointerup', onPointerUp);
+    canvas.addEventListener('pointercancel', onPointerCancel);
+    canvas.addEventListener('wheel', onWheel, { passive: false });
     return () => {
-      domElement.removeEventListener('pointerdown', onPointerDown);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      domElement.removeEventListener('touchmove', onTouchMove);
-      domElement.removeEventListener('touchend', onTouchEnd);
-      domElement.removeEventListener('wheel', onWheel);
+      canvas.removeEventListener('pointerdown', onPointerDown);
+      canvas.removeEventListener('pointermove', onPointerMove);
+      canvas.removeEventListener('pointerup', onPointerUp);
+      canvas.removeEventListener('pointercancel', onPointerCancel);
+      canvas.removeEventListener('wheel', onWheel);
+      navigationRef.current = null;
     };
-  }, [camera, gl]);
+  }, [camera, gl, scene, raycaster, plane, navigationRef, tourRef]);
 
   useFrame((_, delta) => {
-    const speed = 5.2 * delta;
-    const forward = new THREE.Vector3();
-    const right = new THREE.Vector3();
-
-    if (mobileTurn) {
-      euler.current.setFromQuaternion(camera.quaternion);
-      euler.current.y += mobileTurn * 2.2 * delta;
-      camera.quaternion.setFromEuler(euler.current);
+    if (!destination.current) return;
+    const to = targetDirection.current.copy(destination.current).sub(camera.position);
+    to.y = 0;
+    const remaining = to.length();
+    if (remaining > 0.055) {
+      const step = Math.min(remaining, WALK_SPEED * Math.min(delta, 0.05));
+      camera.position.addScaledVector(to.normalize(), step);
+    } else {
+      camera.position.copy(destination.current);
+      destination.current = null;
+      if (pendingArt.current) {
+        onArtworkReachedRef.current(pendingArt.current);
+        pendingArt.current = null;
+      }
+      if (tourRef.current) {
+        currentTourIndex.current += 1;
+        if (currentTourIndex.current >= ALL_STOPS.length) {
+          tourRef.current = false;
+          onTourFinishedRef.current();
+        } else {
+          const art = ALL_STOPS[currentTourIndex.current];
+          destination.current = artworkDestination(art);
+          lookAt.current = new THREE.Vector3(...art.position);
+        }
+      }
     }
-
-    camera.getWorldDirection(forward);
-    forward.y = 0;
-    forward.normalize();
-    right.crossVectors(camera.up, forward).normalize();
-
-    if (mobileMove) {
-      if (mobileMove.forward !== 0) camera.position.addScaledVector(forward, mobileMove.forward * speed);
-      if (mobileMove.right !== 0) camera.position.addScaledVector(right, mobileMove.right * speed);
+    camera.position.y = CAMERA_HEIGHT;
+    if (lookAt.current) {
+      const desired = new THREE.Quaternion();
+      const matrix = new THREE.Matrix4().lookAt(camera.position, lookAt.current, camera.up);
+      desired.setFromRotationMatrix(matrix);
+      camera.quaternion.slerp(desired, Math.min(1, delta * 4));
     }
-
-    camera.position.y = 1.7;
-    camera.position.x = THREE.MathUtils.clamp(camera.position.x, -11.2, 11.2);
-    camera.position.z = THREE.MathUtils.clamp(camera.position.z, -17.0, 13.0);
   });
-
   return null;
 }
 
+
 export default function App() {
   const [selectedArt, setSelectedArt] = useState(null);
-  const [mobileMove, setMobileMove] = useState(null);
-  const [mobileTurn, setMobileTurn] = useState(null);
+  const [entered, setEntered] = useState(false);
+  const [tourActive, setTourActive] = useState(false);
+  const navigationRef = useRef(null);
+  const tourRef = useRef(false);
+  const startTour = () => { setEntered(true); setSelectedArt(null); navigationRef.current?.startTour(); setTourActive(true); };
+  const stopTour = () => { navigationRef.current?.stop(); setTourActive(false); };
+  const nextStop = () => { setEntered(true); setSelectedArt(null); navigationRef.current?.next(); setTourActive(true); };
 
   return (
-    <div className="canvas-container">
-      <div className="instructions-overlay-hint" style={{ position: 'absolute', top: 15, left: '50%', transform: 'translateX(-50%)', zIndex: 10, background: 'rgba(0,0,0,0.6)', color: '#fff', padding: '6px 16px', borderRadius: '20px', fontSize: '13px', pointerEvents: 'none' }}>
-        💡 Click &amp; drag or touch &amp; swipe to look around.
-      </div>
-
-      <div className="mobile-controls-overlay" style={{ bottom: '75px' }}>
-        <div className="mobile-turn-group">
-          <button onTouchStart={() => setMobileTurn(1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(1)} onMouseUp={() => setMobileTurn(0)}>↺ Turn</button>
-          <button onTouchStart={() => setMobileTurn(-1)} onTouchEnd={() => setMobileTurn(0)} onMouseDown={() => setMobileTurn(-1)} onMouseUp={() => setMobileTurn(0)}>Turn ↻</button>
-        </div>
-        <div className="mobile-dpad">
-          <button onTouchStart={() => setMobileMove({ forward: 1, right: 0 })} onTouchEnd={() => setMobileMove(null)} onMouseDown={() => setMobileMove({ forward: 1, right: 0 })} onMouseUp={() => setMobileMove(null)}>▲</button>
-          <div className="dpad-row">
-            <button onTouchStart={() => setMobileMove({ forward: 0, right: 1 })} onTouchEnd={() => setMobileMove(null)} onMouseDown={() => setMobileMove({ forward: 0, right: 1 })} onMouseUp={() => setMobileMove(null)}>◄</button>
-            <button onTouchStart={() => setMobileMove({ forward: -1, right: 0 })} onTouchEnd={() => setMobileMove(null)} onMouseDown={() => setMobileMove({ forward: -1, right: 0 })} onMouseUp={() => setMobileMove(null)}>▼</button>
-            <button onTouchStart={() => setMobileMove({ forward: 0, right: -1 })} onTouchEnd={() => setMobileMove(null)} onMouseDown={() => setMobileMove({ forward: 0, right: -1 })} onMouseUp={() => setMobileMove(null)}>►</button>
-          </div>
-        </div>
-      </div>
-
-      <Canvas camera={{ position: [0, 1.7, 8.0], fov: 70 }}>
-        <ambientLight intensity={1.8} color="#ffffff" />
-        <directionalLight position={[0, 10, 5]} intensity={1.8} color="#fffcf5" />
-        <TouchAndTrackpadControls mobileMove={mobileMove} mobileTurn={mobileTurn} />
+    <main className="canvas-container">
+      <Canvas
+        dpr={[1, 1.6]}
+        camera={{ position: [0, 1.7, 9.7], fov: 65, near: 0.1, far: 80 }}
+        gl={{ antialias: true, powerPreference: 'high-performance' }}
+        onCreated={({ gl }) => {
+          gl.toneMapping = THREE.ACESFilmicToneMapping;
+          gl.toneMappingExposure = 1.15;
+          gl.outputColorSpace = THREE.SRGBColorSpace;
+        }}
+      >
+        <color attach="background" args={['#edeae2']} />
+        <fog attach="fog" args={['#edeae2', 20, 47]} />
+        <hemisphereLight args={['#fff7ee', '#b4afa4', 1.8]} />
+        <ambientLight intensity={0.65} color="#fffcf5" />
+        <directionalLight position={[-2, 12, 8]} intensity={1.4} color="#fff4e7" />
+        <GalleryNavigation navigationRef={navigationRef} tourRef={tourRef}
+          onArtworkReached={(art) => { setSelectedArt(art); setTourActive(false); }}
+          onTourInterrupted={() => setTourActive(false)}
+          onTourFinished={() => setTourActive(false)} />
         <GalleryArchitecture />
         <GalleryDoor />
-        {ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} onSelect={setSelectedArt} />)}
-        {GRID_SETS.map((setInfo) => <GridArtSet key={setInfo.id} setInfo={setInfo} onSelect={setSelectedArt} />)}
-        {WING_ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} onSelect={setSelectedArt} />)}
+        {ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} />)}
+        {GRID_SETS.map((setInfo) => <GridArtSet key={setInfo.id} setInfo={setInfo} />)}
+        {WING_ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} />)}
       </Canvas>
+
+      <header className="museum-header">
+        <div className="museum-identity">
+          <span className="museum-kicker">AN INDEPENDENT VIRTUAL EXHIBITION</span>
+          <span className="museum-name">Zeynep Özçelik <i>—</i> Works</span>
+        </div>
+        <div className="museum-header-actions">
+          <button className={tourActive ? 'is-active' : ''} type="button" onClick={tourActive ? stopTour : startTour}>
+            {tourActive ? 'Pause tour' : 'Guided tour'}
+          </button>
+          <button type="button" onClick={nextStop}>Next work <span aria-hidden="true">↗</span></button>
+        </div>
+      </header>
+
+      {!entered && (
+        <section className="welcome-card" aria-label="Enter exhibition">
+          <span className="welcome-eyebrow">THE ONLINE EXHIBITION · VOLUME 01</span>
+          <h1>Art deserves<br/><em>room to breathe.</em></h1>
+          <p>An intimate collection of paintings and studies, presented at their individual scale. Wander freely, take a closer look, or enjoy a curated walk.</p>
+          <div className="welcome-actions">
+            <button type="button" className="primary-action" onClick={() => setEntered(true)}>Enter gallery <span aria-hidden="true">↗</span></button>
+            <button type="button" className="quiet-action" onClick={startTour}>Take a guided tour</button>
+          </div>
+          <div className="welcome-rule"><span>CURATED BY GRADPIXEL</span><span>OPEN 24 HOURS</span></div>
+        </section>
+      )}
+
+      {entered && (
+        <footer className="museum-footer">
+          <div className="museum-help"><span className="help-dot" aria-hidden="true"/> Click floor to walk <span className="help-separator">·</span> Click art to explore <span className="help-separator">·</span> Drag to look</div>
+          <button type="button" onClick={stopTour} disabled={!tourActive}>Stop motion</button>
+        </footer>
+      )}
 
       {selectedArt && (
         <div className="modal-overlay" onClick={() => setSelectedArt(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close-btn" onClick={() => setSelectedArt(null)}>&times;</button>
-            <div className="modal-img-wrapper">
-              <img src={selectedArt.file} alt={selectedArt.title} style={{ maxWidth: '100%', maxHeight: '75vh', objectFit: 'contain' }} />
-            </div>
+          <section className="modal-content" role="dialog" aria-modal="true" aria-label={selectedArt.title} onClick={event => event.stopPropagation()}>
+            <button className="modal-close-btn" aria-label="Close artwork details" onClick={() => setSelectedArt(null)}>×</button>
+            <div className="modal-img-wrapper"><img src={selectedArt.file} alt={selectedArt.title} /></div>
             <div className="modal-body">
-              <div className="modal-meta-row">
-                <span className="modal-tag">{selectedArt.category || 'Fine Art'}</span>
-              </div>
+              <span className="modal-tag">SELECTED WORK</span>
               <h2>{selectedArt.title}</h2>
-              <p className="artist-byline">Artist: <strong>Zeynep Ozcelik</strong></p>
-              <p className="art-desc">{selectedArt.description || 'Virtual Fine Art Exhibition piece.'}</p>
+              <p className="artist-byline">Zeynep Özçelik</p>
+              {selectedArt.physicalWidthCm ? <p className="art-dimensions">{selectedArt.physicalWidthCm} × {selectedArt.physicalHeightCm} cm</p> : <p className="art-dimensions">Dimensions pending verification</p>}
+              {selectedArt.description && <p className="art-desc">{selectedArt.description}</p>}
               <div className="modal-actions-row">
-                <a href={ARTIST_INFO.instagram} target="_blank" rel="noreferrer" className="modal-action-btn ig">📸 Instagram {ARTIST_INFO.instagramHandle}</a>
-                <a href={`mailto:${ARTIST_INFO.email}?subject=Acquisition Inquiry: ${encodeURIComponent(selectedArt.title)}`} className="modal-action-btn mail">✉️ Inquire via Email</a>
+                <a href={ARTIST_INFO.instagram} target="_blank" rel="noreferrer" className="modal-action-btn">View artist profile ↗</a>
+                <a href={`mailto:${ARTIST_INFO.email}?subject=Artwork inquiry: ${encodeURIComponent(selectedArt.title)}`} className="modal-action-btn">Enquire about this work ↗</a>
               </div>
             </div>
-          </div>
+          </section>
         </div>
       )}
-    </div>
+    </main>
   );
 }
