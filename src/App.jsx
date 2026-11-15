@@ -1,599 +1,232 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Text } from '@react-three/drei';
 import * as THREE from 'three';
 import './App.css';
 
-const ARTIST_INFO = {
-  name: 'Zeynep Ozcelik',
-  instagram: 'https://instagram.com/zeyozc',
-  instagramHandle: '@zeyozc',
-  email: 'nakiera@gmail.com'
-};
-
-const SOURCE_ARTWORKS = [
-  // --- SOL DUVAR (X = -11.88) - Tek Sıra ---
-  { id: 1, title: 'Balloon Float', file: '/artworks/1-baloon.png', position: [-11.88, 1.8, -15.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
-  { id: 2, title: 'Strawberry Bloom', file: '/artworks/2-straw.png', position: [-11.88, 1.8, -12.2], rotation: [0, Math.PI / 2, 0], height: 1.1 },
-  { id: 3, title: 'Botanical Study', file: '/artworks/3-DSC00648.JPG', position: [-11.88, 1.8, -9.4], rotation: [0, Math.PI / 2, 0], height: 1.1 },
-  { id: 4, title: 'Daisies I', file: '/artworks/4-daisies1.jpg', position: [-11.88, 1.8, -6.6], rotation: [0, Math.PI / 2, 0], height: 1.1 },
-  { id: 5, title: 'Daisies II', file: '/artworks/5-daisies2.JPG', position: [-11.88, 1.8, -3.8], rotation: [0, Math.PI / 2, 0], height: 1.1 },
-  { id: 6, title: 'Daisies III', file: '/artworks/6-daisies3.JPG', position: [-11.88, 1.8, -1.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
-  { id: 7, title: 'Bust Study', file: '/artworks/7-bust1.jpg', position: [-11.88, 1.8, 1.8], rotation: [0, Math.PI / 2, 0], height: 1.1 },
-  { id: 8, title: 'Lighthouse', file: '/artworks/8-lighthouse1.jpg', position: [-11.88, 1.8, 4.6], rotation: [0, Math.PI / 2, 0], height: 1.1 },
-  { id: 9, title: 'Lillies', file: '/artworks/9-lillies4.jpg', position: [-11.88, 1.8, 7.4], rotation: [0, Math.PI / 2, 0], height: 1.1 },
-  { id: 10, title: 'Rose I', file: '/artworks/10-rose1.jpg', position: [-11.88, 1.8, 10.2], rotation: [0, Math.PI / 2, 0], height: 1.1 },
-  { id: 11, title: 'Rose II', file: '/artworks/11-rose2.jpg', position: [-11.88, 1.8, 13.0], rotation: [0, Math.PI / 2, 0], height: 1.1 },
-
-  // --- SAĞ DUVAR (X = 11.88) - Tek Sıra ---
-  { id: 12, title: 'Roses Set', file: '/artworks/12-roses3.jpg', position: [11.88, 1.8, -15.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
-  { id: 13, title: 'Ink Flower', file: '/artworks/13-inkflower1.jpg', position: [11.88, 1.8, -12.2], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
-  { id: 14, title: 'Wine Still Life', file: '/artworks/14-wine1.jpg', position: [11.88, 1.8, -9.4], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
-  { id: 15, title: 'Bouquet', file: '/artworks/15-DSC00922.JPG', position: [11.88, 1.8, -6.6], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
-  { id: 16, title: 'Flower Study', file: '/artworks/16-flower11.11.23.png', position: [11.88, 1.8, -3.8], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
-  { id: 17, title: 'Blue Flower', file: '/artworks/17-flower07-11-23.png', position: [11.88, 1.8, -1.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
-  { id: 18, title: 'Bicycle', file: '/artworks/18-bycycle1.jpg', position: [11.88, 1.8, 1.8], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
-  { id: 19, title: 'Sunflower', file: '/artworks/19-sunflower2.jpg', position: [11.88, 1.8, 4.6], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
-  { id: 20, title: 'Iris Study', file: '/artworks/20-DSC00927.JPG', position: [11.88, 1.8, 7.4], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
-  { id: 23, title: 'Poppy I', file: '/artworks/23poppy1.jpg', position: [11.88, 1.8, 10.2], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
-  { id: 24, title: 'Poppy II', file: '/artworks/24poppy2.jpg', position: [11.88, 1.8, 13.0], rotation: [0, -Math.PI / 2, 0], height: 1.1 },
-
-  // --- ARKA DUVAR (Z = -17.85) - Tek Sıra ---
-  { id: 25, title: 'Poppy III', file: '/artworks/25poppy3.jpg', position: [-10.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
-  { id: 26, title: 'Poppies', file: '/artworks/26poppies4.jpg', position: [-7.5, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
-  { id: 27, title: 'Tulip Etude I', file: '/artworks/27-DSC00662.JPG', position: [-5.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
-  { id: 28, title: 'Tulip Etude II', file: '/artworks/28-DSC00664.JPG', position: [-2.5, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
-  { id: 29, title: 'Tulip Etude III', file: '/artworks/29-DSC00668.JPG', position: [0.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
-  { id: 30, title: 'Abstract Vortex', file: '/artworks/30-DSC00655.JPG', position: [2.5, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
-  { id: 31, title: 'Ancestral Mirage', file: '/artworks/31-DSC00657.JPG', position: [5.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
-  { id: 32, title: 'Genesis of Color', file: '/artworks/32-DSC00659.JPG', position: [7.5, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 },
-  { id: 33, title: 'Sunflower Vase I', file: '/artworks/33-DSC00923.JPG', position: [10.0, 1.8, -17.85], rotation: [0, 0, 0], height: 1.1 }
+// IAAF 2026 | Stand L28. Source: artist PDFs supplied by the exhibitor.
+// Paintings are represented by labelled conservation-safe panels until the
+// original artwork scans can be uploaded; never fabricate reproductions.
+const inventory = [
+ {artist:'Tülin Oktav Doğruer',title:'Untitled I',size:'55 × 80 cm',w:.55,h:.8,wall:'left'},
+ {artist:'Tülin Oktav Doğruer',title:'Untitled II',size:'70 × 90 cm',w:.7,h:.9,wall:'left'},
+ {artist:'Ayazma',title:'Just Like Water',size:'90 × 90 cm',w:.9,h:.9,wall:'left'},
+ {artist:'Birgül Ergün',title:'Öyle Bir Geçer Zaman ki',size:'110 × 110 cm',w:1.1,h:1.1,wall:'back'},
+ {artist:'Birgül Ergün',title:'Bir Varmış Bir Yokmuş',size:'20 × 25 cm',w:.2,h:.25,wall:'left'},
+ {artist:'Birsen Karaosman',title:'Untitled',size:'15 × 15 cm',w:.15,h:.15,wall:'left'},
+ {artist:'Erdinç Sakin',title:'Untitled (round)',size:'80 cm diameter',w:.8,h:.8,wall:'back'},
+ {artist:'Erdinç Sakin',title:'Untitled II',size:'60 × 60 cm',w:.6,h:.6,wall:'right'},
+ {artist:'Erdinç Sakin',title:'Untitled III',size:'60 × 50 cm',w:.6,h:.5,wall:'right'},
+ {artist:'Haldun Yılmaz',title:'Görmek yetmez',size:'75 × 75 cm',w:.75,h:.75,wall:'right'},
+ {artist:'Özlen Yücelmiş',title:'Untitled',size:'Dimensions unconfirmed',w:.55,h:.7,wall:'right'},
+ {artist:'Çiğdem Kılıç',title:'Untitled I',size:'80 × 60 cm',w:.8,h:.6,wall:'back'},
+ {artist:'Çiğdem Kılıç',title:'Untitled II',size:'80 × 60 cm',w:.8,h:.6,wall:'right'},
+ {artist:'Ece Kanışkan & Kayhan Öztürk',title:'Neşe Palamutları — large',size:'Ø 30 × 46 cm',sculpt:true,group:0},
+ {artist:'Ece Kanışkan & Kayhan Öztürk',title:'Neşe Palamutları — medium',size:'Ø 20 × 32 cm',sculpt:true,group:0},
+ {artist:'Ece Kanışkan & Kayhan Öztürk',title:'Neşe Palamutları — small',size:'Ø 12 × 20 cm',sculpt:true,group:0},
+ {artist:'Kayhan Öztürk',title:'Sadakat',size:'10 × 30 × 50 cm',sculpt:true,group:1},
+ {artist:'Kayhan Öztürk',title:'Araf I',size:'6 × 30 × 40 cm',sculpt:true,group:2},
+ {artist:'Kayhan Öztürk',title:'Araf II',size:'6 × 30 × 45 cm',sculpt:true,group:2},
+ {artist:'Şebnem Çetiner',title:'Hayal et',size:'Dimensions unconfirmed',sculpt:true,group:3}
+];
+const walls=inventory.filter(item=>!item.sculpt);
+const sculpture=inventory.filter(item=>item.sculpt);
+const left=walls.filter(item=>item.wall==='left');
+const right=walls.filter(item=>item.wall==='right');
+const back=walls.filter(item=>item.wall==='back');
+const sculptureStations=[[-1.55,-8.75],[1.55,-8.75],[-1.5,-11.2],[1.5,-11.2]];
+const wallStops=[
+ ...left.map((a,i)=>({...a,position:[-2.45,1.52,-8.05-i*.96],eye:[-.55,1.58,-8.05-i*.96]})),
+ ...back.map((a,i)=>({...a,position:[-1.48+i*1.48,1.55,-12.91],eye:[-1.48+i*1.48,1.6,-11.1]})),
+ ...right.map((a,i)=>({...a,position:[2.45,1.52,-12.15+i*.96],eye:[.55,1.58,-12.15+i*.96]}))
+];
+const sculptStops=sculpture.map((a,i)=>({...a,position:[sculptureStations[a.group][0],.9,sculptureStations[a.group][1]],eye:[sculptureStations[a.group][0]*.55,1.6,sculptureStations[a.group][1]+1]}));
+const stops=[...wallStops,...sculptStops];
+// Arrival route is a cinematic interpretation, not a surveyed Lütfi Kırdar path.
+const approach=[
+ {eye:[0,1.65,23],look:[0,1.65,15],label:'Fair arrival'},
+ {eye:[0,1.65,13.5],look:[0,1.6,0],label:'Exhibition aisle'},
+ {eye:[0,1.65,-3.7],look:[0,1.5,-10],label:'Stand L28'},
+ {eye:[0,1.65,-8.05],look:[0,1.6,-12.6],label:'Pintura exhibition'}
 ];
 
-/**
- * Source: BuynsellArt_Eser_Katalogu_Guncel.xlsx.
- * Dimensions below are the catalogued physical sizes, in cm (width x height).
- * We do NOT infer dimensions from source-image pixel resolution.
- * Entries without a verified catalog dimension remain explicitly unverified.
- */
-const VERIFIED_ARTWORK_DIMENSIONS_CM = {
-  1: [50, 70],
-  2: [50, 70],
-  4: [30, 50],
-  5: [30, 50],
-  6: [30, 50],
-  7: [25, 35],
-  8: [24, 32.8],
-  9: [40, 30],
-  10: [30, 40],
-  11: [30, 40],
-  12: [30, 50],
-  13: [30, 50],
-  14: [30, 50],
-  15: [30, 50],
-  16: [30, 50],
-  17: [30, 50],
-  18: [24, 32.8],
-  19: [50, 70],
-  20: [40, 70],
-  23: [20, 40],
-  24: [20, 40],
-  25: [15, 30],
-  26: [30, 50],
-  27: [30, 50],
-  28: [30, 50],
-  29: [30, 50],
-  30: [30, 40],
-  31: [30, 40],
-  32: [30, 40],
-  33: [15, 25],
-  981: [15, 25],
-  982: [15, 25],
-  984: [30, 50],
-};
-
-const DISPLAY_SCALE = 1.7;
-const MISSING_DIMENSION_PREVIEW = { height: 0.85, tier: 'unverified' };
-
-function measureArtwork(art) {
-  const physical = VERIFIED_ARTWORK_DIMENSIONS_CM[art.id];
-  if (!physical) return { ...MISSING_DIMENSION_PREVIEW };
-  const [widthCm, heightCm] = physical;
-  const longSide = Math.max(widthCm, heightCm);
-  const tier = longSide <= 36 ? 'small' : longSide <= 50 ? 'medium' : 'large';
-  return {
-    height: heightCm / 100 * DISPLAY_SCALE,
-    width: widthCm / 100 * DISPLAY_SCALE,
-    tier,
-    physicalWidthCm: widthCm,
-    physicalHeightCm: heightCm
+function CameraDirector({mode,step,onArrive,goTo,refApi}){
+ const {camera,gl}=useThree();
+ const target=useRef(new THREE.Vector3(...approach[0].eye));
+ const focal=useRef(new THREE.Vector3(...approach[0].look));
+ const reached=useRef(false);
+ const yaw=useRef(0);
+ const pitch=useRef(0);
+ const drag=useRef(null);
+ useFrame((_,delta)=>{
+  const d=Math.min(delta,.045);
+  const alpha=1-Math.exp(-2.05*d);
+  camera.position.lerp(target.current,alpha);
+  const desired=new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().lookAt(camera.position,focal.current,new THREE.Vector3(0,1,0)));
+  camera.quaternion.slerp(desired,1-Math.exp(-3.5*d));
+  if(camera.position.distanceTo(target.current)<.095&&!reached.current){ reached.current=true; onArrive(); }
+ });
+ React.useEffect(()=>{
+  const stop=goTo;
+  if(!stop)return;
+  reached.current=false;
+  target.current.set(...stop.eye);
+  focal.current.set(...stop.look);
+ },[goTo]);
+ React.useEffect(()=>{
+  if(!refApi)return;
+  refApi.current={recenter:()=>{reached.current=false;target.current.set(0,1.6,-8);focal.current.set(0,1.55,-12);}};
+ },[refApi]);
+ React.useEffect(()=>{
+  const el=gl.domElement;
+  const down=e=>{if(mode!=='explore')return;drag.current=[e.clientX,e.clientY];yaw.current=Math.atan2(focal.current.x-camera.position.x,-(focal.current.z-camera.position.z));};
+  const move=e=>{
+   if(!drag.current||mode!=='explore')return;
+   yaw.current-=(e.clientX-drag.current[0])*.003;
+   pitch.current=THREE.MathUtils.clamp(pitch.current+(e.clientY-drag.current[1])*.002,-.45,.45);
+   drag.current=[e.clientX,e.clientY];
+   const vec=new THREE.Vector3(Math.sin(yaw.current),Math.sin(pitch.current),-Math.cos(yaw.current));
+   focal.current.copy(camera.position).add(vec.multiplyScalar(7));
   };
+  const up=()=>{drag.current=null;};
+  el.addEventListener('pointerdown',down);window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);
+  return()=>{el.removeEventListener('pointerdown',down);window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);};
+ },[mode,gl]);
+ return null;
 }
-
-const STACK_ROWS = { small: 3, medium: 2, large: 1, unverified: 2 };
-const STACK_GAP = 0.18;
-const WALL_CENTER_Y = 2.05;
-
-function stackWall(artworks, axis, min, max) {
-  const columns = [];
-  for (const art of artworks) {
-    const measured = measureArtwork(art);
-    const last = columns[columns.length - 1];
-    if (last && last.tier === measured.tier && last.items.length < STACK_ROWS[measured.tier]) {
-      last.items.push({ art, measured });
-    } else {
-      columns.push({ tier: measured.tier, items: [{ art, measured }] });
-    }
+function Label({children,position,color='#665b50',size=.105,rotation=[0,0,0],maxWidth=1.4}){
+ return <Text position={position} rotation={rotation} fontSize={size} color={color} maxWidth={maxWidth} textAlign="center" anchorX="center" anchorY="middle">{children}</Text>;
+}
+function WallWork({art,index,side,onClick}){
+ const isBack=side==='back';
+ const x=isBack?-1.48+index*1.48:side==='left'?-2.475:2.475;
+ const z=isBack?-12.94:side==='left'?-8.05-index*.96:-12.15+index*.96;
+ const rotation=isBack?[0,0,0]:[0,side==='left'?Math.PI/2:-Math.PI/2,0];
+ const center=art.h<.35?1.52:1.60;
+ const scale=Math.min(1,art.w>.9?1:.92);
+ return <group position={[x,center,z]} rotation={rotation} onClick={(e)=>{e.stopPropagation();onClick(art);}}>
+  <mesh position={[0,0,-.01]} castShadow><boxGeometry args={[art.w*scale+.065,art.h*scale+.065,.06]}/><meshStandardMaterial color="#c7b99f" metalness={.42} roughness={.42}/></mesh>
+  <mesh position={[0,0,.027]}><planeGeometry args={[art.w*scale,art.h*scale]}/><meshStandardMaterial color={index%3===0?'#c6b9a5':index%3===1?'#d3d2c9':'#b4c1bd'} roughness={.9}/></mesh>
+  <Label position={[0,.012,.034]} size={Math.max(.045,Math.min(.072,art.w/8))} maxWidth={art.w*.86} color="#3f443f">{art.artist}{'\n'}{art.title}</Label>
+  <Label position={[0,-art.h*scale/2-.12,.034]} color="#655d53" size={.056} maxWidth={.9}>{art.size}</Label>
+ </group>;
+}
+function Pedestal({group,items,onClick}){
+ const [x,z]=sculptureStations[group];
+ const height=group===0?.65:.88;
+ return <group position={[x,0,z]}>
+  <mesh castShadow receiveShadow position={[0,height/2,0]}><boxGeometry args={[group===0?1.05:.65,height,group===0?.62:.65]}/><meshStandardMaterial color="#e6e0d5" roughness={.82}/></mesh>
+  <mesh position={[0,height+.025,0]}><boxGeometry args={[group===0?1.07:.67,.05,group===0?.64:.67]}/><meshStandardMaterial color="#c2b9a8" roughness={.55}/></mesh>
+  {items.map((a,i)=><group key={a.title} position={[group===0?(i-1)*.28:group===2?(i-.5)*.21:0,height+.1,0]} onClick={e=>{e.stopPropagation();onClick(a);}}>
+    <mesh castShadow position={[0,group===0?.17:.2,0]}>
+     {group===0?<sphereGeometry args={[i===0?.14:i===1?.105:.075,12,12]}/>:<boxGeometry args={[.12,.35,.15]}/>}
+     <meshStandardMaterial color={group===0?'#b39b72':group===3?'#9a7967':'#8f7559'} roughness={.75}/>
+    </mesh>
+   </group>)}
+  <Label position={[0,.16,.35]} size={.065} color="#6f6254" maxWidth={.7}>{['Neşe Palamutları','Sadakat','Araf','Hayal et'][group]}</Label>
+ </group>;
+}
+function FairArchitecture({onSelect}){
+ return <group>
+  <color attach="background" args={['#e6e1da']}/>
+  <fog attach="fog" args={['#e6e1da',29,57]}/>
+  <ambientLight intensity={1.45}/>
+  <hemisphereLight args={['#fff8eb','#a2a39e',1.3]}/>
+  <directionalLight position={[6,11,7]} intensity={2.0} castShadow shadow-mapSize={[1024,1024]} />
+  <mesh receiveShadow position={[0,-.07,4]}><boxGeometry args={[29,.12,54]}/><meshStandardMaterial color="#cbc9c2" roughness={.88}/></mesh>
+  {[-11,11].map(x=><group key={x} position={[x,0,8]}>
+    <mesh position={[0,2,0]}><boxGeometry args={[.12,4,32]}/><meshStandardMaterial color="#f1eee8" roughness={.9}/></mesh>
+    {[-4,4,12].map(z=><group key={z} position={[0,1.75,z]}>
+     <mesh><boxGeometry args={[.19,3.5,.24]}/><meshStandardMaterial color="#bdb5aa"/></mesh>
+     <Label position={[x<0?.3:-.3,.25,0]} size={.12} color="#776c5d" rotation={[0,x<0?Math.PI/2:-Math.PI/2,0]}>ART FAIR</Label>
+    </group>)}
+  </group>)}
+  <mesh position={[0,4,20.2]}><boxGeometry args={[10,.6,.5]}/><meshStandardMaterial color="#3d3935"/></mesh>
+  <Label position={[0,3.98,20.6]} size={.34} color="#f4eee5" maxWidth={9}>ISTANBUL ART FAIR</Label>
+  {[-7,7].map(x=><group key={x} position={[x,1.3,6]}>
+   <mesh><boxGeometry args={[4.5,2.6,4]}/><meshStandardMaterial color="#ece8e0" roughness={.8}/></mesh>
+   <mesh position={[0,2,0]}><boxGeometry args={[4.55,1,.05]}/><meshStandardMaterial color="#c7bdae"/></mesh>
+  </group>)}
+  <mesh receiveShadow position={[0,-.012,-10]}><boxGeometry args={[5,.045,6]}/><meshStandardMaterial color="#e8e5de" roughness={.76}/></mesh>
+  <mesh position={[-2.5,1.65,-10]} receiveShadow><boxGeometry args={[.09,3.3,6]}/><meshStandardMaterial color="#f7f5f0" roughness={.96}/></mesh>
+  <mesh position={[2.5,1.65,-10]} receiveShadow><boxGeometry args={[.09,3.3,6]}/><meshStandardMaterial color="#f7f5f0" roughness={.96}/></mesh>
+  <mesh position={[0,1.65,-13]} receiveShadow><boxGeometry args={[5.03,3.3,.09]}/><meshStandardMaterial color="#f7f5f0" roughness={.96}/></mesh>
+  <mesh position={[0,3.3,-7.02]}><boxGeometry args={[5,.22,.17]}/><meshStandardMaterial color="#343332" metalness={.1}/></mesh>
+  <Label position={[0,3.28,-6.89]} size={.17} color="#f1e9da" maxWidth={4.8}>PINTURA   /   L28</Label>
+  {[-1.75,1.75].map(x=><group key={x}>
+    <mesh position={[x,3.2,-10]}><cylinderGeometry args={[.075,.075,.16,10]}/><meshStandardMaterial color="#282727"/></mesh>
+    <spotLight position={[x,3.15,-10]} angle={.68} intensity={16} penumbra={.95} distance={5} target-position={[x,1,-13]}/>
+  </group>)}
+  {left.map((a,i)=><WallWork key={a.artist+a.title} art={a} index={i} side="left" onClick={onSelect}/>)}
+  {back.map((a,i)=><WallWork key={a.artist+a.title} art={a} index={i} side="back" onClick={onSelect}/>)}
+  {right.map((a,i)=><WallWork key={a.artist+a.title} art={a} index={i} side="right" onClick={onSelect}/>)}
+  {[0,1,2,3].map(g=><Pedestal key={g} group={g} items={sculpture.filter(a=>a.group===g)} onClick={onSelect}/>)}
+  <Label position={[0,.04,-4.3]} rotation={[-Math.PI/2,0,0]} size={.32} color="#81766b" maxWidth={4}>L28</Label>
+ </group>;
+}
+function Stage({phase,index,mode,onReached,onSelect,controller}){
+ const destination=useMemo(()=>{
+  if(phase==='arrival')return approach[Math.min(index,approach.length-1)];
+  const a=stops[index]||stops[0];
+  return {eye:a.eye,look:a.position};
+ },[phase,index]);
+ return <>
+  <CameraDirector mode={mode} onArrive={onReached} goTo={destination} refApi={controller}/>
+  <FairArchitecture onSelect={onSelect}/>
+ </>;
+}
+export default function App(){
+ const [phase,setPhase]=useState('welcome');
+ const [index,setIndex]=useState(0);
+ const [mode,setMode]=useState('guided');
+ const [selected,setSelected]=useState(null);
+ const [paused,setPaused]=useState(false);
+ const [ready,setReady]=useState(false);
+ const control=useRef(null);
+ const timer=useRef(null);
+ const stopTimer=useCallback(()=>{clearTimeout(timer.current);timer.current=null;},[]);
+ React.useEffect(()=>()=>stopTimer(),[stopTimer]);
+ const begin=()=>{stopTimer();setSelected(null);setPaused(false);setMode('guided');setIndex(0);setPhase('arrival');};
+ const enter=()=>{stopTimer();setIndex(0);setPhase('works');setPaused(false);};
+ const next=()=>{stopTimer();setSelected(null);setPaused(false);setIndex(i=>i+1>=stops.length?0:i+1);};
+ const reached=()=>{
+  if(paused||mode==='explore')return;
+  stopTimer();
+  if(phase==='arrival')timer.current=setTimeout(()=>setIndex(i=>{if(i>=approach.length-1){setPhase('works');return 0;}return i+1;}),index===approach.length-1?2100:850);
+  if(phase==='works'){
+   const art=stops[index];if(art)setSelected(art);
+   timer.current=setTimeout(()=>{setSelected(null);setIndex(i=>(i+1)%stops.length);},11500);
   }
-  return columns.flatMap((column, index) => {
-    const along = columns.length === 1 ? (min + max) / 2 : min + (max - min) * index / (columns.length - 1);
-    const fullHeight = column.items.reduce((n, item) => n + item.measured.height, 0) +
-      STACK_GAP * (column.items.length - 1);
-    let cursor = WALL_CENTER_Y + fullHeight / 2;
-    return column.items.map(({ art, measured }) => {
-      const centerY = cursor - measured.height / 2;
-      cursor -= measured.height + STACK_GAP;
-      const position = [...art.position];
-      position[axis] = along;
-      position[1] = centerY;
-      return { ...art, ...measured, position };
-    });
-  });
-}
-
-const ARTWORKS = [
-  ...stackWall(SOURCE_ARTWORKS.filter(art => art.position[0] < -11), 2, -15.0, 12.0),
-  ...stackWall(SOURCE_ARTWORKS.filter(art => art.position[0] > 11), 2, -15.0, 12.0),
-  ...stackWall(SOURCE_ARTWORKS.filter(art => art.position[2] < -17 && art.id !== 33), 0, -10.0, 10.0)
-];
-
-const GRID_SETS = [
-  {
-    id: 'flamingo-set',
-    title: 'Flamingo Polyptych',
-    category: 'Oil Painting Set',
-    description: 'A four-panel unified set forming an elegant stylized flamingo composition.',
-    position: [-3.8, 1.8, 13.95],
-    rotation: [0, Math.PI, 0],
-    files: [
-      '/artworks/21Flamingo1.JPG',
-      '/artworks/21Flamingo2.JPG',
-      '/artworks/21Flamingo3.JPG',
-      '/artworks/21Flamingo4.JPG'
-    ]
-  },
-  {
-    id: 'synthesis-set',
-    title: 'Chromatic Synthesis',
-    category: 'Abstract Set',
-    description: 'A four-panel modernist abstract matrix investigating chromatic color blocks.',
-    position: [3.8, 1.8, 13.95],
-    rotation: [0, Math.PI, 0],
-    files: [
-      '/artworks/22Piece1.JPG',
-      '/artworks/22Piece2.JPG',
-      '/artworks/22Piece3.JPG',
-      '/artworks/22Piece4.JPG'
-    ]
-  }
-];
-
-const SOURCE_WING_ARTWORKS = [
-  { id: 981, title: 'Sunflower Vase II', file: '/artworks/33-DSC00924.JPG', position: [-8.2, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 },
-  { id: 982, title: 'Sunflower Vase III', file: '/artworks/33-DSC00925.JPG', position: [-6.0, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 },
-  { id: 983, title: 'Emerald Rose', file: '/artworks/34-DSC00670.JPG', position: [6.0, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 },
-  { id: 984, title: 'Tulips', file: '/artworks/35-tulip1.jpg', position: [8.2, 1.8, 13.95], rotation: [0, Math.PI, 0], height: 1.1 }
-];
-
-/** The three small sunflower paintings are a single curated 15 x 25 cm vertical column. */
-const SMALL_SUNFLOWER_TRIO = [
-  SOURCE_ARTWORKS.find(art => art.id === 33),
-  ...SOURCE_WING_ARTWORKS.filter(art => art.id === 981 || art.id === 982)
-].map(art => ({
-  ...art,
-  position: [-8.15, art.position[1], 13.95],
-  rotation: [0, Math.PI, 0]
-}));
-const WING_ARTWORKS = [
-  ...stackWall(SMALL_SUNFLOWER_TRIO, 0, -8.15, -8.15),
-  ...SOURCE_WING_ARTWORKS.filter(art => art.id !== 981 && art.id !== 982)
-    .map(art => ({ ...art, ...measureArtwork(art) }))
-];
-
-function ArtFrame({ art }) {
-  const [texture, setTexture] = useState(null);
-  const [aspect, setAspect] = useState(1.0);
-  const [hovered, setHovered] = useState(false);
-
-  useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    loader.load(art.file, (tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      if (tex.image && tex.image.height > 0) {
-        setAspect(tex.image.width / tex.image.height);
-      }
-      setTexture(tex);
-    });
-  }, [art.file]);
-
-  const frameWidth = art.width || (art.height || 1.1) * aspect;
-  const frameHeight = art.height || 1.1;
-
-  return (
-    <group userData={{ navigationArtwork: art }} position={art.position} rotation={art.rotation}
-      onClick={(e) => { e.stopPropagation(); }}
-      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
-      onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
-    >
-      <mesh position={[0, 0, -0.01]}>
-        <boxGeometry args={[frameWidth + 0.04, frameHeight + 0.04, 0.02]} />
-        <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} />
-      </mesh>
-      <mesh position={[0, 0, 0.01]}>
-        <planeGeometry args={[frameWidth, frameHeight]} />
-        {texture ? <meshBasicMaterial map={texture} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#c4b5a5" side={THREE.DoubleSide} />}
-      </mesh>
-    </group>
-  );
-}
-
-function GridArtSet({ setInfo }) {
-  const [textures, setTextures] = useState([]);
-  const [hovered, setHovered] = useState(false);
-
-  useEffect(() => {
-    const loader = new THREE.TextureLoader();
-    setInfo.files.forEach((file, idx) => {
-      loader.load(file, (tex) => {
-        tex.colorSpace = THREE.SRGBColorSpace;
-        setTextures(prev => {
-          const next = [...prev];
-          next[idx] = tex;
-          return next;
-        });
-      });
-    });
-  }, [setInfo.files]);
-
-  const pW = 0.75;
-  const pH = 1.0;
-  const gap = 0.02;
-
-  return (
-    <group userData={{ navigationArtwork: { ...setInfo, file: setInfo.files[0] } }} position={setInfo.position} rotation={setInfo.rotation}
-      onClick={(e) => {
-        e.stopPropagation();
-        // Navigation is handled by the shared pointer controller.
-      }}
-      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
-      onPointerOut={() => { setHovered(false); document.body.style.cursor = 'default'; }}
-    >
-      <mesh position={[-pW/2 - gap/2, pH/2 + gap/2, 0.01]}>
-        <planeGeometry args={[pW, pH]} />
-        {textures[0] ? <meshBasicMaterial map={textures[0]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
-      </mesh>
-      <mesh position={[pW/2 + gap/2, pH/2 + gap/2, 0.01]}>
-        <planeGeometry args={[pW, pH]} />
-        {textures[1] ? <meshBasicMaterial map={textures[1]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
-      </mesh>
-      <mesh position={[-pW/2 - gap/2, -pH/2 - gap/2, 0.01]}>
-        <planeGeometry args={[pW, pH]} />
-        {textures[2] ? <meshBasicMaterial map={textures[2]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
-      </mesh>
-      <mesh position={[pW/2 + gap/2, -pH/2 - gap/2, 0.01]}>
-        <planeGeometry args={[pW, pH]} />
-        {textures[3] ? <meshBasicMaterial map={textures[3]} side={THREE.DoubleSide} /> : <meshStandardMaterial color="#3d2514" />}
-      </mesh>
-      <mesh position={[0, 0, -0.01]}>
-        <boxGeometry args={[pW*2 + gap + 0.06, pH*2 + gap + 0.06, 0.02]} />
-        <meshStandardMaterial color={hovered ? '#d4af37' : '#3d2514'} roughness={0.3} />
-      </mesh>
-    </group>
-  );
-}
-
-function GalleryDoor() {
-  return (
-    <group position={[0, 0, 14.0]}>
-      <mesh position={[-1.1, 1.8, 0]}><boxGeometry args={[0.2, 3.6, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
-      <mesh position={[1.1, 1.8, 0]}><boxGeometry args={[0.2, 3.6, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
-      <mesh position={[0, 3.55, 0]}><boxGeometry args={[2.4, 0.2, 0.3]} /><meshStandardMaterial color="#3d2314" /></mesh>
-      <group position={[-1.0, 0, 0]} rotation={[0, Math.PI / 3, 0]}>
-        <mesh position={[0.5, 1.7, 0]}><boxGeometry args={[1.0, 3.3, 0.08]} /><meshStandardMaterial color="#4a2e18" /></mesh>
-      </group>
-      <group position={[1.0, 0, 0]} rotation={[0, -Math.PI / 3, 0]}>
-        <mesh position={[-0.5, 1.7, 0]}><boxGeometry args={[1.0, 3.3, 0.08]} /><meshStandardMaterial color="#4a2e18" /></mesh>
-      </group>
-    </group>
-  );
-}
-
-function GalleryArchitecture() {
-  const ecruColor = '#ede7db';
-  const floorColor = '#1e2124';
-  return (
-    <group>
-      <mesh position={[0, 0, -2]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[26, 36]} />
-        <meshStandardMaterial color={floorColor} roughness={0.15} metalness={0.1} side={THREE.DoubleSide} />
-      </mesh>
-      <mesh position={[0, 4.2, -2]} rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[26, 36]} /><meshStandardMaterial color="#faf8f5" roughness={0.9} side={THREE.DoubleSide} /></mesh>
-
-      <mesh position={[-12.0, 2.1, -2]} rotation={[0, Math.PI / 2, 0]}><planeGeometry args={[36, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[12.0, 2.1, -2]} rotation={[0, -Math.PI / 2, 0]}><planeGeometry args={[36, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[0, 2.1, -19]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-      <mesh position={[0, 2.1, 15]}><planeGeometry args={[24, 4.2]} /><meshStandardMaterial color={ecruColor} roughness={0.8} side={THREE.DoubleSide} /></mesh>
-    </group>
-  );
-}
-
-
-const CAMERA_HEIGHT = 1.7;
-const WALK_BOUNDS = { minX: -11.1, maxX: 11.1, minZ: -16.9, maxZ: 12.9 };
-const WALK_SPEED = 3.9;
-const ALL_STOPS = [...ARTWORKS, ...WING_ARTWORKS, ...GRID_SETS.map(item => ({ ...item, file: item.files[0] }))];
-
-function validDestination(position) {
-  return new THREE.Vector3(
-    THREE.MathUtils.clamp(position.x, WALK_BOUNDS.minX, WALK_BOUNDS.maxX),
-    CAMERA_HEIGHT,
-    THREE.MathUtils.clamp(position.z, WALK_BOUNDS.minZ, WALK_BOUNDS.maxZ)
-  );
-}
-
-function artworkDestination(art) {
-  const normal = new THREE.Vector3(0, 0, 1).applyEuler(new THREE.Euler(...art.rotation));
-  const position = new THREE.Vector3(...art.position).addScaledVector(normal, 2.2);
-  return validDestination(position);
-}
-
-// Navigation uses the existing rectangular walkable gallery. A real fair hall will
-// require a measured walkable navigation mesh before entrance routing is enabled.
-function GalleryNavigation({ navigationRef, tourRef, onArtworkReached, onTourFinished, onTourInterrupted }) {
-  const { camera, gl, scene } = useThree();
-  const pointer = useRef(null);
-  const raycaster = useMemo(() => new THREE.Raycaster(), []);
-  const plane = useMemo(() => new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), []);
-  const euler = useRef(new THREE.Euler(0, 0, 0, 'YXZ'));
-  const forward = useRef(new THREE.Vector3());
-  const targetDirection = useRef(new THREE.Vector3());
-  const destination = useRef(null);
-  const lookAt = useRef(null);
-  const pendingArt = useRef(null);
-  const currentTourIndex = useRef(-1);
-  const onArtworkReachedRef = useRef(onArtworkReached);
-  const onTourFinishedRef = useRef(onTourFinished);
-  const onTourInterruptedRef = useRef(onTourInterrupted);
-
-  useEffect(() => { onArtworkReachedRef.current = onArtworkReached; }, [onArtworkReached]);
-  useEffect(() => { onTourFinishedRef.current = onTourFinished; }, [onTourFinished]);
-  useEffect(() => { onTourInterruptedRef.current = onTourInterrupted; }, [onTourInterrupted]);
-
-  useEffect(() => {
-    navigationRef.current = {
-      stop() { destination.current = null; pendingArt.current = null; tourRef.current = false; },
-      goTo(art) {
-        destination.current = artworkDestination(art);
-        lookAt.current = new THREE.Vector3(...art.position);
-        pendingArt.current = art;
-      },
-      startTour() {
-        tourRef.current = true;
-        currentTourIndex.current = 0;
-        const art = ALL_STOPS[0];
-        destination.current = artworkDestination(art);
-        lookAt.current = new THREE.Vector3(...art.position);
-        pendingArt.current = null;
-      },
-      next() {
-        tourRef.current = true;
-        currentTourIndex.current = (currentTourIndex.current + 1) % ALL_STOPS.length;
-        const art = ALL_STOPS[currentTourIndex.current];
-        destination.current = artworkDestination(art);
-        lookAt.current = new THREE.Vector3(...art.position);
-        pendingArt.current = null;
-      },
-      previous() {
-        tourRef.current = true;
-        currentTourIndex.current = (currentTourIndex.current - 1 + ALL_STOPS.length) % ALL_STOPS.length;
-        const art = ALL_STOPS[currentTourIndex.current];
-        destination.current = artworkDestination(art);
-        lookAt.current = new THREE.Vector3(...art.position);
-        pendingArt.current = null;
-      }
-    };
-
-    const canvas = gl.domElement;
-    canvas.style.touchAction = 'none';
-    const onPointerDown = (event) => {
-      if (event.button !== 0 && event.pointerType !== 'touch') return;
-      pointer.current = { id: event.pointerId, x: event.clientX, y: event.clientY, prevX: event.clientX, prevY: event.clientY, moved: false };
-      canvas.setPointerCapture?.(event.pointerId);
-    };
-    const onPointerMove = (event) => {
-      const p = pointer.current;
-      if (!p || p.id !== event.pointerId) return;
-      const dx = event.clientX - p.prevX;
-      const dy = event.clientY - p.prevY;
-      p.prevX = event.clientX;
-      p.prevY = event.clientY;
-      if (Math.hypot(event.clientX - p.x, event.clientY - p.y) > 7) p.moved = true;
-      if (!p.moved) return;
-      destination.current = null;
-      tourRef.current = false;
-      onTourInterruptedRef.current();
-      pendingArt.current = null;
-      lookAt.current = null;
-      euler.current.setFromQuaternion(camera.quaternion);
-      euler.current.y -= dx * 0.003;
-      euler.current.x = THREE.MathUtils.clamp(euler.current.x - dy * 0.003, -1.25, 1.25);
-      camera.quaternion.setFromEuler(euler.current);
-    };
-    const onPointerUp = (event) => {
-      const p = pointer.current;
-      if (!p || p.id !== event.pointerId) return;
-      pointer.current = null;
-      if (p.moved) return;
-      const rect = canvas.getBoundingClientRect();
-      const coords = new THREE.Vector2(
-        ((event.clientX - rect.left) / rect.width) * 2 - 1,
-        -((event.clientY - rect.top) / rect.height) * 2 + 1
-      );
-      raycaster.setFromCamera(coords, camera);
-      const intersections = raycaster.intersectObjects(scene.children, true);
-      let art = null;
-      for (const hit of intersections) {
-        let object = hit.object;
-        while (object) {
-          if (object.userData?.navigationArtwork) {
-            art = object.userData.navigationArtwork;
-            break;
-          }
-          object = object.parent;
-        }
-        if (art) break;
-      }
-      if (art) {
-        destination.current = artworkDestination(art);
-        lookAt.current = new THREE.Vector3(...art.position);
-        pendingArt.current = art;
-        tourRef.current = false;
-        onTourInterruptedRef.current();
-        return;
-      }
-      const ground = new THREE.Vector3();
-      if (raycaster.ray.intersectPlane(plane, ground)) {
-        destination.current = validDestination(ground);
-        lookAt.current = null;
-        pendingArt.current = null;
-        tourRef.current = false;
-        onTourInterruptedRef.current();
-      }
-    };
-    const onWheel = (event) => {
-      event.preventDefault();
-      destination.current = null;
-      lookAt.current = null;
-      pendingArt.current = null;
-      tourRef.current = false;
-      onTourInterruptedRef.current();
-      camera.getWorldDirection(forward.current);
-      forward.current.y = 0;
-      forward.current.normalize();
-      const next = validDestination(camera.position.clone().addScaledVector(forward.current, -event.deltaY * 0.009));
-      camera.position.copy(next);
-    };
-    const onPointerCancel = () => { pointer.current = null; };
-    canvas.addEventListener('pointerdown', onPointerDown);
-    canvas.addEventListener('pointermove', onPointerMove);
-    canvas.addEventListener('pointerup', onPointerUp);
-    canvas.addEventListener('pointercancel', onPointerCancel);
-    canvas.addEventListener('wheel', onWheel, { passive: false });
-    return () => {
-      canvas.removeEventListener('pointerdown', onPointerDown);
-      canvas.removeEventListener('pointermove', onPointerMove);
-      canvas.removeEventListener('pointerup', onPointerUp);
-      canvas.removeEventListener('pointercancel', onPointerCancel);
-      canvas.removeEventListener('wheel', onWheel);
-      navigationRef.current = null;
-    };
-  }, [camera, gl, scene, raycaster, plane, navigationRef, tourRef]);
-
-  useFrame((_, delta) => {
-    if (!destination.current) return;
-    const to = targetDirection.current.copy(destination.current).sub(camera.position);
-    to.y = 0;
-    const remaining = to.length();
-    if (remaining > 0.055) {
-      const step = Math.min(remaining, WALK_SPEED * Math.min(delta, 0.05));
-      camera.position.addScaledVector(to.normalize(), step);
-    } else {
-      camera.position.copy(destination.current);
-      destination.current = null;
-      if (pendingArt.current) {
-        onArtworkReachedRef.current(pendingArt.current);
-        pendingArt.current = null;
-      }
-      if (tourRef.current) {
-        currentTourIndex.current += 1;
-        if (currentTourIndex.current >= ALL_STOPS.length) {
-          tourRef.current = false;
-          onTourFinishedRef.current();
-        } else {
-          const art = ALL_STOPS[currentTourIndex.current];
-          destination.current = artworkDestination(art);
-          lookAt.current = new THREE.Vector3(...art.position);
-        }
-      }
-    }
-    camera.position.y = CAMERA_HEIGHT;
-    if (lookAt.current) {
-      const desired = new THREE.Quaternion();
-      const matrix = new THREE.Matrix4().lookAt(camera.position, lookAt.current, camera.up);
-      desired.setFromRotationMatrix(matrix);
-      camera.quaternion.slerp(desired, Math.min(1, delta * 4));
-    }
-  });
-  return null;
-}
-
-export default function App() {
-  const [selectedArt, setSelectedArt] = useState(null);
-  const navigationRef = useRef(null);
-  const tourRef = useRef(false);
-  const [tourActive, setTourActive] = useState(false);
-  const startTour = () => { setSelectedArt(null); navigationRef.current?.startTour(); setTourActive(true); };
-  const stopTour = () => { navigationRef.current?.stop(); setTourActive(false); };
-  const nextStop = () => { setSelectedArt(null); navigationRef.current?.next(); setTourActive(true); };
-
-  return (
-    <div className="canvas-container">
-      <div className="gallery-toolbar" aria-label="Gallery navigation">
-        <div className="gallery-brand"><span>GRADPIXEL</span><strong>Virtual Gallery</strong></div>
-        <div className="gallery-actions">
-          <button type="button" onClick={tourActive ? stopTour : startTour}>{tourActive ? 'Pause tour' : 'Start guided tour'}</button>
-          <button type="button" onClick={nextStop}>Next artwork</button>
-          <button type="button" onClick={stopTour}>Stop</button>
-        </div>
-        <p className="gallery-hint">Click the floor to walk · Click an artwork to approach · Drag to look around · Scroll to move</p>
-      </div>
-
-      <Canvas camera={{ position: [0, 1.7, 8.0], fov: 70 }}>
-        <ambientLight intensity={1.8} color="#ffffff" />
-        <directionalLight position={[0, 10, 5]} intensity={1.8} color="#fffcf5" />
-        <GalleryNavigation navigationRef={navigationRef} tourRef={tourRef}
-          onArtworkReached={(art) => { setSelectedArt(art); setTourActive(false); }}
-          onTourInterrupted={() => setTourActive(false)}
-          onTourFinished={() => setTourActive(false)} />
-        <GalleryArchitecture />
-        <GalleryDoor />
-        {ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} />)}
-        {GRID_SETS.map((setInfo) => <GridArtSet key={setInfo.id} setInfo={setInfo} />)}
-        {WING_ARTWORKS.map((art) => <ArtFrame key={art.id} art={art} />)}
-      </Canvas>
-
-      {selectedArt && (
-        <div className="modal-overlay" onClick={() => setSelectedArt(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close-btn" onClick={() => setSelectedArt(null)}>&times;</button>
-            <div className="modal-img-wrapper">
-              <img src={selectedArt.file} alt={selectedArt.title} style={{ maxWidth: '100%', maxHeight: '75vh', objectFit: 'contain' }} />
-            </div>
-            <div className="modal-body">
-              <div className="modal-meta-row">
-                <span className="modal-tag">{selectedArt.category || 'Fine Art'}</span>
-              </div>
-              <h2>{selectedArt.title}</h2>
-              <p className="artist-byline">Artist: <strong>Zeynep Ozcelik</strong></p>
-              <p className="art-desc">{selectedArt.description || 'Virtual Fine Art Exhibition piece.'}</p>
-              <div className="modal-actions-row">
-                <a href={ARTIST_INFO.instagram} target="_blank" rel="noreferrer" className="modal-action-btn ig">📸 Instagram {ARTIST_INFO.instagramHandle}</a>
-                <a href={`mailto:${ARTIST_INFO.email}?subject=Acquisition Inquiry: ${encodeURIComponent(selectedArt.title)}`} className="modal-action-btn mail">✉️ Inquire via Email</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+ };
+ return <div className="iaaf-page">
+  <div className="iaaf-scene"><Canvas shadows dpr={[1,1.5]} camera={{position:approach[0].eye,fov:64,near:.05,far:85}} onCreated={()=>setReady(true)}>
+   <Stage phase={phase==='welcome'?'arrival':phase} index={index} mode={mode} onReached={reached} onSelect={(art)=>{stopTimer();setPaused(true);setSelected(art);}} controller={control}/>
+  </Canvas></div>
+  <header className="iaaf-topbar"><div className="iaaf-mark">GRADPIXEL <span>/</span> PINTURA</div><div className="iaaf-place">ISTANBUL ART FAIR <span>·</span> L28</div></header>
+  {phase==='welcome'&&<section className="iaaf-welcome">
+   <p className="iaaf-eyebrow">AN IMMERSIVE EXHIBITION</p>
+   <h1>Art begins<br/><em>with arrival.</em></h1>
+   <p>Step inside the fair, arrive at Pintura's L28 stand and discover twenty works by eleven participating artist catalogues.</p>
+   <div className="iaaf-welcome-actions"><button onClick={begin}>Begin the journey <span>→</span></button><button className="iaaf-secondary" onClick={enter}>Go directly to L28</button></div>
+   <small>Architectural approach is an interpretation of the fair plan. Artwork images and sculptural scans are being prepared.</small>
+  </section>}
+  {phase!=='welcome'&&<div className="iaaf-controls">
+    <div className="iaaf-stage"><span className="iaaf-dot"/> {phase==='arrival'?'ARRIVING AT THE EXHIBITION':'INSIDE STAND L28'} <span className="iaaf-counter">{phase==='works'?String(index+1).padStart(2,'0')+' / '+stops.length:'FAIR ROUTE'}</span></div>
+    <div className="iaaf-buttons">
+     <button onClick={begin}>Restart</button>
+     {phase==='arrival'?<button className="iaaf-main" onClick={enter}>Skip to stand →</button>:<>
+      <button onClick={()=>{stopTimer();setPaused(true);setSelected(null);setMode('explore');control.current?.recenter();}}>Explore</button>
+      <button onClick={()=>{stopTimer();setMode('guided');setPaused(false);setSelected(null);setIndex(i=>(i+1)%stops.length);}}>Guided tour</button>
+      <button className="iaaf-main" onClick={next}>Next artwork →</button>
+     </>}
     </div>
-  );
+   </div>}
+  {selected&&phase==='works'&&<aside className="iaaf-workdetail" aria-live="polite">
+    <button aria-label="Close artwork details" onClick={()=>{setSelected(null);setPaused(true);stopTimer();}} className="iaaf-close">×</button>
+    <p className="iaaf-eyebrow">{selected.sculpt?'SCULPTURE / CERAMICS':'WORK ON WALL'}</p>
+    <h2>{selected.title}</h2><p className="iaaf-artist">{selected.artist}</p><p className="iaaf-size">{selected.size}</p>
+    <p className="iaaf-disclaimer">Artwork reproduction pending. The 3D stand uses labelled scale-study panels, not invented images.</p>
+   </aside>}
+  <footer className="iaaf-footer"><span>2026 · GRADPIXEL VIRTUAL EXHIBITIONS</span><span>5 × 6 M · OPEN FRONT · L28</span></footer>
+ </div>;
 }
